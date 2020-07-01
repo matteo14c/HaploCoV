@@ -1,11 +1,3 @@
-$lfile=shift;
-open(IN,$lfile);
-while(<IN>)
-{
-	chomp;
-	$list{$_}++;
-}
-
 %pos=
 (
 	"17858_A|G"=>[3],
@@ -44,7 +36,7 @@ while(<IN>)
 	"2480_A|G"=>[10],
 	"17247_T|C"=>[9]
 );
-
+print "name c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 C\n"
 @files=<*_ref_qry.snps>;
 @genomes=();
 foreach $f (@files)
@@ -52,7 +44,6 @@ foreach $f (@files)
 	$name=$f;
 	$name=~s/_ref_qry.snps//;
 	$name=~s/\.\d+//;
-	next unless $list{$name};
         my @scores=(-1,-1,0,0,0,0,0,0,0,0,0,0,0);
 	%Ihave=();	
 
