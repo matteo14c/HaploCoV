@@ -36,7 +36,7 @@
 	"2480_A|G"=>[10],
 	"17247_T|C"=>[9]
 );
-print "name c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 C\n"
+print "name c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 C\n";
 @files=<*_ref_qry.snps>;
 @genomes=();
 foreach $f (@files)
