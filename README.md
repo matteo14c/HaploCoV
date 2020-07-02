@@ -67,7 +67,7 @@ While input 2 is assigned to C12
 ## For impatient people
 
 To do all of the above: 
-1. put fasta files of genome sequence in one folder. 1 sequence per file. all the files must have the *.fasta* extension
+1. put fasta files of genome sequences in one folder. 1 sequence per file. all the files must have the *.fasta* extension
 2. download this repo
 3. run `perl align.pl`
 4. run `perl assign_CL.pl > OUTPUT_FILE`
