@@ -17,7 +17,7 @@ on a unix system you can download this file, by
 
 followed by
 
-`gunzip GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz`
+`gunzip GCF_009858895.2_ASM985889v3_genomic.fna.gz`
 
 Should you find any of this software useful for your work, please cite:
 >**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics provides an operational classification system and reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2 bioRxiv 2020.06.26.172924; doi: https://doi.org/10.1101/2020.06.26.172924**
