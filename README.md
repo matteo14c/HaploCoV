@@ -71,7 +71,6 @@ To do all of the above:
 2. download this repo
 3. run `perl align.pl`
 4. run `perl assign_CL.pl > OUTPUT_FILE`
-
 5 open the output file, for every sequence the last column will indicate the cluster to which the sequence is assigned
 
 
