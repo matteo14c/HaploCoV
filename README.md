@@ -41,7 +41,7 @@ For every genome fasta file you will obtain a file with the extension .snps whic
 
 To assign genomes to clusters, you need to used the *assign_CL.pl* script. This script uses 46 high frequency polymorphic sites to assign a SARS-CoV-2 genome to clusters as defined in Chiara et al 2020 (see above). 
 
-Although in the paper we identify 50 high frequency polymorphic sites in currently avaialbe genomes of SARS-CoV-2,  *3* 3' and 1 *5'* proximal sites have been excluded here based on the consideration that the majority of the currently available assemblies of SARS-CoV-2 are truncated at one or both ends. 
+Although in the paper we identify 50 high frequency polymorphic sites in currently avaialbe genomes of SARS-CoV-2, **3'** and **5'** proximal sites have been excluded here, based on the consideration that the majority of the currently available assemblies of SARS-CoV-2 are truncated at one or both ends. 
 
 As shown in supplementary figure 1 of the paper, the exclusion of these sites does alter significantly our classification system.
 
@@ -71,6 +71,7 @@ To do all of the above:
 2. download this repo
 3. run `perl align.pl`
 4. run `perl assign_CL.pl > OUTPUT_FILE`
+
 5 open the output file, for every sequence the last column will indicate the cluster to which the sequence is assigned
 
 
