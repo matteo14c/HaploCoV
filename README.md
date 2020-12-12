@@ -37,9 +37,9 @@ Once you have everything in place, you can simply run:
 
 For every genome fasta file you will obtain a file with the extension .snps which will contain all the polymorphic positions identified by nucmer
 
-## Assign to a Cluster
+## Assign to a Haplogroup
 
-To assign genomes to clusters, you need to used the *assign_CL.pl* script. This script uses 46 high frequency polymorphic sites to assign a SARS-CoV-2 genome to clusters as defined in Chiara et al 2020 (see above). 
+To assign genomes to haplogrouos, you need to used the *assign_CL.pl* script. This script uses 46 high frequency polymorphic sites to assign a SARS-CoV-2 genome to haplogroups as defined in Chiara et al 2020 (see above). 
 
 Although in the paper we identify 50 high frequency polymorphic sites in currently avaialbe genomes of SARS-CoV-2, **3'** and **5'** proximal sites have been excluded here, based on the consideration that the majority of the currently available assemblies of SARS-CoV-2 are truncated at one or both ends. 
 
@@ -47,22 +47,22 @@ As shown in supplementary figure 1 of the paper, the exclusion of these sites do
 
 Similar to *align.pl* , *assign_CL.pl* will automatically detect its input files. These are the files with the *.snps* extesion that you obtained from nucmer. So ideally you should place both scripts in the same folder where you have the genome sequences.
 
-At this point to assign genomes to a cluster you need to run
+At this point to assign genomes to a haplogroup you need to run
 `perl assign_CL.pl > OUTPUT_FILE`
 
 *assign.pl* will print its output to the stdout by default, so  ">" is required to redirect the output to a file.
 
 The output consists in a simple table, formatted as follows:
-Name of the file | C1 score | C2 score | C3 score | C4 score | C5 score | C6 score | C7 score | C8 score | C9 score | C10 score | C11 score | C12 score | C |
----------------- |----------|----------|----------|----------|----------|----------|----------|----------|----------|-----------|-----------|-----------|---|
-input 1|-1|-2|-5|-7|-4|-6|-5|-8|-4|-4|-4|-5|1
-input 2|-2|-2|-5|-7|-4|-6|-5|-8|-4|-4|-4|3|12
+Name of the file | HG1 score | HG2 score | HG3 score | HG4 score | HG5 score | HGN score ... | HG |
+---------------- |-----------|-----------|-----------|-----------|-----------|---------------|----|
+input 1|-1|-2|-5|-7|-5|1
+input 2|-2|-2|-5|-7|3|12
 
-The table indicates the name of each input file (column 1), the score for the membership of the sequence in each cluster (1-12, columns 2 to 13) and in the last column (14) the cluster with the highest score for that sequence, that is the cluster to which the sequence is assigned.
+The table indicates the name of each input file (column 1), the score for the membership of the sequence in each haplogroup (1-22, columns 2 to 23) and in the last column (24) the haplogroup with the highest score for that sequence, that is the haplogroup to which the sequence is assigned.
 
-So in the example input 1 is assigned to C1
+So in the example input 1 is assigned to HG1
 
-While input 2 is assigned to C12
+While input 2 is assigned to HG12
 
 ## For impatient people
 
@@ -71,7 +71,7 @@ To do all of the above:
 2. download this repo
 3. run `perl align.pl`
 4. run `perl assign_CL.pl > OUTPUT_FILE`
-5. open the output file, for every sequence the last column will indicate the cluster to which the sequence is assigned
+5. open the output file, for every sequence the last column will indicate the haplogroup to which the sequence is assigned
 
 
 
