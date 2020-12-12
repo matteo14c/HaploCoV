@@ -73,7 +73,10 @@ To do all of the above:
 4. run `perl assign_CL.pl > OUTPUT_FILE`
 5. open the output file, for every sequence the last column will indicate the haplogroup to which the sequence is assigned
 
+## Graphical interface version
 
+Please notice that a more user friendly, graphical interface based version of this software is also available from: http://corgat.cloud.ba.infn.it/galaxy . Please refer to https://corgat.readthedocs.io/en/latest/ for a more detailed manual.
 
+In case of problems or doubts, please feel free to contact me at matteo.chiara@unimi.it
 
 
