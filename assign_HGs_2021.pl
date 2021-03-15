@@ -71,17 +71,7 @@ foreach my $f (@files)
 
 	#########################################################
 	# store variants seen in this genome
-	my %Ihave=();	
-
-	open(IN,$f);
-	my %ldata=();
-	while(<IN>)
-	{
-		next unless $_=~/NC_045512.2/;
-                my ($pos,$b1,$b2)=(split(/\s+/,$_))[1,2,3];
-		my $label="$pos\_$b1|$b2";
-		$Ihave{$label}=1;
-	}
+	%Ihave=%{read_snp($f)}
 
 	#######################################################
 	# compare with variants that define clusters
@@ -154,5 +144,42 @@ sub print_help
         print "--out <<name>>\tName of the output file. Defaults to ASSIGN_out.tsv\n";
         print "\n##EXAMPLES:\n\n";
         print "1# input is multi-fasta (apollo.fa):\nperl align.pl --multi apollo.fa\n\n";
+}
+
+sub read_snp
+{
+        my $file=$_[0];
+        open(IN,$f);
+        my %ldata=();
+        while(<IN>)
+        {
+                next unless $_=~/NC_045512.2/;
+                my ($pos,$b1,$b2)=(split(/\s+/,$_))[1,2,3];
+                next if $b2=~/N/;
+                $ldata{$pos}=[$b1,$b2];
+        }
+        my %dat_final=();
+        my $prev_pos=0;
+        my $prev_ref="na";
+        my $prev_alt="na";
+        my $pos_append="na";
+        foreach my $pos (sort{$a<=>$b} keys %ldata)
+        {
+                my  $dist=$pos-$prev_pos;
+                if ($dist>1)
+                {
+                        $pos_append=$prev_pos-length($prev_alt)+1;
+                        $dat_final{"$pos_append\_$prev_ref|$prev_alt"}{$name}=1 unless $prev_ref eq "na";
+                        $prev_ref=$ldata{$pos}[0];
+                        $prev_alt=$ldata{$pos}[1];
+                }else{
+                        $prev_ref.=$ldata{$pos}[0];
+                        $prev_alt.=$ldata{$pos}[1];
+                }
+                $prev_pos=$pos;
+        }
+        $pos_append=$prev_pos-length($prev_alt)+1;
+        $dat_final{"$pos_append\_$prev_ref|$prev_alt"}{$name}=1 if $prev_ref ne "na";
+        return(\%dat_final);
 }
 
