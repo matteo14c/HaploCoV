@@ -71,7 +71,7 @@ foreach my $f (@files)
 
 	#########################################################
 	# store variants seen in this genome
-	%Ihave=%{read_snp($f)}
+	my %Ihave=%{read_snp($f)};
 
 	#######################################################
 	# compare with variants that define clusters
@@ -149,7 +149,11 @@ sub print_help
 sub read_snp
 {
         my $file=$_[0];
-        open(IN,$f);
+	my $name=$file;
+        $name=~s/_ref_qry.snps//;
+        $name=~s/\.\d+//;
+
+        open(IN,$file);
         my %ldata=();
         while(<IN>)
         {
