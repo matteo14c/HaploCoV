@@ -51,9 +51,9 @@ For every genome fasta file you will obtain a file with the extension .snps whic
 
 To assign genomes to haplogrouos, you need to run the *assign_HGs_2021.pl* script. This script uses high frequency polymorphic sites, as specified by **listVariants.txt** to assign a SARS-CoV-2 genome to haplogroups as defined in Chiara et al 2021 (see above). Please make sure that a copy of this file is always in the same folder from which the script is executed. Incosistent/incorrect results will be obtained otherwise.
 
-Although in the paper we initially identified 50 high frequency polymorphic SARS-CoV-2 genomic sequences considered in our analyses, more recent analyses based on a larger number of genomes (last update 26th Feb 2021), suggest that currently this number raised to 243.  As of this update 85 distinct **HGs** of SARS-CoV-2 are currently identified.  Please see https://figshare.com/articles/dataset/Data_and_images_from_Chiara_et_2020_/13333877 for a more detailed description
+Although in the paper we initially identified 81 high frequency polymorphic SARS-CoV-2 genomic sequences considered in our analyses, more recent analyses based on a larger number of genomes (last update 26th Feb 2021), suggest that currently this number raised to 311.  As of this update 119 distinct **HGs** of SARS-CoV-2 are currently identified.  Please see https://figshare.com/articles/dataset/Data_and_images_from_Chiara_et_2020_/13333877 for a more detailed description
 
-Similar to *align.pl* , *assign_HGs_2021.pl* will automatically detect its input files. These are the files with the *.snps* extension that you obtained from running nucmer, and are saved in the output folder of align.pl (see --outdir). The script currently accept two main parametes:
+Similar to *align.pl* , *assign_HGs_2021.pl* will automatically detect its input files. These are the files with the *.snps* extension that you obtained from  nucmer, and are saved in the output folder of align.pl (see --outdir). The script currently accept two main parametes:
 >* **--dir**: the name of the input directory 
 >* **--out**: the name of the ouput file (defaults to **ASSIGNED_out.tsv**)
 
