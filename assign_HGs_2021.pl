@@ -2,6 +2,7 @@ use strict;
 
 my %arguments=
 (
+"--infile"=>"na",
 "--dir"=>"align",                  # directory with alignment files. Defaults to current dir
 #####OUTPUT file#############################################
 "--out"=>"ASSIGNED_out.tsv" #file #OUTPUT #tabulare
@@ -14,12 +15,11 @@ check_arguments();
 ########################################################################################
 # Populate score matrix. 
 #
-my @initscores=(-1);
+my @initscores=();
 
 #######################################################################################
-# list of variants that define the haplogroups. Downloaded from github repo. hard-coded
-# and there should be no reason to change it
-my $lvarFile="listVariants.txt";
+# list of variants that define the groups. 
+my $lvarFile=$arguments{"--infile"};
 
 ######################################################################################
 # Populate score matrix
@@ -28,23 +28,34 @@ my %pos=();
 open(IN,$lvarFile);
 unless (-e $lvarFile)
 {
-	print "The file listVariants.txt was not found in the current directory\nThis file is required for running assign_HGs_2021.pl\nPlease download all the files from the Github repository again\n.";
+	print "The file $lvarFile was not found in the current directory\nThis file is required for running assign_HGs_2021.pl\n";
+	print_help();
 }
+
+
+my @decode=();
+my %pos=();
+
+my $iclus=0;
 while(<IN>)
 {
-	push(@initscores,0);
-	my ($clus,@var)=(split());
-	foreach my $var (@var)
-	{
-		push(@{$pos{$var}},$clus);
-	}
-	
+        push(@initscores,0);
+        my ($clus,@var)=(split());
+        #print "$clus\n";
+        foreach my $var (@var)
+        {
+                next if $var eq "none";
+                push(@{$pos{$var}},$iclus);
+        }
+        $decode[$iclus]=$clus;
+        $iclus++;
+
 }
 
 my $dir=$arguments{"--dir"};
 my $ofile=$arguments{"--out"};
 open(OUT,">$ofile");
-my @files=<$dir/*_ref_qry.snps>;
+my @files=<$dir/*_form.txt>;
 if (scalar @files == 0)
 {
 	#die("no input files were found in the input directory!\nPlease run align.pl before running this script\nPlease see the manual in the Github repo for more details\n";
@@ -52,7 +63,7 @@ if (scalar @files == 0)
 
 
 my @genomes=();
-print OUT "ID HG\n";
+print OUT "ID group\n";
 ######################################################################################
 # read every file
 
@@ -64,7 +75,7 @@ foreach my $f (@files)
 	# Trim names to remove the suffix
 
 	my $name=$f;
-	$name=~s/_ref_qry.snps//;
+	$name=~s/_form.txt//;
 	$name=~s/\.\d+//;
 	$name=~s/$dir//;
 	$name=~s/\///;
@@ -105,9 +116,8 @@ foreach my $f (@files)
 		$max=$s if $s>$max;
 		$i++;
 	}
-	shift(@scores);
-	$imax=1 if $imax==0;
-	print OUT "$name $imax\n";
+	my $cl=$decode[$imax];
+	print OUT "$name $cl\n";
 }
 
 
@@ -134,11 +144,12 @@ sub check_arguments
 
 sub print_help
 {
-        print "This utility can be used assign SARS-CoV-2 genomes to HGs, as defined in Chiara et al 2021. Please see: https://doi.org/10.1093/molbev/msab049\n";
-        print "A helper script, align.pl is included in the github repo. This script should be used to align SARS-CoV-2 genomes to the reference genome\n";
-	print "The output of  align.pl should be provided as the input Please make sure that align.pl is executed BEFORE launching this script\n";
+        print "This utility can be used assign SARS-CoV-2 genomes a classification. The main inputs consist in a file with a list of variants\n";
+        print "and their characteristic mutations (outout of augmentClusters.pl) and a collection of files with allele variants. One file\n";
+	print "for every genome included in the analysis. These files are the main output of align.pl Please make sure that align.pl is executed BEFORE launching this script\n";
         print ":\n";
         print "##INPUT PARAMETERS\n\n";
+        print "--infile <<filename\t input file with the list of variants and their characteristic mutations\n(this is the output of augmentClusters.pl)";
         print "--dir <<directory>>\tinput directory. Should contain the files produced by align.pl (.snps format)\nDefaults to current directory";
         print "\n##OUTPUT PARAMETERS\n\n";
         print "--out <<name>>\tName of the output file. Defaults to ASSIGN_out.tsv\n";
@@ -149,41 +160,13 @@ sub print_help
 sub read_snp
 {
         my $file=$_[0];
-	my $name=$file;
-        $name=~s/_ref_qry.snps//;
-        $name=~s/\.\d+//;
-
+        my %dat_final=();
         open(IN,$file);
-        my %ldata=();
         while(<IN>)
         {
-                next unless $_=~/NC_045512.2/;
-                my ($pos,$b1,$b2)=(split(/\s+/,$_))[1,2,3];
-                next if $b2=~/N/;
-                $ldata{$pos}=[$b1,$b2];
+                #print;
+                chomp();
+                $dat_final{$_}=1;
         }
-        my %dat_final=();
-        my $prev_pos=0;
-        my $prev_ref="na";
-        my $prev_alt="na";
-        my $pos_append="na";
-        foreach my $pos (sort{$a<=>$b} keys %ldata)
-        {
-                my  $dist=$pos-$prev_pos;
-                if ($dist>1)
-                {
-                        $pos_append=$prev_pos-length($prev_alt)+1;
-                        $dat_final{"$pos_append\_$prev_ref|$prev_alt"}{$name}=1 unless $prev_ref eq "na";
-                        $prev_ref=$ldata{$pos}[0];
-                        $prev_alt=$ldata{$pos}[1];
-                }else{
-                        $prev_ref.=$ldata{$pos}[0];
-                        $prev_alt.=$ldata{$pos}[1];
-                }
-                $prev_pos=$pos;
-        }
-        $pos_append=$prev_pos-length($prev_alt)+1;
-        $dat_final{"$pos_append\_$prev_ref|$prev_alt"}{$name}=1 if $prev_ref ne "na";
         return(\%dat_final);
 }
-
