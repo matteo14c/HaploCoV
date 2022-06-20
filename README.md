@@ -21,7 +21,7 @@ After de-compresson, 2 files should be obtained:
 2. sequences.fasta a multi-fasta file with SARS-CoV-2 genome sequences.
 These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/obtains all the data used in subsequent analyses.
 
-### Structure of the metadata
+### Required metadata
 Please be aware that the some metadata are **mandatory** and that columns names in your metadata file **MUST** abide to the structure/names indicateb below. Mandatory metadata:
 * a valid unique identifier for every isolate, column name: *"Virus name"*;
 * a collection date, column name *"Collection date"*;
@@ -38,18 +38,18 @@ hcov/somename_2| NA | 2022-06-01 | Europe/Italy/Apulia | BA.2.9.1|
 
 ### Important: providing "external" data  
 
-While the HaploCoV was designed to work with data derived from GISAID, the tool can in principle work also with data from other sources, however equivalent metadata must always be provided. To be more clear, this means that in any case you need to provide a metadata table, and that this table need to have at least 5 columns with the following names:
+While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however equivalent metadata must always be provided. To be more clear, this means that in any case you need to provide a metadata table, and that this table need to have at least 5 columns with the following names:
 * "Virus name";
 * "Collection date";
 * "Submission date";
 * "Location";
 * "Pango Lineage";
-
+an the data described above
 
 ### Important: using data from Nextstrain
 
-Users that do not have access to GISAID can obtain the complete collection of publicly available sequences, and their metadata from Nexstrain, please refer to here [link](https://nextstrain.org/sars-cov-2/) for more information.
-Metadata in "Nexstrain format" can be obtained from here[link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need to execute *addToTable.pl* on this file**. The file however needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below)
+Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and metadata from Nexstrain, please refer to here [link](https://nextstrain.org/sars-cov-2/) for more information.
+Metadata in "Nexstrain format" can be obtained from here[link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need to execute *addToTable.pl* on this file**. The file however needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
 
 ### #2 Have all of the configuration files included in this repository
 
@@ -116,8 +116,8 @@ Should you find any issue, please contact me at matteo.chiara@unimi.it , or open
 
 ## #1 Compile a metadata table in HaploCoV format
 
-All the tools and utilities in HaploCov operate on a large metadata table in tsv format (**HaploCoV** format from here onward). This table contains the required metadata (extracted from "metadata.tsv" or equivalent files) and the collection of allele variants for every SARS-CoV-2 genome included in the analyses.  
-If you obtained your data from **GISAID** you can obtain a metadata table in **Haplocov** format by using the *addToTable.pl* utility. If data were downloaded from Nexstrain, you can use *NextStrainToHaploCov.pl* instead (see below).
+All the tools and utilities in HaploCov operate on a large metadata table in tsv format (*HaploCoV* format from here onward). This table contains the required metadata (extracted from "metadata.tsv" or equivalent files) and the collection of allele variants for every SARS-CoV-2 genome included in the analyses.  
+If you obtained your data from **GISAID** you can obtain a metadata table in *Haplocov* format by using the *addToTable.pl* utility. If data were downloaded from Nexstrain, you can use *NextStrainToHaploCov.pl* instead (see below).
 
 ## HaploCoV format for metadata
 An example of the data format used by HaploCoV (HaploCoV format) is reported in the table below:
@@ -132,10 +132,10 @@ The format is as follows<br>:
 
 ## GISAID data: addToTable.pl
 
-addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. 
+addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. A helper script, *align.pl* is used to align sequences to the reference genome assembly of SARS-CoV-2 and derive allele variants.
 
 ### Aligning SARS-CoV-2 genomes to the reference 
-aling.pl the helper script aling.pl is used to derive allele variants by *addToTable.pl* although you do not need to run it directly, please make sure that you have a copy of align.pl in the same folder from where *addToTable.pl* is executed. Identification of allele variants is performed by means of the MUMMER program. Execution will halt if MUMMER is not installed. Please see above for how to install MUMMER.
+The helper script *aling.pl* is used to derive allele variants by *addToTable.pl*; although you do not need to run it directly, please make sure that you have a copy of align.pl in the same folder from where *addToTable.pl* is executed. Identification of allele variants is performed by means of the MUMMER program. Execution will halt if MUMMER is not installed. Please see above for how to install MUMMER.
 All input files **MUST** be in the **same folder** from which the program is executed. 
 
 ### Incremental addition of data
@@ -152,17 +152,36 @@ addToTable.pl accepts the following options:
 
 ### A typical run of align.pl should look something like:
 `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt ` 
-The final output will consist in a metadata table, sorted by collection dates, which will report the information required for subsequent analyses for every genome.
+The final output will consist in a metadata table in HaploCoV format, sorted by collection dates.  This table is required for all the subsequent analyses.
 
 ### Execution times 
-Please be aware that tipically a single thread/process can align genomes and derive allele variants of about 20k SARS-CoV-2 genomes per hour (160k on 8 cores, or 320k on 16 cores). This would mean that aligning the complete collection of the more than 11M genomes included in the GISAID database will take about 20 days if only one core/process is used. Computation scales linearly, hence 3 days would be needed if 8 processes are used, and 1.5 days if 16 are used. Importantly, since data can be added incrementally, this operations needs to be performed only once. 
+Please be aware that typically a single thread/process can align genomes and derive allele variants of about 20k SARS-CoV-2 genomes per hour (160k genomes on 8 cores, or 320k on 16 cores). This would mean that processing the complete collection of the more than 11M genomes included in the GISAID database on June 10th 2022  from scratch will take about 20 days if only one core/process is used. Computation scales linearly, hence 3 days would be needed if 8 processes are used, and 1.5 days if 16 are used. Importantly, since data can be added incrementally, this operations needs to be performed only once. 
 
 ## NextStrain data: NextStrainToHaploCoV.pl
+
+If you have obtained your metadata files from Nexstrain instead of GISAID you will not need to process the data by addToTable.pl. Metadata tables from Nexstrain have already been processed by they ncov pipeline, and do already include a list of allele variants for every genome. Download is available from from here[link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). 
+Please be aware that however Nexstrain can re-distribute only publicly available data, which at the moment account for about 1/3 of all the data in GISAID.
+Data from Nexstrain still need to be converted in *HaploCoV* format. For this purpose you can use the utility *NextStrainToHaploCoV.pl*
+
+### Options
+NextStrainToHaploCoV.pl accepts the following options
+--infile: name of the input file
+--outfile: name of the output file
+
+## Execution
+
+A typical command line for NextStrainToHaploCoV.pl is something like:
+
+` NextStrainToHaploCoV.pl --infile metadata.tsv --outfile linearDataSorted.txt `
+
+The output file will be in *HaploCoV* format and can be used by computeAF.pl to compute allele frequencies 
+
+
 ## #2 Compute high frequency alleles
 
-High frequency alleles are computed by *computeAF.pl* this program requires the metadata table in HaploCoV format compiled by addToTable.pl as the main input.
-The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main ouputs consist in lists of "high frequency" allele variants. Different level of geographic granularity: global (all genomes), macro(macro geographic areas) and regional(country) are considerd. Macro areas are specified by the "areaFile" file included in the current repo.
-All the final outputs as well as all intermediate files, are saved in a output folder that can be specified by the user. User do also have the option to select the minimum frequency (as in allele frequency) and "persistency" (number of weeks above the AF threshold) thresholds for the identification of high frequency variants.
+High frequency alleles are computed by *computeAF.pl* this program requires the metadata table in *HaploCoV* format compiled by addToTable.pl (or NextStrainToHaploCoV) as the main input.
+The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main ouputs consist in lists of "high frequency" allele variants. Different level of geographic granularity: global (all genomes), macro(macro geographic areas) and regional(country) are taken into account. Macro areas are specified by the "areaFile" file included in the current repo.
+All the final outputs as well as all intermediate files, are saved in a output folder that can be specified by the user at run time with the option --outdir (see below). User do also have the option to select the minimum frequency (as in allele frequency) and "persistency" (number of weeks above the AF threshold) thresholds for the identification of high frequency variants.
 
 ### Options
 The script accepts the following parameters:
@@ -174,8 +193,8 @@ The script accepts the following parameters:
 * *--minP* defaults to 3, minimum persistence (number of overlapping time windows) for high freq alleles: only alleles that have a high frequency (>=minCoF) in at least this number of distinct time windows will be included in subsequent analyses
 * *--outdir*  defaults to "./metadata", output directory. This directory will hold the main output files, including lists of high frequency alleles. 
 
-
-### A typical run of align.pl should look something like:
+### Execution
+A typical run of align.pl should look something like:
 `perl computeAF.pl --file linearDataSorted.txt ` (where linearDataSorted.txt is is the file with metadata in HaploCoV format)
 The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
 * allele frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt)
@@ -186,9 +205,8 @@ Any of global_list.txt, area_list.txt or country_list.txt can be used to provide
 
 ## #3 Derive novel groups
 
-Novel groups/sublineages of SARS-CoV-2 within a nomenclature are identified by augmentClusters.pl. This utility is used to derive novel sub-groups/sub lineages within an existing classification of SARS-CoV-2 lineages/variants. The aim is to extend a "targeted" classification by the incoporation of local/regional high frequency alleles, which are used to infer/derive local variants of the virus. Users can specify the minimum size (miminum number of isolates included in the group) required for a novel group to be formed (--size) and the minimum distance (in terms of number of characteristic high frequency alleles, --dist) between a newly formed groups.
-The input is the metadata table in HaploCoV format compiled by addToTable.pl.
-The output will consist of a simple text file including a list of SARS-CoV-2 variants/lineages (one per line) and the list of their characteristic (present in >50% of the genomes) allele variants. The file will include all the extant lineages/variants specified in the metadata table,  and also novel variants/sub-group formed by the tool. All novel variant/groups will be indicated by a suffix (--suffix) that can be specified by the user.
+Novel groups/sublineages of SARS-CoV-2 are identified by augmentClusters.pl. This utility is used to derive novel sub-groups/sub lineages within an existing classification of SARS-CoV-2 lineages/variants. The aim is to extend a "target" classification by the incoporation of local/regional high frequency alleles, which are used to infer/derive local variants of the virus. Users can specify the minimum size (miminum number of isolates included in the group) required for a novel group to be formed (--size) and the minimum distance (in terms of number of characteristic high frequency alleles, --dist) between a newly formed groups.
+The input is the metadata table in *HaploCoV* format. The output will consist of a simple text file including a list of SARS-CoV-2 variants/lineages (one per line) and the list of their characteristic (present in >50% of the genomes) allele variants. The file will include all the extant lineages/variants specified in the metadata table,  and also novel variants/sub-group formed by the tool. All novel variant/groups will be indicated by a suffix (--suffix) that can be specified by the user.
 
 ### Options
 
@@ -202,13 +220,14 @@ The script accepts the following parameters:
 * --oufile name of the output file
 The main output will be saved in the current folder. --tmpdir will hold all temporary files, along with a log file.
 
-### A typical run of align.pl should look something like:
+### Execution
+A typical run of align.pl should look something like:
 `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt  --posFile areas_list.txt `
 The main output file, lvar.txt will contain all current groups/lineages and newly formed groups/sub-lineages, and a complete list of their defining mutations, in txt format one per line. An example is outlined in the screenshot below.
 
 ### Custom analyses
 
-"Custom" analyses can be executed by providing a customized --posFile, with a list of allele variants that are of interest to the user and are not necessarily of "high frequency" and/or derived by any of the tools described here. Please see the section "**Executing Custom Analyses**" for more details
+"Custom" analyses can be executed by providing a customized --posFile, with a list of allele variants that are of interest to the user and are not necessarily of "high frequency" and/or derived by any of the tools described here. Please see the section "**Executing Custom Analyses**" for more details.
 
 ## #4 Compute genomic features of SARS-CoV-2 lineages and sublineages
 
@@ -228,15 +247,15 @@ The program requires only 3 parameters:
 The main output file: lvar_feats.tsv will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages.
 
 
-## #5 Prioritize newly created lineages
+## #5 Prioritization of novel groups/lineages
 
 The report.pl utility can be used compare newly created groups/sublineages with their parental lineages in the reference nomenclature and priotitize lineages/sub lineages of SARS-CoV-2 showing a high increase in score with respect to a parental lineage. 
 The main input corresponds with the output of LinToFeats.pl. 
 Users are also required to specify the prefix used to indicate "novel" lineages/sublineages. 
 This suffix must match the equivalent suffix provided to augmentClusters.pl. The default value is N.
-The configuration file indicated by --scaling: provides the list of features to be used in the computation of the final score.
-A complete description of the features can be found in the features.csv file attached to this github repo
-The final output consist in a simple text file, in tsv format where high scoring varants/sub-variants are reported
+The configuration file indicated by --scaling: provides the list of the features to be used in the computation of the final score. The default is the list of features described in Chiara et al 2022, the file should not be edited, if not for a very good reason. See the section "executing custom analyses" for how to modify this file- 
+A complete description of the features used by LinToFeats.pl to compute scores can be found in the features.csv file attached to this github repo.
+The final output consist in a simple text file, in tsv format where high scoring variants/sub-variants are reported
 
 ### Options
 report.pl accepts the following input parameters:
@@ -260,9 +279,12 @@ Assign.pl takes 2 main input files: 1 a simple file with "group/lineage" definin
 ### Assigning Pango Lineages 
 linDefMut50 in the current github repository provides a complete list of defining allele variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign to Pango. The file is updated on a weekly basis.
 
+### Assigning Haplogroups as defined in Chiara et al 2021
+HaploDefMut in the current github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in Chiara el al 2021. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a weekly basis.
+
 ### Options
 assign.pl takes the following options:
-stored in the --outdir that you specified to align.pl. The script currently accept two main parametes:
+
 * *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
 * *--metafile*: a metdata file in HaploCov format
 * *--out*: the name of the ouput file (defaults to **ASSIGNED_out.tsv**)
@@ -271,18 +293,17 @@ stored in the --outdir that you specified to align.pl. The script currently acce
 To assign genomes to a lineages/group/classes you need to run
 ` assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned `
 
-The output consists in a table in a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will will be updated with the newly determined groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. No indicates no alternative assignemnts were detected, and hence that the genome was unabigously assigned to a group.
+The output consists in a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will will be updated with the newly determined groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. No indicates no alternative assignments were supported, and hence that the genome was unanbigously assigned to a group.
 
-Name of the file | group assigned|
----------------- |---------------|
-input 1| 5|
-input 2|26|
-
-The table indicates the name of each input file (column 1), and the designation assigned to that sequence.
+column 1 |column 2 |column 3 |column 4 |column 5 |column 6 |column 7 |column 8 |column 9 |column 10 |column 11 |
+---------|---------|---------|---------|---------|---------|---------|---------|---------|----------|----------|
+genome ID|collection date|delta days from collection|deposition date| delta days from deposition|continent|country|region|lineage|list of allele variants|alternative lineages|
+genome_1|2022-06-01|788|2022-06-11|798|Europe|Italy|Lombardy|BA.2|v1,v2,vn|no|
+genome_1|2022-05-01|758|2022-05-11|768|Europe|Italy|Lombardy|BA.2.9|v1,v2,vn|BA.2.9.1|
 
 ### Execution times and multithreading 
 
-On a single core/thread assign.pl can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility p_assign.pl included in this repository can be used to parallilze the execution of assign.pl if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required
+On a single core/thread assign.pl can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility p_assign.pl included in this repository can be used to parallilze the execution of assign.pl if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required to assign 11M genomes.
 
 ### p_assign.pl
 Multi-threading, the p_assign.pl utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
@@ -295,14 +316,30 @@ The following input parameters are accepted:
 To execute it you can use:
 ` assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --nproc 8 --out  linearDataSorted.txt_reAssigned `
 
-Input files are the same as those provided to assign.pl. Output format is the same
+Input files are the same as those provided to assign.pl. Output format is in the same format described above.
+<hr>
 
 ## For impatient people
 
 To do all of the above: 
+### GISAID data
 1. `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `
+
+### Nexstrain data
+1. ` per NextStrainToHaploCoV.pl --infile metadata.tsv --outfile linearDataSorted.txt `
+
+### then
+
 2. `perl computeAF.pl --file linearDataSorted.txt `
 3. `perl augmentClusters.pl --outfile lvar.txt --metafilelinearDataSorted.txt --posFile areas_list.txt `
 4. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
 5. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
 6. `perl assign.pl --infile  lvar.txt `
+
+<hr>
+
+## Dates and times in HaploCoV
+
+
+
+## Executing custom analyses
