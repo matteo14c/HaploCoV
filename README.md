@@ -48,8 +48,8 @@ an the data described above
 
 ### Important: using data from Nextstrain
 
-Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and metadata from Nexstrain, please refer to here [link](https://nextstrain.org/sars-cov-2/) for more information.
-Metadata in "Nexstrain format" can be obtained from here[link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need to execute *addToTable.pl* on this file**. The file however needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
+Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and metadata from Nexstrain, please refer to here: [link](https://nextstrain.org/sars-cov-2/) for more information.
+Metadata in "Nexstrain format" can be obtained from here: [link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need to execute *addToTable.pl* on this file**. The file however needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
 
 ### #2 Have all of the configuration files included in this repository
 
