@@ -3,28 +3,39 @@
 ## What this tool can do for you
 
 This repository contains a collection of simple Perl scripts that can be used to:
-* **align** complete assemblies of SARS-CoV-2 genomes wih the reference genomic sequence and derive allele variants, 
-* identify **regional** "high frequency" allele variants, 
+* **align** complete assemblies of SARS-CoV-2 genomes wih the reference genomic sequence and **derive allele variants**, 
+* identify **regional** **"high frequency"** allele variants, 
 * **extend an existing classification** by including such regional alleles, 
 * derive **potentially epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** 
 * and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice. 
 
 ## Important! Prerequisites
-
-To run HaploCoV you **must meet all** of the following prerequisites:
+## To run HaploCoV you **must meet all** of the following prerequisites:
 
 ### #1 Have access to SARS-CoV-2 genome sequences and associated metadata
+Right now the GISAID database [link](https://www.gisaid.org/) represents the most complete and up to date point of access to obtain SARS-CoV-2 data. Authorized users can download the complete collection of SARS-CoV-2 genome assemblies and associated metadata by following the procedure illustrated in the figure below. 
 
-Right now the GISAID database represents the most complete and up to date point of access to obtain SARS-CoV-2 data. Authorized users can download the complete collection of SARS-CoV-2 genome assemblies and associated metadata simply by following the procedure illustrated in the figures below. 
 
-After de-compresson, 2 files should be obtained: metadata.tsv a metadata table in .tsv format and sequences.fasta; a multi-fasta file with SARS-CoV-2 genome sequences. These files provide the main input to *addToTable.pl*; the utility in HaploCoV that is used to extract/obtain all the data used in subsequent analyses. 
-The following metadata are mandatory:
-* a valid unique identifier for every isolate, this is derived from the column "Virus name" of metadata.tsv
-* a collection date derived from the column "Collection date" of the metadata.tsv file (NA for missing values)
-* a submission date ("Submission date" in metadata.tsv)
-* location: the geographic place from where the isolated was collected; format: *Continent/Country/Region*. Inferred from the column "Location" in metadata.tsv
-* a valid lineage/group/class associated with the genome (Pango lineage in metadata.tsv)
-                        
+![alt text](https://github.com/matteo14c/HaploCoV/blob/dcda4c6f1518e31882ddccacb5d7a8a72aa6998c/images/fig1.png)
+
+After de-compresson, 2 files should be obtained: 
+1. metadata.tsv a metadata table in .tsv format and sequences.fasta; 
+2. a multi-fasta file with SARS-CoV-2 genome sequences. 
+
+These files provide the main input to *addToTable.pl*; the utility in HaploCoV that is used to extract/obtain all the data used in subsequent analyses. 
+Please be aware that the following metadata are mandatory and that columns'names in your metadata file **MUST** abide to the structure/names indicateb below. Mandatory metadata:
+* a valid unique identifier for every isolate, column name: *"Virus name"*;
+* * a collection date, column name *"Collection date"*;
+* a submission date, column *"Submission date"*;
+* location: the geographic place from where the isolated was collected; Column name: *"Location"*;
+* a valid lineage/group/class associated with the genome. Column name: *"Pango lineage"* 
+Dates must be provided in YYYY-MM-DD format. Locations in the following format: Continent/Country/Region. Missing information must be indicated by NA (not available).An example of a valid metadata table is reported below
+
+Virus name | Collection date | Submission date | Location | Pango Lineage |
+-----------|-----------------|-----------------|----------|---------------|
+hcov/somename_1| 2022-05-26| 2022-06-01 | Europe/Italy/Lombardy | BA.2.9
+hcov/somename_2| NA | 2022-06-01 | Europe/Italy/Apulia | BA.2.9.1|
+
 **Important** : While the HaploCoV was designed to work with data derived from GISAID, the tool can in principle work also with data from other sources, however equivalent metadata must always be provided. To be more clear, this means that in any case you need to provide a metadata table, and that this table need to have at least 5 columns with the following names:
 
 * "Virus name";
@@ -33,7 +44,7 @@ The following metadata are mandatory:
 * "Location";
 * "Pango Lineage";
 
-Dates must be provided in YYYY-MM-DD format. Locations in the following format: Continent/Country/Region. Missing information must be indicated by NA (not available).
+
 
 ## 2 Have all of the configuration files included in this repository
 
