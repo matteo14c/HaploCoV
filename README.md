@@ -267,7 +267,7 @@ stored in the --outdir that you specified to align.pl. The script currently acce
 * *--metafile*: a metdata file in HaploCov format
 * *--out*: the name of the ouput file (defaults to **ASSIGNED_out.tsv**)
 
-# Assigning genomes
+### Execution
 To assign genomes to a lineages/group/classes you need to run
 ` assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned `
 
