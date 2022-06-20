@@ -110,6 +110,7 @@ Should you find any of this software useful for your work, please cite:
 
 Should you find any issue, please contact me at matteo.chiara@unimi.it , or open an issue here on github
 <hr>
+
 ### #1 Compile a metadata table in HaploCoV format
 
 All the tools and utilities in HaploCov operate on a large *metadata table* in tsv format. This table contains the required metadata (extracted from "metadata.tsv" or equivalent files) and the collection of allele variants for every SARS-CoV-2 genome included in the analyses.  The table is obtained by the *addToTable.pl* utility, the tool reads multifasta and metadata files and extracts all the information required for subsequent analyses. 
