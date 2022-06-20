@@ -130,6 +130,12 @@ The file is delineated by tabulations. Allele variants are reported as a comma s
 The format is as follows<br>: 
 *genomicposition_ref|alt* i.e. *1_A|T* for example indicates a A to T substitution in position 1 of the reference genome<br>
 
+## Dates and time in HaploCoV
+
+HaploCoV can only read dates in the YYYY-MM-DD format. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represent day 0. This date represent the beginning of the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019). For example Tue 31th Dec 2019 is day 1 according to HaploCoV notation and Sun 29th Dec 2019, represents day -1. In the HaploCoV formatted metadata table see above, the 3rd column reports the offset in days (delta-time) between the isolation of that specific isolate and Dec 30th 2019; similarly the 5th column reports the offset from Dec 30th 2019 to the "deposition" date (typically in GISAID). Metadata table in HaploCov format are sorted in descending order by the 3rd column (offset of the collection date). This means that the "most ancient" genome will always be at the top of the file, while the most recently isolated at the bottom. 
+If you need to know the date of isolation (and offset with respect to day 0) of the most recent genome included in the dataset you can simply use this command in a unix-like shell environment
+` tail -n 1 linearDataSorted.txt | cut -f 2,3`
+
 ## GISAID data: addToTable.pl
 
 addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. A helper script, *align.pl* is used to align sequences to the reference genome assembly of SARS-CoV-2 and derive allele variants.
@@ -337,9 +343,5 @@ To do all of the above:
 6. `perl assign.pl --infile  lvar.txt `
 
 <hr>
-
-## Dates and times in HaploCoV
-
-
 
 ## Executing custom analyses
