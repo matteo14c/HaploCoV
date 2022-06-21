@@ -209,8 +209,11 @@ The output will be stored in the directory specified by --outdir (defaults to ./
 
 ### High frequency alleles files from the github repo
 Any of global_list.txt, area_list.txt or country_list.txt can be used to provide the list of allele variants used to "expand" lineages/sub-lineages of SARS-CoV-2 by augment.pl.  Please see Chiara et al 2022 for a detailed discussion of the implications. 
-A copy of each of these files can also be found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a weekly basis (every Wednesday). If you do not want to compute high frequency alleles yourself, you can download the files directly from *github*. On a unix system this can be done by using the wget command.
-For example
+A copy of each of these files can also be found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a weekly basis (every Wednesday). If you do not want to compute high frequency alleles yourself, you can download the files directly from *github*. On a unix system this can be done by using the  ` wget command`.
+For example:
+1. global_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt`
+2. area_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt`
+3. countries_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt`
 
 
 
@@ -342,10 +345,16 @@ To do all of the above:
 ### then
 
 2. `perl computeAF.pl --file linearDataSorted.txt `
-3. `perl augmentClusters.pl --outfile lvar.txt --metafilelinearDataSorted.txt --posFile areas_list.txt `
-4. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
-5. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
-6. `perl assign.pl --infile  lvar.txt `
+
+### OR
+
+` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt`
+
+### and Finally
+4. `perl augmentClusters.pl --outfile lvar.txt --metafilelinearDataSorted.txt --posFile areas_list.txt `
+5. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
+6. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
+7. `perl assign.pl --infile  lvar.txt `
 
 <hr>
 
