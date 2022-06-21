@@ -205,7 +205,7 @@ A typical run of computeAF.pl should look something like:
 `perl computeAF.pl --file linearDataSorted.txt ` (where linearDataSorted.txt is is the file with metadata in HaploCoV format)
 The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
 * allele frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt)
-* three files containing the lists of high frequency allele, showing a frequency above the user defined threshold for more that the timespan set by the usrer, at global (global_list.txt), macro-areas(area_list.txt) and country (country_list.txt) level
+* three files containing the lists of high frequency allele, showing a frequency above the user defined threshold for more that the timespan set by the user, at global (global_list.txt), macro-areas(area_list.txt) and country (country_list.txt) level.
 
 ### High frequency alleles files from the github repo
 Any of global_list.txt, area_list.txt or country_list.txt can be used to provide the list of allele variants used to "expand" lineages/sub-lineages of SARS-CoV-2 by augment.pl.  Please see Chiara et al 2022 for a detailed discussion of the implications. 
@@ -315,7 +315,7 @@ genome ID|collection date|delta days from collection|deposition date| delta days
 genome_1|2022-06-01|788|2022-06-11|798|Europe|Italy|Lombardy|BA.2|v1,v2,vn|no|
 genome_1|2022-05-01|758|2022-05-11|768|Europe|Italy|Lombardy|BA.2.9|v1,v2,vn|BA.2.9.1|
 
-### Execution times and multithreading 
+### Execution times, and multithreading 
 
 On a single core/thread assign.pl can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility p_assign.pl included in this repository can be used to parallilze the execution of assign.pl if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required to assign 11M genomes.
 
@@ -348,7 +348,7 @@ To do all of the above:
 
 ### OR
 
-` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt`
+` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/area_list.txt`
 
 ### and Finally
 4. `perl augmentClusters.pl --outfile lvar.txt --metafilelinearDataSorted.txt --posFile areas_list.txt `
