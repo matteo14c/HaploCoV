@@ -69,6 +69,7 @@ HaploCoV is written in the Perl programming language. Hence you will need Perl t
 Please follow this [link](https://sourceforge.net/projects/mummer/files/ "Mummer Download") for detailed instruction on how to install and run Mummer. A detailed manual can also be found in CorGAT main documentation at [readthedocs](https://corgat.readthedocs.io/en/latest/prerequisites.html "Install Mummer").
 
 <hr>
+
 ## Running HaploCoV
 
 This software package is composed of **6(*+2*)** very simple scripts. Prerequisites are stated above. 
@@ -200,14 +201,18 @@ The script accepts the following parameters:
 * *--outdir*  defaults to "./metadata", output directory. This directory will hold the main output files, including lists of high frequency alleles. 
 
 ### Execution
-A typical run of align.pl should look something like:
+A typical run of computeAF.pl should look something like:
 `perl computeAF.pl --file linearDataSorted.txt ` (where linearDataSorted.txt is is the file with metadata in HaploCoV format)
 The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
 * allele frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt)
 * three files containing the lists of high frequency allele, showing a frequency above the user defined threshold for more that the timespan set by the usrer, at global (global_list.txt), macro-areas(area_list.txt) and country (country_list.txt) level
 
-### High frequency alleles files 
+### High frequency alleles files from the github repo
 Any of global_list.txt, area_list.txt or country_list.txt can be used to provide the list of allele variants used to "expand" lineages/sub-lineages of SARS-CoV-2 by augment.pl.  Please see Chiara et al 2022 for a detailed discussion of the implications. 
+A copy of each of these files can also be found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a weekly basis (every Wednesday). If you do not want to compute high frequency alleles yourself, you can download the files directly from *github*. On a unix system this can be done by using the wget command.
+For example
+
+
 
 ## #3 Derive novel groups
 
