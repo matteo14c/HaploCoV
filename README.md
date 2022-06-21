@@ -235,9 +235,16 @@ The script accepts the following parameters:
 The main output will be saved in the current folder. --tmpdir will hold all temporary files, along with a log file.
 
 ### Execution
-A typical run of align.pl should look something like:
+A typical run of augmentClusters.pl should look something like:
 `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt  --posFile areas_list.txt `
 The main output file, lvar.txt will contain all current groups/lineages and newly formed groups/sub-lineages, and a complete list of their defining mutations, in txt format one per line. An example is outlined in the screenshot below.
+
+### Novel variants identified by HaploCoV
+Novel variants identified by HaploCoV will be reported in the output file produced by a augmentClusters.pl. The format of this file is very simple: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic allele variants (defined here as thos present in >50% of the isolates assigned to the group). Values are separated by spaces.
+This file includes the complete collection of lineages/groups as defined in the reference input nomenclature, plus all the novel lineages/groups/sub-lineages formed by HaploCoV. Newly formed lineages/groups/sub-lineages are identified by a suffix that can be specified by the user and by a progressive number. The default value for this suffix is the letter "N". If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.2.9 lineage, these will be reported as:
+1. BA.2.9.N1 and;
+2. BA.2.9.N2;
+in the output file.
 
 ### Custom analyses
 
