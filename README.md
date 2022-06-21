@@ -358,10 +358,10 @@ To do all of the above:
 ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/area_list.txt`
 
 ### and Finally
-4. `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt --posFile areas_list.txt `
-5. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
-6. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
-7. `perl assign.pl --infile  lvar.txt `
+3. `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt --posFile areas_list.txt `
+4. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
+5. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
+6. `perl assign.pl --infile  lvar.txt `
 
 <hr>
 
