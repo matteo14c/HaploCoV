@@ -79,7 +79,7 @@ sub compress_groups
 	open(IN,$file);
 
 	#1 identify lineage defining mutations if file was not provided
-	print " #1\n";
+	#print " #1\n";
 	my %Clin=();
 	my %Dlin=();
 	open(IN,$file);
@@ -113,7 +113,7 @@ sub compress_groups
 	# 2 identify genomes with common patterns of HF variants within a lineage
 	# and store them
 	#
-	print " #2\n";
+	#print " #2\n";
 	open(IN,$file);
 	my %candNew=();
 	my %listVarNew=();
@@ -141,7 +141,7 @@ sub compress_groups
 
 	}
 =pod
-	print " #3\n";
+	#print " #3\n";
 	# write out lineage specific files 
 	foreach my $lin (keys %candNew)
 	{
@@ -193,7 +193,7 @@ sub allocate_groups
 	open(OUT,">$outdir/$varFile.log");
 	open(MAIN,">$varFile");
 	my @Gs=keys %data;
-	print "	#3\n";
+	#print "	#3\n";
 	foreach my $G (@Gs)
 	{
 		next if $G eq "";
