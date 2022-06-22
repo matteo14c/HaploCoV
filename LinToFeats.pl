@@ -294,7 +294,11 @@ sub download_annot
 {
 	if (-e "globalAnnot")
 	{
-		system("rm globalAnnot")==0||die("could not remove the old annotation file\n");
+		system("rm globalAnnot")==0||die("could not remove old annotation files\n");
+	}
+	if (-e "globalAnnot.gz")
+	{
+		system("rm globalAnnot.gz")==0||die("could not remove old annotation files\n");
 	}
         print "Will now dowload CorGAT annotation of SARS-CoV-2 variants, from Github\n";
         print "Please download this file manually, if this fails\n";
