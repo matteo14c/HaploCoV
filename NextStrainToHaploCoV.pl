@@ -5,8 +5,8 @@ use strict;
 #
 my %arguments=
 (
-"--metadata"=>"metadata.tsv",      	# max time
-"--outfile"=>"NextHaploCoV.tsv" 		# min time
+"--metadata"=>"na",      	# max time
+"--outfile"=>"na" 		# min time
 );
 #
 #############################################################
