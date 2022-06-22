@@ -90,6 +90,10 @@ sub merge
 	}
 }
 
+sub check_exists_command {
+    my $check = `sh -c 'command -v $_[0]'`;
+    return $check;
+}
 
 
 ######################################################################################
