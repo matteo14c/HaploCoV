@@ -367,7 +367,12 @@ To do all of the above:
 3. `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt --posFile areas_list.txt `
 4. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
 5. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
-6. `perl assign.pl --infile  lvar.txt `
+6. `perl assign.pl --infile  lvar.txt --metafile linearDataSorted.txt `
+
+### OR 
+
+6. `perl p_assign.pl --infile  lvar.txt --metafile linearDataSorted.txt --nproc 12 `
+
 
 <hr>
 
