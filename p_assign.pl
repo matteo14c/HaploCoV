@@ -4,7 +4,7 @@ use strict;
 my %arguments=
 (
 "--dfile"=>"na",
-"--metafile"=>"linearDataSorted.txt",                  # directory with alignment files. Defaults to current dir
+"--metafile"=>"na",                  # directory with alignment files. Defaults to current dir
 "--nproc"=>8,
 #####OUTPUT file#############################################
 "--out"=>"GlobalquickASSIGNEDScore2_out.tsv" #file #OUTPUT #tabulare
