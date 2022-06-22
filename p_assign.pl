@@ -49,7 +49,7 @@ sub parallel_assign
 			die "Cannot fork a child: $!";
 		}elsif ($pid == 0) {
 			print "Printed by $i child process\n";
-			exec("perl assign.pl --metafile $file --dfile linDefMut50SortedM.csv  --out $file\_Assign.tmp") || die "can't exec $!";
+			exec("perl assign.pl --metafile $file --dfile $lvarFile  --out $file\_Assign.tmp") || die "can't exec $!";
 			exit(0);
 		}else {
 			push(@childs,$pid);
