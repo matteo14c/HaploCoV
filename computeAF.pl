@@ -64,7 +64,7 @@ sub buildlistPos
 			$index{$v}++;
 		}
 		$c++;
-		print "$c\n" if $c % 1000000==0;
+		#print "$c\n" if $c % 1000000==0;
 	}
 	my @vars= keys %index;
 	return(\@vars,$maxL);
@@ -142,7 +142,7 @@ sub process_data
 			$local_i++;
 		}
                 $c++;
-		print "$c\n" if $c % 1000000==0;
+		#print "$c\n" if $c % 1000000==0;
 	
 	}
 	foreach my $spec (keys %final_data)
