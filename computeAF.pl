@@ -179,7 +179,7 @@ sub process_data
 	foreach my $spec (keys %freqPos)
 	{
 		
-		open(OUT,">$spec\_list.txt");
+		open(OUT,">$outdir/$spec\_list.txt");
 		foreach my $pos (keys %{$freqPos{$spec}})
 		{
 			my @list=@{$freqPos{$spec}{$pos}};
