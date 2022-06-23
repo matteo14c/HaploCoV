@@ -22,7 +22,7 @@ After de-compresson, 2 files should be obtained:
 These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/obtains all the data used in subsequent analyses.
 
 ### Required metadata
-Please be aware that some metadata are **mandatory** and that columns names in your metadata file **MUST** abide to the structure/names indicated below. Mandatory metadata:
+Please be aware that some metadata are **mandatory** to execute HaploCoV and that columns names in your metadata file **MUST** abide to the structure/names described below. Mandatory metadata:
 * a valid unique identifier for every isolate, column name: *"Virus name"*;
 * a collection date, column name *"Collection date"*;
 * a submission date, column *"Submission date"*;
@@ -44,7 +44,6 @@ While HaploCoV was designed to work with data from GISAID, the tool can in princ
 * "Submission date";
 * "Location";
 * "Pango Lineage";
-an the data described above
 
 ### Important: using data from Nextstrain
 
@@ -64,7 +63,7 @@ While all the tools in HaploCoV that use these files will attempt to download th
 
 ### #3 Have a working installation of Perl and mummer
 
-HaploCoV is written in the Perl programming language. Hence you will need Perl to run it. Perl should be already installed by default on any unix and Mac OSX system. Please see here [link](https://www.perl.org/get.html) for instruction on how to install Perl 
+HaploCoV is written in the Perl programming language. Hence you will need Perl to run it. Perl should be already installed by default on any unix and Mac OSX system. Please follow this [link](https://www.perl.org/get.html) for instructions on how to install Perl 
 
 Please follow this [link](https://sourceforge.net/projects/mummer/files/ "Mummer Download") for detailed instruction on how to install and run Mummer. A detailed manual can also be found in CorGAT main documentation at [readthedocs](https://corgat.readthedocs.io/en/latest/prerequisites.html "Install Mummer").
 
@@ -102,7 +101,7 @@ SARS-CoV-2 genomic sequences and associated metadata can be obtained from the GI
 * **Submission date** : date of submsision of the sample to the the database.  Format: YYYY-MM-DD
 * **Pango lineage** : Pango lineage (or group according to a nomenclature of choice) assigned to viral isolates
 
-If any of the columns indicated above (with the exact same names) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. Please be aware that this does not mean that you necessarily need to provide data from the GISAID database as the main input (see below), but just that the metadata that you provide must have names consistent with those above.
+If any of the columns indicated above (names must be exactly matched) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. Please be aware that this does not mean that you necessarily need to provide data from the GISAID database as the main input (see below), but just that the metadata that you provide must have names consistent with those reported above.
 If you do not have access to GISAID, you can obtain publicly available SARS-CoV-2 data processed according to their "ncov" workflow from Nextstrain [link]([https://nextstrain.org/sars-cov-2/). 
 ### Important: Nextstain data 
 since metadata from Nextstrain have slightly different format than that used by HaploCov, you will need to convert them in "HaploCov" format by using *NextStrainToHaploCoV.pl*.
@@ -136,6 +135,7 @@ The format is as follows<br>:
 HaploCoV can only read dates in the YYYY-MM-DD format. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represent day 0. This date represents the beginning of the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019). For example Tue 31th Dec 2019 is day 1 according to HaploCoV notation and Sun 29th Dec 2019, represents day -1. In the HaploCoV metadata format, the 3rd column reports the offset in days between the isolation of that specific isolate and Dec 30th 2019; similarly the 5th column reports the offset from Dec 30th 2019 to the "deposition" date (typically in GISAID). Metadata tables in HaploCov format are sorted in descending order by the 3rd column (offset of the collection date). This means that the "most ancient" genome will always be at the top of the file, while the most recently isolated at the bottom. 
 If you need to know the date of isolation (and offset with respect to day 0) of the most recent genome included in the dataset you can simply use this command in a unix-like shell environment
 ` tail -n 1 linearDataSorted.txt | cut -f 2,3`
+For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
 
 ## GISAID data: addToTable.pl
 
@@ -159,7 +159,7 @@ addToTable.pl accepts the following options:
 
 ### A typical run of addToTable.pl should look something like:
 `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt ` 
-The final output will consist in a metadata table in HaploCoV format, sorted by collection dates.  This table is required for all the subsequent analyses.
+The final output will consist in a metadata table in HaploCoV format.  This table is required for all the subsequent analyses.
 
 ### Execution times 
 Please be aware that typically a single thread/process can align genomes and derive allele variants of about 20k SARS-CoV-2 genomes per hour (160k genomes on 8 cores, or 320k on 16 cores). This would mean that processing the complete collection of the more than 11M genomes included in the GISAID database on June 10th 2022  from scratch will take about 20 days if only one core/process is used. Computation scales linearly, hence 3 days would be needed if 8 processes are used, and 1.5 days if 16 are used. Importantly, since data are added incrementally, this operation needs to be performed only once. 
@@ -173,7 +173,7 @@ Contrary to addToTable.pl, NextStrainToHaploCoV.pl does not feature incremental 
 
 ### Options
 NextStrainToHaploCoV.pl accepts the following options
---infile: name of the input file
+--metadata: name of the input file
 --outfile: name of the output file
 
 ## Execution
@@ -237,19 +237,21 @@ The augmentClusters.pl accepts the following parameters:
 * --size minimum size for a new subgroup within a lineage/group, defaults to 100
 * --tmpdir directory used to store temporary files
 * --oufile name of the output file
-The main output will be saved in the current folder. --tmpdir will hold all temporary files, along with a log file.
+The main output will be saved in the current folder. 
 
 ### Execution
 A typical run of augmentClusters.pl should look something like:
 `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt  --posFile areas_list.txt `
 The main output file, lvar.txt will contain all current groups/lineages and newly formed groups/sub-lineages, and a complete list of their defining mutations, in txt format one per line. An example is outlined in the screenshot below.
+![alt text](https://github.com/matteo14c/HaploCoV/blob/bb50436aab85fb48c1f36d274964ddaac9072032/images/output.png)
+
 
 ### Novel variants identified by HaploCoV
-Novel variants identified by HaploCoV will be reported in the output file produced by augmentClusters.pl. The format of this file is very simple: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic allele variants (defined here as those present in >50% of the isolates assigned to the group). Values are separated by spaces.
-This file includes the complete collection of lineages/groups as defined in the reference input nomenclature, plus all the novel lineages/groups/sub-lineages formed by HaploCoV. Newly formed lineages/groups/sub-lineages are identified by a suffix that can be specified by the user and by a progressive number. The default value for this suffix is the letter "N". If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.2.9 lineage, these will be reported as:
-1. BA.2.9.N1 and;
-2. BA.2.9.N2;
-in the output file.
+Novel variants identified by HaploCoV will be reported in the output file produced by augmentClusters.pl. The format of this file is very simple: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic allele variants (defined here as those present in >50% of the isolates assigned to the group). Values are separated by spaces (see above).
+This file includes the complete collection of lineages/groups as defined in the reference input nomenclature, plus all the novel lineages/groups/sub-lineages formed by HaploCoV. Newly formed lineages/groups/sub-lineages are identified by a suffix that can be specified by the user and by a progressive number. The default value for this suffix is the letter "N". If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.1.17 lineage, these will be reported as:
+1. BA.1.17.N1 and;
+2. BA.1.17.N2;
+in the output file (see above).
 
 ### Custom analyses
 
@@ -367,11 +369,11 @@ To do all of the above:
 3. `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt --posFile areas_list.txt `
 4. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
 5. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
-6. `perl assign.pl --infile  lvar.txt --metafile linearDataSorted.txt `
+6. `perl assign.pl --infile lvar.txt --metafile linearDataSorted.txt --outfile --outfile HaploCoVAssignedVariants.txt `
 
 ### OR 
 
-6. `perl p_assign.pl --infile  lvar.txt --metafile linearDataSorted.txt --nproc 12 `
+6. `perl p_assign.pl --infile  lvar.txt --metafile linearDataSorted.txt --nproc 12 --outfile --outfile HaploCoVAssignedVariants.txt `
 
 
 <hr>
