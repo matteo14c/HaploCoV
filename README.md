@@ -346,6 +346,12 @@ To execute it you can use:
 ` p_assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --nproc 8 --out  linearDataSorted.txt_reAssigned `
 
 Input files are the same as those provided to assign.pl. Output format is in the same format described above.
+
+### Important p_assign.pl and assign.pl 
+Since p_assign.pl does directly make use of assign.pl whent it is executed, both scripts need to be in the same folder when invoking p_assign.pl. Execution will halt and raise an error is assign.pl is not found/is not in the same folder as p_assign.pl
+. 
+All input files **MUST** be in the **same folder** from which the program is executed. 
+
 <hr>
 
 ## For impatient people
