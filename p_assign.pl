@@ -48,14 +48,14 @@ sub parallel_assign
 		{
 			die "Cannot fork a child: $!";
 		}elsif ($pid == 0) {
-			print "Printed by $i child process\n";
+			#print "Printed by $i child process\n";
 			exec("perl assign.pl --metafile $file --dfile $lvarFile  --out $file\_Assign.tmp") || die "can't exec $!";
 			exit(0);
 		}else {
 			push(@childs,$pid);
 		}
 	}
-	print "@childs\n";
+	#print "@childs\n";
 	foreach(@childs){
 		my $tmp=waitpid($_,0);
 	}
@@ -85,7 +85,7 @@ sub merge
 	my $ifile=$_[1];
 	foreach my $f (@files)
 	{
-		system ("cat $f\_Assign.tmp >> $ifile.Massigned")==0||die();
+		system ("cat $f\_Assign.tmp >> $ifile")==0||die();
 		system ("rm $f\_Assign.tmp")==0||die();
 	}
 }
@@ -128,7 +128,6 @@ sub download_refMut
 	}
         print "Downloading linDefMut from the github repo. Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
-        check_exists_command('gunzip') or die "$0 requires gunzip to unzip the genome\n";
         system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
 
 }
