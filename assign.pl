@@ -5,7 +5,7 @@ my %arguments=
 "--dfile"=>"na",
 "--metafile"=>"na",                  # directory with alignment files. Defaults to current dir
 #####OUTPUT file#############################################
-"--out"=>"ASSIGNEDScore_out.tsv" #file #OUTPUT #tabulare
+"--out"=>"na" #file #OUTPUT #tabulare
 );
 
 check_arguments();
@@ -16,7 +16,6 @@ check_arguments();
 my $lvarFile=$arguments{"--dfile"};
 my $metafile=$arguments{"--metafile"};
 my $ofile=$arguments{"--out"};
-print "$metafile\n";
 
 check_input_arg_valid();
 
