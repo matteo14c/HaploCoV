@@ -7,7 +7,7 @@ my %arguments=
 "--metafile"=>"na",                  # directory with alignment files. Defaults to current dir
 "--nproc"=>8,
 #####OUTPUT file#############################################
-"--out"=>"GlobalquickASSIGNEDScore2_out.tsv" #file #OUTPUT #tabulare
+"--out"=>"na" #file #OUTPUT #tabulare
 );
 
 check_arguments();
