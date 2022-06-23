@@ -361,7 +361,7 @@ To do all of the above:
 1. `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `
 
 ### Nexstrain data
-1. ` per NextStrainToHaploCoV.pl --infile metadata.tsv --outfile linearDataSorted.txt `
+1. ` perl NextStrainToHaploCoV.pl --infile metadata.tsv --outfile linearDataSorted.txt `
 
 ### then
 
