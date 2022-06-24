@@ -106,13 +106,13 @@ sub metadataToLists
 	
 	if (-e $ofile)
 	{
-		print "indexing $ofile\n";
+		#print "indexing $ofile\n";
 		open(IN,$ofile);
 		my $c=0;
 		while(<IN>)
 		{
 			$c++;
-			print "#$c sequences indexed\n" if $c %1000000==0;
+			#print "#$c sequences indexed\n" if $c %1000000==0;
 			my ($id,$date)=(split(/\t/))[0,2];
 			$indexO{$id}=1;
 		}
@@ -156,7 +156,7 @@ sub metadataToLists
 	while (<IN>)
 	{
 		$c++;
-		print "#$c sequences aquired\n" if $c%1000000==0;
+		#print "#$c sequences aquired\n" if $c%1000000==0;
 		my @data=(split(/\t/));
 		my $id=$data[$Iv];
 		$id=fix_strain($id);
@@ -184,7 +184,7 @@ sub metadataToLists
 	}
 	if (-e $ofile)
 	{
-		print "metadata read done\nNow subsetting the fasta file\n";
+		#print "metadata read done\nNow subsetting the fasta file\n";
 		my $c=0;
 		open(IN,$seq);
 		open(OUT,">tmpMissingSeq.fa");
@@ -198,7 +198,7 @@ sub metadataToLists
 				print OUT "\n" if $print==1;
 				$print=0;
 				$c++;
-				print "#$c genomes processed\n" if $c%100000==0;
+				#print "#$c genomes processed\n" if $c%100000==0;
 				my $fid=$1;
 				$fid=(split(/\|/,$fid))[0];
 				$fid=fix_strain($fid);
@@ -220,7 +220,7 @@ sub metadataToLists
 		{
 			die("No novel sequences were detected in your fasta file\nExecution will stop here\nYour Haplocov metadata file already contains all the metadata for all the genomes in the fasta file\nOr the start date you set is way far ahead in the future. Please check\n");
 		}
-		print "Adding $seqOUT sequences\n";
+		#print "Adding $seqOUT sequences\n";
 	}
 	return(\%data,$fileTosplit);
 }
@@ -292,7 +292,7 @@ sub parallel_align
                         push(@childs,$pid);
                 }
         }
-	print "Now aligning with $numP processes: c:@childs\n";
+	#print "Now aligning with $numP processes: c:@childs\n";
         foreach(@childs){
                 my $tmp=waitpid($_,0);
         }
@@ -376,7 +376,7 @@ sub download_areas
         print "addToTable.pl will try to Download the file from github\n";
         print "Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download areafile\nHit <<which wget>> on the terminal to check if you have wget\n";
-        system("https://raw.githubusercontent.com/matteo14c/HaploCoV/master/areaFile")==0||die("Could not retrieve the required file areafile. The file is not in the current folder. Please download it!\n");
+        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/areaFile")==0||die("Could not retrieve the required file areafile. The file is not in the current folder. Please download it!\n");
 
 }
 
