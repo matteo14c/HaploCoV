@@ -425,6 +425,8 @@ For example you get a complete list of the countries in the metadata table as we
 <br><br>
 
 The output should look something like this:
+<br>
+<br>
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/7b64742f8ef1d05dbfe933fb07ae7282253ee3f0/images/Screenshot-countries.png)
 
 and should provide a complete list of the "countries" that are listed in column 8 (as well as a the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be perfomed simply by 
@@ -433,10 +435,11 @@ and should provide a complete list of the "countries" that are listed in column 
 
 For example these commands will extract data from Venezuela and Uzbekistan:
 
-<br><br>
 `grep -P "\tVenezuela\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest`
+
 `grep -P "\tUzbekistan\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest`
-<br><br>
+<br>
+
 Please notice the ">>" symbols, which are used in unix to append content to a file without over-writing it.
 
 The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the `sort`, `uniq`, `cut` and `grep` utilities to find out all the options and set out the "pipeline" that is best suited for your needs. 
@@ -455,8 +458,9 @@ The method described in *#1 :  Basic statistics: how do I summarize geographic d
 <br>cut -f 10 B117data |sort | uniq -c<br>
 
 The output should be:
-![alt text](https://github.com/matteo14c/HaploCoV/blob/00e0f3992dc73968e52d8d900f252cca43746a05/images/b117.png)
-
+<br>
+![alt text](https://github.com/matteo14c/HaploCoV/blob/df3e957a7e067643ffb3e5916e41840a18c03457/images/b117.png)
+<br>
 
 ### #3 Time restricted analyses: 
 
@@ -476,19 +480,48 @@ The output should be:
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/57668f83c7320f94884b4d6ae016a6545115fbe4/images/subsetDates.png)
 
 Hence lines, in between line 3688449 and line 4553984 hold all the data from the interval of time we want to analyse.
+To extract those lines we can simply combine the `head` and `tail` commands. We need a total of 4553984-3688449+1=865536 lines.
 
+`head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime`
 
-
-
-
-
-
-
-
-
+We use head to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use tail to grab only the 865536 lines that correspond with the offset between our start and end date.
 
 
 ### Can I combine #1,#2 and 3?
+
+Yes of course. Suppose that you want to analyse:
+
+Interval of time -> 2021-12-24 to 2022-02-24
+Lineage -> BA.1.1
+Country -> USA
+
+First you will need to extract the data for your time interval of intersest with:
+
+For example like this:
+
+`cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1` # Find the first occurence of the end date
+
+`cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1` # Find the last occurence of the start dare
+
+`head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime` #Extract the data
+
+Then you can subset by lineage:
+
+`grep -P "\tBA\.1\.1\t" myIntervalOfTime > myIntervalOfTime_BA11data`
+
+And finally by country
+
+`grep -P "USA" myIntervalOfTime_BA11data > myIntervalOfTime_BA11data_USA`
+<hr>
+
+## Executing custom analyses: using custom set of alleles
+
+Although HaploCoV was originally devised to use a predefined set of high frequency alleles (derived by computeAF.pl) to search for novel clusters of viral genomes in a nomenclature, in principle any custom files with a list of allele variants of interest can be used for this task. This approach allows the identification of clusters/novel potential designations defined by any combination of allelic variants of interest.  
+
+To execute custom analysis and identify potential new lineages/viral clusters defined by any arbirtrary set of allelic variants, all you need to do is to provide a "custom" posFile with the (--posFile) option to augmentCluster.pl . This file has a very simple format: allelic variants are listed one per line. This is a minimal (valid) example:
+
+
+
 
 
 
