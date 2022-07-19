@@ -67,6 +67,8 @@ HaploCoV is written in the Perl programming language. Hence you will need Perl t
 
 Please follow this [link](https://sourceforge.net/projects/mummer/files/ "Mummer Download") for detailed instruction on how to install and run Mummer. A detailed manual can also be found in CorGAT main documentation at [readthedocs](https://corgat.readthedocs.io/en/latest/prerequisites.html "Install Mummer").
 
+### #4 Computational resources
+
 <hr>
 
 ## Running HaploCoV
@@ -362,7 +364,7 @@ Since p_assign.pl does directly make use of assign.pl whent it is executed, both
 . 
 All input files **MUST** be in the **same folder** from which the program is executed. 
 
-<br>
+<hr>
 
 ## For impatient people
 
