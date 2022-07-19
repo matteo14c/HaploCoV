@@ -399,23 +399,33 @@ To do all of the above:
 ## Executing custom analyses
 
 The input to HaploCoV are very simple (yet relatively large) metadata tables. The easisest way to execute custom analyses on a subset of data of interest is simply to subset the input metadata accordingly.  On any unix system, this operation can be performed very easily by taking advantage of built-in shell utilities. Like for example: `grep` or `head` or `tail`. 
-A few examples are reported below
+A few examples are reported below:
 
-
-### 1 Geographically restricted analyses: how do analyse a specific, area country or region of interest
+### #1 Geographically restricted analyses: how do analyse a specific, area country or region of interest
 
 ### Before you start, Important!
 Please be aware that HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived -as they are- from their respective repositories. If you encounter any inconsitencies or errors in the naming of contintens countries or regions please contact data submitters and/or curators of the database from which data obtained directly.
 
 ### Basic statistics: how do I summarize geographic data
-Simple stats on the number of genomes associated with distinct, Contintents, Countries, Regions and or Macro-areas can be easily obtained by combining the `cut` , `sort` and `uniq' unix commands. 
-Since in th
+Simple stats on the number of genomes associated with distinct, Continents, Countries, Regions and or Macro-areas can be easily obtained by combining the `cut` , `sort` and `uniq' unix commands. 
+These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file.
 
-column 6 |column 7 |column 8 
+column 6 |column 7 |column 8 | column 9 |
+---------|---------|---------|----------|
+continent|macroArea|country|region|
 
+To obtain basic stats about any of such columns (in unix) you can:
+1. extract the desired column with ` cut`
+2. sort all the values in the column you selected by using the `sort` utility
+3. summarize the results with `uniq -c`
 
+For example you get a complete list of the countries in the metadata table as well as the total number of genome from every country, "simply" by piping these 3 commands
+<br><br>
+`cut -f 8 linearDataSorted.txt | sort | uniq -c`
+<br><br>
 
-
+The output should look something like this:
+![alt text](https://github.com/matteo14c/HaploCoV/blob/5d3108172a69703d89fef0593ada43815b305f17/images/Screenshot-countries.png)
 
 ### 2 Lineage/HG specific analyses: can I analyse just a lineage of interest
 
