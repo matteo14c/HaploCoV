@@ -458,12 +458,12 @@ sub print_help
 
 	print "##INPUT PARAMETERS\n\n";
         print "--metadata <<filename>>\t metadata file\n";
-        print "--seq <<filenae>>\t fasta file\n";
+        print "--seq <<filename>>\t fasta file\n";
         print "--dayFrom <<integer>>\t keep only genomes isolated after this day. Default -2500\n";
 	print "--nproc <<integer>>\t number of processes to align genomes and call variants. Default 8 \n";
 	print "--outfile <<filename>>\t output metadata file in HaploCoV format. If the file is not empty\n";
 	print "novel data/metadata will be appended to the bottom of the file\n";
-        print "Mandatory parameters are --seq and --metadata \n";
+        print "Mandatory parameters are --seq, --metadata  and --outfile\n";
         print "the file needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";
         print "1# input is metadata.tsv:\nperl addToTable.pl --metadata metadata.tsv --sequences sequences.fasta --outfile HaploCoV_formattedMetadata\n\n";
