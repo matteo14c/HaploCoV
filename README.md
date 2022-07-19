@@ -551,7 +551,6 @@ All our collection of alleles are updated on a weekly basis. Tipically every Wed
 3. Country:      `wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country/alleleVariantsSet/country/Thailand_list.txt` 
 4. High-freq: `wget https://raw.githubusercontent.com/matteo14c/HaploCoV/HighFreq/master/alleleVariantsSet/HighFreq/April2021_list.txt` 
 
-
 ## Possible applications. #1 identifying \<hyper-variable> clusters of genome sequences
 
 Suppose that want to identify groups/cluster of genome sequences that carry an excess of allelic variants with respect to their assigned lineage. Recent experience suggest that VOC variants of SARS-CoV-2 are characterised by a significantly increased number of allelic variants compared with their ancestors. This is particularly true for Omicron, but it does also apply to other VOCs. <br>
@@ -588,13 +587,14 @@ at this point you can use LinToFeats.pl and report.pl to identify novel designat
 
 The file highlyVariableGroups_prioritization.txt will report the novel designations with an additional increase in their HaploCoV score. If-any, these novel designations should be probably added to the reference nomenclature.
 
-## Possible applications. #2 analysing a specific country
+## Possible applications. #2 Analysing data from a specific country
 
 If you want to analyse data from only a specific country, this can be easily done by using allele variants files found under the alleleVariants/country folder. Again you will need to subset your HaploCoV formatted data accordingly, and retain only data from the country of interest. 
 This should be relatively easy. If for example we want to analyse only data from Thailand we can use the following commands:
 
-1.`grep -P "\tThailand\t" HaploCoVformattedData.txt > ThaiData` #extract data from Thailand
-2. `perl augmentClusters.pl --metafile ThaiData --posFile Thailand_list.txt --outfile ThaiClusters.txt`
+`grep -P "\tThailand\t" HaploCoVformattedData.txt > ThaiData` #extract data from Thailand
+
+`perl augmentClusters.pl --metafile ThaiData --posFile Thailand_list.txt --outfile ThaiClusters.txt`
 
 At this point we can resume the "standard" workflow of HaploCoV, and apply LinToFeats.pl and report.pl :
 
@@ -603,6 +603,10 @@ At this point we can resume the "standard" workflow of HaploCoV, and apply LinTo
 `perl report.pl --infile ThaiClusters_feats.tsv --outfile ThaiClusters_prioritization.txt `
 
 
+## Possible applications. #3 Can I combine #1 and #2? 
+
+Yes of course! Just select for a country of interest after you subset by date (i.e see the paragraph Can I combine #1,#2 and 3? above)
+ 
 
 
 
