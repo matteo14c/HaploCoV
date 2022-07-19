@@ -421,16 +421,71 @@ To obtain basic stats about any of such columns (in unix) you can:
 
 For example you get a complete list of the countries in the metadata table as well as the total number of genome from every country, "simply" by piping these 3 commands
 <br><br>
-`cut -f 8 linearDataSorted.txt | sort | uniq -c`
+`cut -f 8 HaploCoVformattedData.txt | sort | uniq -c`
 <br><br>
 
 The output should look something like this:
-![alt text](https://github.com/matteo14c/HaploCoV/blob/5d3108172a69703d89fef0593ada43815b305f17/images/Screenshot-countries.png)
+![alt text](https://github.com/matteo14c/HaploCoV/blob/7b64742f8ef1d05dbfe933fb07ae7282253ee3f0/images/Screenshot-countries.png)
 
-### 2 Lineage/HG specific analyses: can I analyse just a lineage of interest
+and should provide a complete list of the "countries" that are listed in column 8 (as well as a the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be perfomed simply by 
+1. finding the name/s of the country/countries in the list
+2. using grep.
+
+For example these commands will extract data from Venezuela and Uzbekistan:
+
+<br><br>
+`grep -P "\tVenezuela\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest`
+`grep -P "\tUzbekistan\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest`
+<br><br>
+Please notice the ">>" symbols, which are used in unix to append content to a file without over-writing it.
+
+The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the `sort`, `uniq`, `cut` and `grep` utilities to find out all the options and set out the "pipeline" that is best suited for your needs. 
 
 
-### 3 Time restricted analyses: 
+### #2 Lineage/HG specific analyses: can I analyse just a lineage of interest
+
+Of course this is completely possible. All you need to know is the exact, full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by preprending a "\" symbol to "." in the regular expression to be passed to grep.
+For example if you are interested in "B.1.1.7" only you can subset you data like this:
+
+`grep -P "\tB\.1\.1\.7\t"  HaploCoVformattedData.txt > B117data`
+
+The "\t" symbol indicates a tabulation. It is needed since we make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metaata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
+The method described in *#1 :  Basic statistics: how do I summarize geographic data?* can be adapted and reapplied here to double check that our output file only includes genomes assigned. We just need to extract a different column: (number 10) in this case:
+
+<br>cut -f 10 B117data |sort | uniq -c<br>
+
+The output should be:
+![alt text](https://github.com/matteo14c/HaploCoV/blob/00e0f3992dc73968e52d8d900f252cca43746a05/images/b117.png)
+
+
+### #3 Time restricted analyses: 
+
+If you want to analyse only genomes/isolates collected between any interval of time, you can subset the an HaploCoV formatted file accordingly. 
+Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  corresponding  only to the sequences from the dates of interest. Since HaploCoV formatted files are sorted in descending order, by collection date ,all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
+Collection dates in HaploCoV formatted  metadata files are reported in the second column. We can find the first occurence of any date of interest by applying grep to that column.
+For example like this:
+<br><br>
+`cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1`
+<br><br>
+Similarly we can find the last occurence of the end date with:
+`cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1`
+<br><br>
+Here `cut` is used to extract the column of interest (the second in this case).  Grep with the -n option to reports every occurence of the date/dates of interest, and also the line number where the occurence was found (-n). For the start date we use `head -1` since we are only interested in the first occurence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurence.
+In the example results look something like:
+The output should be:
+![alt text](https://github.com/matteo14c/HaploCoV/blob/57668f83c7320f94884b4d6ae016a6545115fbe4/images/subsetDates.png)
+
+Hence lines, in between line 3688449 and line 4553984 hold all the data from the interval of time we want to analyse.
+
+
+
+
+
+
+
+
+
+
 
 
 ### Can I combine #1,#2 and 3?
