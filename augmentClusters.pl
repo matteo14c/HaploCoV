@@ -11,7 +11,7 @@ my %arguments=
 "--suffix"=>"N",
 "--size"=>100,
 "--tmpdir"=>"novelGs",
-"--outfile"=>"lvar.txt"
+"--outfile"=>"na"
 );
 #
 ##############################################################
@@ -125,13 +125,15 @@ sub compress_groups
                 next if $lin eq "Unassigned";
                 next if $lin eq "NA";
 
-		my @vars=(split(/\,/,$var));
+		my @vars=sort(split(/\,/,$var));
 		my $genomeString="";
 		my $Nvar=0;
 		foreach my $vr (@vars)
 		{
-			next if $Dlin{$lin}{$vr};
-			next unless $HFpos{$vr};
+
+			#commentato xché: cosa succede invece se mancano varianti?
+			#next if $Dlin{$lin}{$vr};
+			next unless $HFpos{$vr} || $Dlin{$lin}{$vr};
 			$genomeString.="$vr ";
 			$listVarNew{$lin}{$vr}++;
 			$Nvar++;
@@ -217,7 +219,9 @@ sub allocate_groups
 			$HGprint{$v}=1;
                 	$printedHG{$G}{$v}=1;
                	}
-
+		
+		# move up to print also all the HGs, or delete: so you simply "merge"
+		# now delete
 		print MAIN "$G";
 		foreach my $pos (sort{$a<=>$b} keys %HGdata)
 		{
@@ -235,10 +239,13 @@ sub allocate_groups
 		{
 			my $id++;
                 	my $tot=$data{$G}{$sub};
-			next unless $tot>=$size || ($tot/$totG>=0.1 && $tot>$size/2);
+			next unless $tot>=$size; #|| ($tot/$totG>=0.01 && $tot>$size/2);
+		
 			# novel group: defined by HG muts
-			my %localHG=%HGdata;
-			my %localPrint=%HGprint;
+			# not necessarily
+			my %localHG=();#%HGdata;
+			my %localPrint=();#%HGprint;
+			
 			my @add=split(/\s+/,$sub);
 			# add group specific muts
 			my $count=@add;
@@ -365,9 +372,10 @@ sub print_help
 	print " Users need to provide:\n\n"; 
 	print " 1) --metafile a metadata file containing a table with the list of genetic\n"; 
 	print " variants and the class/lineaged assigned to each genoneme (addToTable.pl);\n";
-	print " 2) --posFile a list of high frequency genetic variants (see computeAF.pl)\n\n";
-	print " The tool identifies all possible sub-groups/lineages, according to user\n"; 
-	print " defined criteria, within any extant lineage.\n";
+	print " 2) --posFile a list of high frequency genetic variants (see computeAF.pl and\n";
+	print " or collections of allele-sets available from the github repo)\n\n";
+	print " The tool identifies all possible sub-groups/lineages within any extant group/lineage\n";
+	print " according to parameters set by the user.\n";
 	print " Criteria for the definition of novel groups/subgroups are specified by:\n";
 	print "	--dist minimum phenetic distance to an extant group (default 2)\n";  
 	print " and --size: minimum number of distinct genomes in the group (default 100).\n";
@@ -384,8 +392,8 @@ sub print_help
         print "--suffix <<character>>\t suffix for new lineages,defaults to N\n";
         print "--size <<integer>>\t minimum size for a new subgroup within a lineage, defaults to 100\n";
         print "--tmpdir <<dirname>>\t defaults to \"./novelGs\", output directory\n";
-        print "--outfile <<filenane>>\t name of the output file\n";
-	print "\n To run the program you MUST provide at least --metafile, --varFile and --posFile\n";
+        print "--outfile <<filename>>\t name of the output file\n";
+	print "\n To run the program you MUST provide  --metafile, --outfile and --posFile\n";
         print " all the file needs to be in the folder from which the script is executed.\n\n";
         print "\n##EXAMPLE:\n\n";
         print "1# perl augmentClusters.pl --outfile lvar.txt --metafile metadata.tsv --posFile areas_list.txt \n\n";
