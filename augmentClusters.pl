@@ -396,6 +396,6 @@ sub print_help
 	print "\n To run the program you MUST provide  --metafile, --outfile and --posFile\n";
         print " all the file needs to be in the folder from which the script is executed.\n\n";
         print "\n##EXAMPLE:\n\n";
-        print "1# perl augmentClusters.pl --outfile lvar.txt --metafile metadata.tsv --posFile areas_list.txt \n\n";
+        print "1# perl augmentClusters.pl --outfile lvar.txt --metafile HaploCoV_formattedMetadata --posFile areas_list.txt \n\n";
 }
 
