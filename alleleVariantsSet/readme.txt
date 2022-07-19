@@ -17,6 +17,5 @@ These files are stored under the folder: HighVar
 in any country. Each country corresponds to a file. These files are stored under the folder: country. Each file is named 
 after the country from which it was derived. These files are updated every 15 days.
 
-3 Increased frequency alleles: allelic variants showing an increase in their prevalence in the global viral population 
-of a 2 fold or more in the last 30 days. Intervals of time were defined starting from Mon 12-30-2019 and are expressed 
-as offset.  These files are stored under the folder: HighFreq
+3 Increased frequency alleles: allelic variants showing an increase in their prevalence in at least one country population 
+of a 2.5 fold or more in the last 30 days. These files are stored under the folder: HighFreq
