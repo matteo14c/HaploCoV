@@ -124,6 +124,7 @@ sub compute_vocness
         	}
         	$vocness{$lin}=$vocness;
 		#print "$lin $vocness\n";
+		#die if $lin eq "BA.2";
 	}
 	return(\%vocness);
 
@@ -146,7 +147,7 @@ sub print_pass
         	my $legacyScore=$vocness{$Pvariant};
         	next unless $vocness{$Pvariant};
         	my $diff=$score-$legacyScore;
-		if ($score-$legacyScore>=1.5 && $score>=5)
+		if (($score-$legacyScore)/$legacyScore>=0.1 && $score>=7.5)
 		{
                 	print OUT "$variant $Pvariant $score $legacyScore $diff\n";
 		}	
