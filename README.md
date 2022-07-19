@@ -132,9 +132,13 @@ The format is as follows<br>:
 
 ## Dates and time in HaploCoV
 
-HaploCoV can only read dates in the YYYY-MM-DD format. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represent day 0. This date represents the beginning of the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019). For example Tue 31th Dec 2019 is day 1 according to HaploCoV notation and Sun 29th Dec 2019, represents day -1. In the HaploCoV metadata format, the 3rd column reports the offset in days between the isolation of a specific isolate and Dec 30th 2019; similarly the 5th column reports the offset from Dec 30th 2019 to the "deposition" of the genome sequence in a public database (typically in GISAID). Metadata tables in HaploCov format are sorted in descending order by the 3rd column (offset of the collection date). This means that the "most ancient" genome will always be at the top of the file, while the most recently isolated at the bottom. 
-If you need to know the date of isolation (and offset with respect to day 0) of the most recent genome included in the dataset you can simply use this command in a unix-like shell environment
+HaploCoV can only read dates in the YYYY-MM-DD format. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represent day 0. This date represents the beginning of the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019).<br>
+For example Tue 31th Dec 2019 is day 1 according to HaploCoV notation and Sun 29th Dec 2019, represents day -1. In the HaploCoV metadata format, the 3rd column reports the offset in days between the isolation of a specific isolate and Dec 30th 2019; similarly the 5th column reports the offset from Dec 30th 2019 to the "deposition" of the genome sequence in a public database (typically in GISAID).<br>
+Metadata tables in HaploCov format are sorted in descending order by the 3rd column (offset of the collection date). This means that the "most ancient" genome will always be at the top of the file, while the most recently isolated at the bottom.<br>
+If you need to know the date of isolation (and offset with respect to day 0) of the most recent genome included in the dataset you can simply use this command in a unix-like shell environment:
+<br><br>
 ` tail -n 1 linearDataSorted.txt | cut -f 2,3`
+<br><br>
 For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
 
 ## GISAID data: addToTable.pl
@@ -158,7 +162,7 @@ addToTable.pl accepts the following options:
 * **--outfile**: name of the output file
 
 ### A typical run of addToTable.pl should look something like:
-`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt ` 
+<br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `<br><br> 
 The final output will consist in a metadata table in HaploCoV format.  This table is required for all the subsequent analyses.
 
 ### Execution times 
@@ -203,7 +207,9 @@ The script accepts the following parameters:
 
 ### Execution
 A typical run of computeAF.pl should look something like:
-`perl computeAF.pl --file linearDataSorted.txt ` (where linearDataSorted.txt is is the file with metadata in HaploCoV format)
+<br><br>
+`perl computeAF.pl --file linearDataSorted.txt `          (where linearDataSorted.txt is is the file with metadata in HaploCoV format)
+<br><br>
 The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
 * allele frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt)
 * three files containing the lists of high frequency allele, showing a frequency above the user defined threshold for more that the timespan set by the user, at global (global_list.txt), macro-areas(area_list.txt) and country (country_list.txt) level.
@@ -241,7 +247,9 @@ The main output will be saved in the current folder.
 
 ### Execution
 A typical run of augmentClusters.pl should look something like:
+<br><br>
 `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt  --posFile areas_list.txt `
+<br><br>
 The main output file, lvar.txt will contain all current groups/lineages and newly formed groups/sub-lineages, and a complete list of their defining mutations, in txt format one per line. An example is outlined in the screenshot below.
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/bb50436aab85fb48c1f36d274964ddaac9072032/images/output.png)
 
@@ -272,7 +280,7 @@ The program requires only 3 parameters:
 
 ### Execution
 A typical run of LinToFeats.pl should look something like:
-`perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
+<br><br>`perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `<br><br>
 The main output file: lvar_feats.tsv will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages.
 
 
@@ -294,7 +302,7 @@ report.pl accepts the following input parameters:
 
 ### Execution 
 A typical run of report.pl should look something like:
-`perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
+<br><br>`perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `<br><br>
 The main output file lvar_prioritization.txt will a list of the SARS-CoV-2 variants that show a significant increase in their genomic score with respect to a parent variant. These variants are more likely to pose an increased risk from an epidemiological perspective.
 
 ## #6 Assign genomes to new groups
@@ -320,7 +328,7 @@ assign.pl takes the following options:
 
 ### Execution
 To assign genomes to a lineages/group/classes you need to run
-` assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned `
+<br><br>` assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned `<br><br>
 
 The output consists of a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly determined groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. No indicates no alternative assignments were supported, and hence that the genome was unambiguously assigned to a single group/lineage.
 
@@ -343,7 +351,9 @@ The following input parameters are accepted:
 * *--nproc*: number of processors/cores
 
 To execute it you can use:
+<br>
 ` p_assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --nproc 8 --out  linearDataSorted.txt_reAssigned `
+<br>
 
 Input files are the same as those provided to assign.pl. Output format is in the same format described above.
 
@@ -352,7 +362,7 @@ Since p_assign.pl does directly make use of assign.pl whent it is executed, both
 . 
 All input files **MUST** be in the **same folder** from which the program is executed. 
 
-<hr>
+<br>
 
 ## For impatient people
 
