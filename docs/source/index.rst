@@ -58,15 +58,12 @@ If you do not have access to GISAID, you can obtain publicly available SARS-CoV-
 .. warning::
 since metadata from Nextstrain have slightly different format than that used by HaploCov, you will need to convert them in "HaploCov" format by using *NextStrainToHaploCoV.pl*.
 
-Please see the following sections for point to point instructions and tips for the execution of HaploCoV
-
-Should you find any of this software useful for your work, please cite:
->**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.**
+Please see the following sections for point to point instructions and tips for the execution of HaploCov.
 
 Should you find any issue, please contact me at matteo.chiara@unimi.it , or open an issue here on github
 
 Should you find any of this software useful for your work, please cite:
->**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.**
+*Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.*
 
 If you find any issue with the software, please contact `me <mailto:matteo.chiara@unimi.it>`_, or report it  on `github <https://github.com/matteo14c/HaploCoV/issues>`_.
 
