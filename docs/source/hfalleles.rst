@@ -26,6 +26,7 @@ A typical run of computeAF.pl should look something like:
 
 
 The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
+
 * allele frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt)
 * three files containing the lists of high frequency allele, showing a frequency above the user defined threshold for more that the timespan set by the user, at global (global_list.txt), macro-areas(area_list.txt) and country (country_list.txt) level.
 
