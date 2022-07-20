@@ -292,7 +292,7 @@ The report.pl utility can be used to compare newly created groups/sublineages wi
 The main input corresponds with the output of LinToFeats.pl. 
 Users are also required to specify the suffix used to indicate "novel" lineages/sublineages. 
 This suffix must match the equivalent suffix provided to augmentClusters.pl. The default value is N.
-The configuration file indicated by --scaling: provides the list of the features to be used in the computation of the final score. A complete description of the features used by LinToFeats.pl to compute scores can be found in the features.csv file attached to this github repo The default is the list of features described in Chiara et al 2022, the file should not be edited, if not for a very good reason. See the section "executing custom analyses" for how to modify this file. 
+The configuration file indicated by --scaling: provides the list of the features to be used in the computation of the final score. A complete description of the features used by LinToFeats.pl to compute scores can be found in the features.csv file attached to this github repo The default is the list of features described in Chiara et al 2022, the file should not be edited, if not for a very good reason. 
 The final output consist in a simple text file, in tsv format where high scoring variants/sub-variants are reported along with their score and the score of the parental lineage.
 
 ### Options
@@ -309,11 +309,11 @@ The main output file lvar_prioritization.txt will a list of the SARS-CoV-2 varia
 
 ## #6 Assign genomes to new groups
 
-HaploCoV incorporates *assing.pl* an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature which might have been derived by augment.pl. 
+HaploCoV incorporates *assign.pl* an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature which might have been derived by augmentClusters.pl. 
 The utility applies a simple algorithm based on phenetic distances (described in Chiara et al 2021). For every group, users need to provide a list of "characteristic" allele variants, here defined as those present in more than 50% of the genomes that form the group.
 For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
 
-Assign.pl takes 2 main input files: 1 a simple file with "group/lineage" defining variants; 2 a metadata table, in HaploCoV format. See linDefMut50 in the current github repository for an example of a file with lineage defining variants. The format is exactly the same as that of the output files produced augment.pl.
+Assign.pl takes 2 main input files: 1 a simple file with "group/lineage" defining variants; 2 a metadata table, in HaploCoV format. See linDefMut50 in the current github repository for an example of a file with lineage defining variants. The format is exactly the same as that of the output files produced augmentClusters.pl.
 
 ### Assigning Pango Lineages 
 linDefMut50 in the current github repository provides a complete list of defining allele variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a weekly basis.
@@ -332,7 +332,7 @@ assign.pl takes the following options:
 To assign genomes to a lineages/group/classes you need to run
 <br><br>` assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned `<br><br>
 
-The output consists of a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly determined groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. No indicates no alternative assignments were supported, and hence that the genome was unambiguously assigned to a single group/lineage.
+The output consists of a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly determined groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. No indicates no alternative assignments were identied, and hence that the genome was unambiguously assigned to a single group/lineage.
 
 column 1 |column 2 |column 3 |column 4 |column 5 |column 6 |column 7 |column 8 |column 9 |column 10 |column 11 |
 ---------|---------|---------|---------|---------|---------|---------|---------|---------|----------|----------|
@@ -360,8 +360,8 @@ To execute it you can use:
 Input files are the same as those provided to assign.pl. Output format is in the same format described above.
 
 ### Important p_assign.pl and assign.pl 
-Since p_assign.pl does directly make use of assign.pl whent it is executed, both scripts need to be in the same folder when invoking p_assign.pl. Execution will halt and raise an error is assign.pl is not found/is not in the same folder as p_assign.pl
-. 
+Since p_assign.pl does directly make use of assign.pl whent it is executed, both scripts need to be in the same folder when invoking p_assign.pl. Execution will halt and raise an error is assign.pl is not found/is not in the same folder as p_assign.pl.
+
 All input files **MUST** be in the **same folder** from which the program is executed. 
 
 <hr>
@@ -478,10 +478,10 @@ For example if you are interested in "B.1.1.7" only you can subset you data like
 
 `grep -P "\tB\.1\.1\.7\t"  HaploCoVformattedData.txt > B117data`
 
-The "\t" symbol indicates a tabulation. It is needed since we make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metadata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
-The method described in *#1 :  Basic statistics: how do I summarize geographic data?* can be adapted and reapplied here to double check that our output file only includes genomes assigned. We just need to extract a different column: (number 10) in this case:
+The "\t" symbol indicates a tabulation. It is used here since we want to make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metadata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
+The method described in *#1 :  Basic statistics: how do I summarize geographic data?* can be adapted and reapplied here to double check that our output file only includes genomes assigned to the lineage of interest. We just need to extract a different column: (number 10) in this case:
 
-<br>cut -f 10 B117data |sort | uniq -c<br>
+<br>`cut -f 10 B117data |sort | uniq -c`<br>
 
 The output should be:
 <br>
@@ -504,7 +504,7 @@ For example like this:
 Similarly we can find the last occurence of the end date with:
 `cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1`
 <br><br>
-Here `cut` is used to extract the column of interest (the column second in this case).  Grep with the -n option reports every occurence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use `head -n 1` since we are only interested in the first occurence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurence.
+Here `cut` is used to extract the column of interest (the second column in this case).  `grep` with the -n option reports every occurence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use `head -n 1` since we are only interested in the first occurence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurence.
 In the example results look something like:
 <br>
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/57668f83c7320f94884b4d6ae016a6545115fbe4/images/subsetDates.png)
@@ -514,14 +514,14 @@ To extract those lines we can simply combine the `head` and `tail` commands. We 
 
 `head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime`
 
-We use head to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use tail to grab only the 865536 lines that correspond with the offset between our start and end date.
+We use `head` to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use  `tail` to  grab only the 865536 lines that correspond with the offset between our start and end date.
  
 The procedure described above requires some confidence with the unix shell, if you prefer a more streamlined solution you can (again) use subset.pl. The equivalent command should be something like:
  
  `perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --outfile myIntervalOfTime`
 
 
-### Can I combine #1,#2 and 3?
+### #4 Can I combine #1,#2 and #3?
 
 Yes of course. Suppose that you want to analyse:
 
@@ -544,11 +544,13 @@ Then you can subset by lineage:
 And finally by country
 
 `grep -P "USA" myIntervalOfTime_BA11data > myIntervalOfTime_BA11data_USA`
-<hr>
 
 Or again if you prefer a more compact alternative, you can use subset.pl :
  
  `perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --lineage BA.1.1 --country USA --outfile myIntervalOfTime_BA11data_USA`
+
+<hr>
+
  
 ## Executing custom analyses: custom alleles set
 
