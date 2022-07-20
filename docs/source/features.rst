@@ -19,6 +19,6 @@ A typical run of LinToFeats.pl should look something like:
 
 ::
 
-perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `<br><br>
+ perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `<br><br>
 
 The main output file: *lvar_feats.tsv* will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages.
