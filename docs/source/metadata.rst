@@ -35,8 +35,8 @@ If you need to know the date of isolation (and offset with respect to day 0) of 
 
 For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
 
-GISAID data: addToTable.pl
-==========================
+#1 GISAID data: addToTable.pl
+=============================
 
 addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. A helper script, *align.pl* is used to align sequences to the reference genome assembly of SARS-CoV-2 and derive allele variants.
 
