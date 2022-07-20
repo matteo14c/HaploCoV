@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
    
 Welcome to HaploCoV's documentation!
-==================================
+====================================
 
 `CorGAT <https://github.com/matteo14c/CorGAT>`_ is a collection of Perl utilities that can be used to align complete assemblies of SARS-CoV-2 genomes wih the reference genomic sequence, to obtain a list of polymorphic positions and to **annotate** genetic variants according to the method described in *Chiara et al 2020*  to be published soon (hopefully). The manuscript is currently submitted and undergoing peer review.
 
