@@ -398,16 +398,40 @@ To do all of the above:
 
 ## Executing custom analyses
 
-The input to HaploCoV are very simple (yet relatively large) metadata tables. The easisest way to execute custom analyses on a subset of data of interest is simply to subset the input metadata accordingly.  On any unix system, this operation can be performed very easily by taking advantage of built-in shell utilities. Like for example: `grep` or `head` or `tail`. 
-A few examples are reported below:
+The input to HaploCoV are very simple (yet relatively large) metadata tables. The easiest way to execute custom analyses on a subset of data of interest is simply to subset the input metadata accordingly.  On any unix system, this operation can be performed very easily by taking advantage of built-in shell utilities. Like for example: `grep` or `head` or `tail`. 
+A few examples are reported below.
 
-### #1 Geographically restricted analyses: how do analyse a specific, area country or region of interest
+### subset.pl
+
+If you are not familiar with the unix shell, you can take advantage of the subset.pl script included in this repository to subset the data. The script accepts an input file in HaploCoV format, and extracts from the file only data that match user defined filters/criteria. When multiple criteria are provided, a logical “AND” is applied and only data that satisfy all the criteria/conditions specified by the user are extracted.
+
+### options
+Subset.pl allows the application/definition of the following filters:
+* *--Marea:* name of a macro geographic area as defined in “areaFile”;
+* *--country:*  name of a country;
+* *--region:* name of a region;
+* *--lineage:* name of a lineage. Must match exactly a valid name in the nomenclature;
+* *--startD:* start-date in <YYYY-MM-DD> format. Only genomes collected after this date will be extracted
+* *--endD:* end-date in <YYYY-MM-DD> format. Only genomes collected before this date will be extracted
+
+Mandatory parameters are *--infile* and *--outfile*. At least one of  *--area,--country,--filter
+--lineage,--startD or --endD* should be set. If no filters are specified, execution will halt
+
+### A typical run of subset.pl should look something like:
+
+ `perl subset.pl --infile HaploCoV_formattedMetadata --country Thailand --startD 2022-05-01 --outfile Thai_HaploCoV_formattedMetadata`
+
+ The output file Thai_HaploCoV_formattedMetadata will include only genomes collected in Thailand starting from 2022-05-01 
+
+ <hr>
+ 
+### #1 Geographically restricted analyses: how to analyse a specific Area, Country or region of interest
 
 ### Before you start, Important!
-Please be aware that HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived -as they are- from their respective repositories. If you encounter any inconsitencies or errors in the naming of contintens countries or regions please contact data submitters and/or curators of the database from which data obtained directly.
+Please be aware that HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived *-as they are-* from their respective repositories. If you encounter any inconsistencies or errors in the naming of continents, countries or regions please contact data submitters and/or curators of the database from which data were obtained.
 
 ### Basic statistics: how do I summarize geographic data
-Simple stats on the number of genomes associated with distinct, Continents, Countries, Regions and or Macro-areas can be easily obtained by combining the `cut` , `sort` and `uniq' unix commands. 
+Simple stats on the number of genomes associated with distinct Continents, Countries, Regions and or Macro-geographic regions can be easily obtained by combining the `cut` , `sort` and `uniq' unix commands. 
 These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file.
 
 column 6 |column 7 |column 8 | column 9 |
@@ -429,30 +453,32 @@ The output should look something like this:
 <br>
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/7b64742f8ef1d05dbfe933fb07ae7282253ee3f0/images/Screenshot-countries.png)
 
-and should provide a complete list of the "countries" that are listed in column 8 (as well as a the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be perfomed simply by 
+and should provide a complete list of the "countries" that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by 
 1. finding the name/s of the country/countries in the list
 2. using grep.
 
-For example these commands will extract data from Venezuela and Uzbekistan:
+For example this command will extract data from Venezuela:
 
 `grep -P "\tVenezuela\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest`
+ 
+ The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the `sort`, `uniq`, `cut` and `grep` utilities to find out all the options and set out the "pipeline" that is best suited for your needs. 
 
-`grep -P "\tUzbekistan\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest`
 <br>
 
-Please notice the ">>" symbols, which are used in unix to append content to a file without over-writing it.
-
-The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the `sort`, `uniq`, `cut` and `grep` utilities to find out all the options and set out the "pipeline" that is best suited for your needs. 
-
+Alternatively you can use subset.pl to perform the same selection:
+ 
+ `perl subset.pl --infile HaploCoV_formattedMetadata --country Venezuela --outfile VenezuelaMetadata`
+ 
+subset.pl supports subsetting/selection by macroArea (--Marea), country (--country), and region (--region), which correspond to columns 7,8 and 9 in the HaploCoV metadata file.
 
 ### #2 Lineage/HG specific analyses: can I analyse a lineage of interest?
 
-Of course this is completely possible. All you need to know is the exact, full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by preprending a "\" symbol to "." in the regular expression to be passed to grep.
+Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\" symbol to "." in the regular expression to be passed to grep.
 For example if you are interested in "B.1.1.7" only you can subset you data like this:
 
 `grep -P "\tB\.1\.1\.7\t"  HaploCoVformattedData.txt > B117data`
 
-The "\t" symbol indicates a tabulation. It is needed since we make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metaata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
+The "\t" symbol indicates a tabulation. It is needed since we make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metadata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
 The method described in *#1 :  Basic statistics: how do I summarize geographic data?* can be adapted and reapplied here to double check that our output file only includes genomes assigned. We just need to extract a different column: (number 10) in this case:
 
 <br>cut -f 10 B117data |sort | uniq -c<br>
@@ -461,11 +487,15 @@ The output should be:
 <br>
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/df3e957a7e067643ffb3e5916e41840a18c03457/images/b117.png)
 <br>
+ 
+ Again subset.pl could be used as an alternative to execute the same task:
+ 
+ `perl subset.pl --infile HaploCoV_formattedMetadata --lineage B.1.1.7 --outfile B117data`
 
 ### #3 Time constrained analyses: 
 
-If you want to analyse only genomes/isolates collected between any interval of time, you can subset the an HaploCoV formatted file accordingly. 
-Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  corresponding  only to the sequences from the dates of interest. Since HaploCoV formatted files are sorted in descending order, by collection date ,all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
+If you want to analyse only genomes/isolates collected between any interval of time, you can subset an HaploCoV formatted file accordingly. 
+Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since HaploCoV formatted files are sorted by collection date, in descending order,all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
 Collection dates in HaploCoV formatted  metadata files are reported in the second column. We can find the first occurence of any date of interest by applying grep to that column.
 For example like this:
 <br><br>
@@ -474,9 +504,9 @@ For example like this:
 Similarly we can find the last occurence of the end date with:
 `cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1`
 <br><br>
-Here `cut` is used to extract the column of interest (the second in this case).  Grep with the -n option to reports every occurence of the date/dates of interest, and also the line number where the occurence was found (-n). For the start date we use `head -1` since we are only interested in the first occurence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurence.
+Here `cut` is used to extract the column of interest (the column second in this case).  Grep with the -n option reports every occurence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use `head -n 1` since we are only interested in the first occurence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurence.
 In the example results look something like:
-The output should be:
+<br>
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/57668f83c7320f94884b4d6ae016a6545115fbe4/images/subsetDates.png)
 
 Hence lines, in between line 3688449 and line 4553984 hold all the data from the interval of time we want to analyse.
@@ -485,6 +515,10 @@ To extract those lines we can simply combine the `head` and `tail` commands. We 
 `head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime`
 
 We use head to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use tail to grab only the 865536 lines that correspond with the offset between our start and end date.
+ 
+The procedure described above requires some confidence with the unix shell, if you prefer a more streamlined solution you can (again) use subset.pl. The equivalent command should be something like:
+ 
+ `perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --outfile myIntervalOfTime`
 
 
 ### Can I combine #1,#2 and 3?
@@ -495,9 +529,7 @@ Interval of time -> 2021-12-24 to 2022-02-24
 Lineage -> BA.1.1
 Country -> USA
 
-First you will need to extract the data for your time interval of intersest with:
-
-For example like this:
+First you will need to extract the data for your time interval of interest with:
 
 `cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1` # Find the first occurence of the end date
 
@@ -514,18 +546,22 @@ And finally by country
 `grep -P "USA" myIntervalOfTime_BA11data > myIntervalOfTime_BA11data_USA`
 <hr>
 
+Or again if you prefer a more compact alternative, you can use subset.pl :
+ 
+ `perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --lineage BA.1.1 --country USA --outfile myIntervalOfTime_BA11data_USA`
+ 
 ## Executing custom analyses: custom alleles set
 
 Although HaploCoV was originally devised to use a predefined set of high frequency alleles (derived by computeAF.pl) to search for novel clusters of viral genomes, in principle any custom files with a list of allele variants of interest can be used for this task. This approach allows the identification of clusters/novel potential designations defined by any combination of allelic variants of interest.  
 
-To execute custom analysis and identify potential new lineages/viral clusters defined by any arbirtrary set of allelic variants, all you need to do is to provide a "custom" posFile with the (--posFile) option to augmentCluster.pl . This file has a very simple format: allelic variants are listed one per line. This is a minimal (viable) example:
+To execute custom analysis and identify potential new lineages/viral clusters defined by any arbitrary set of allelic variants, all you need to do is to provide a "custom" posFile with the (--posFile) option to augmentCluster.pl . This file has a very simple format: allelic variants are listed one per line. This is a minimal (viable) example:
 <br>
 <br>
 ![alt text](https://github.com/matteo14c/HaploCoV/blob/1bcc5eb428e92a607e4d6d9e220d94b6dd4d929e/images/mylist.png)
 <br>
-Allelic variants of interest do not need to be in any specific order. All you need to do is to comply the format used by HaploCoV. Allele variant should be indicated according to the following rules:
+Allelic variants of interest do not need to be in any specific order. All you need to do is to comply with the format used by HaploCoV. Allele variant should be indicated according to the following rules:
 
-`<genomic-position>_<reference-allele>_<alternative-allele>`
+`<genomic-position>_<reference-allele>|<alternative-allele>`
 
 and always with respect to the reference Refseq assembly of the SARS-CoV-2 genome (refseq ID NC_045512 or see above: Running HaploCoV-> reference genome). 
 For example a C to T nucleotide substitution in position 241, should be indicated as:
@@ -534,18 +570,18 @@ For example a C to T nucleotide substitution in position 241, should be indicate
 
 ### Precomputed sets of allelic variants
 
-The main repository of HaploCoV incorporates precomputed set of allele variants which could be used to identify novel potential groups of SARS-CoV-2 genomic sequences with different features.
+The main repository of HaploCoV incorporates precomputed sets of allelicc variants which can be used to identify novel potential groups of SARS-CoV-2 genomic sequences with different features.
 
-Precomputed sets of alleles available from this repository can broadly be categorized into 3 main classes:
+These precomputed sets of alleles can broadly be categorized into 3 main classes:
 
 1. *Highly variable genomes.* These are allelic variants found in at least 25 "highly divergent" genomic sequences, at not-overlapping 
 intervals of time of 60 days.  Highly divergent/variable genomes are defined as those carrying at least 6 or more allele variants 
-that are not characteristic to their assigned lineage. Intervals are non-overlapping windows of 60 days, starting from Mon 12-30-2019.  Dates are expressed in "HaploCoV format", i.e offsets from the start date. For example the file: 900_960_list.txt contains allelic variants identified in at least 25 distinct highly variable genomes between day 900 and day 960 
+that are not characteristic to their assigned lineage. Intervals are non-overlapping windows of 60 days, starting from Mon 12-30-2019.  Dates are expressed in "HaploCoV format", i.e offsets from the start date 2019-12-30. For example the file: 900_960_list.txt contains allelic variants identified in at least 25 distinct highly variable genomes between day 900 and day 960 
 These files are stored under the folder: HighVar.<br> 
-2. *Country specific allele variants.* Allele variants reaching a high frequeny of 1% or higher, for at least 15 days  in a country at any time point from Mon 12-30-2019   These files are stored under the folder: country. Each file is named  after the corresponding country. Thailand_list.txt reports the list of high frequency allelic variants observed in Thailand<br> 
+2. *Country specific allele variants.* Allele variants reaching a frequency of 1% or higher, for at least 15 days  in a country at any time point from Mon 2019-12-30.   These files are stored under the folder: country. Each file is named  after the corresponding country. Thailand_list.txt reports the list of high frequency allelic variants observed in Thailand<br> 
 3. *Increased frequency alleles.* Allelic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020.  These files are stored under the folder: HighFreq. Each file is named according to the corresponding month: April2021_list.txt reports allele that increased in prevalence in April 2021 <br>
 
-All our collection of alleles are updated on a weekly basis. Tipically every Wednesday. All files are downloaded automatically at every new installation of HaploCoV. Specific files of interest can be downloaded when/if needed. For example, under unix systems by using the `wget` utility. Some examples are reported below:
+All our collections of allelic variants are updated on a weekly basis. Tipically every Wednesday. All files are downloaded automatically at every new installation of HaploCoV. Specific files of interest can be downloaded when/if needed. For example, under unix systems by using the `wget` utility. Some examples are reported below:
 
 1. HyperVariable:         `wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/alleleVariantsSet/HighVar/900_960_list.txt` 
 3. Country:      `wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country/alleleVariantsSet/country/Thailand_list.txt` 
@@ -553,12 +589,12 @@ All our collection of alleles are updated on a weekly basis. Tipically every Wed
 
 ## Possible applications. #1 identifying \<hyper-variable> clusters of genome sequences
 
-Suppose that want to identify groups/cluster of genome sequences that carry an excess of allelic variants with respect to their assigned lineage. Recent experience suggest that VOC variants of SARS-CoV-2 are characterised by a significantly increased number of allelic variants compared with their ancestors. This is particularly true for Omicron, but it does also apply to other VOCs. <br>
+Suppose that we want to identify groups/cluster of genome sequences that carry an excess of allelic variants with respect to their assigned lineage. Recent experience suggests that VOC variants of SARS-CoV-2 are characterised by a significantly increased number of allelic variants compared with their ancestors. This is particularly true for Omicron, but it does also apply to other VOCs. <br>
 As recently summarized by Markov et al in their review, antigenic drift might represent a major driving force for the evolution of SARS-CoV-2, and hence the next new VOC-VOI-VUM like variants might be characterised/defined by the accumulation of a large number of novel non-synonymous alleles.
 >**Markov PV, Katzourakis A, Stilianakis NI. Antigenic evolution will lead to new SARS-CoV-2 variants with unpredictable severity. Nat Rev Microbiol. 2022;20(5):251-252. doi:10.1038/s41579-022-00722-z**
 
 To identify "highly-variable" clusters of viral genomes in HaploCoV you can use augmentClusters.pl together with any of the sets of allelic variants available under the alleleVariantsSets/HighVar folder. Please notice however that each file in HighVar corresponds with a pre-defined interval of time. Hence is advised that only genomes isolated within a time-frame compatible with that indicated by the file should be included in your analyses. <br>
-For example if you want to analyse/identify highly variable clusters of genome sequences between genomes collected between days 840 and 900 (2022-04-30 and 2022-06-30) you will need to:
+For example if you want to analyse/identify highly variable clusters of genome sequences between genomes collected between days 840 and 900 (2022-05-01 and 2022-06-30) you will need to:
 1. subset your input file in HaploCoV format accordingly
 2. use augmentClusters.pl + 840_900_list.txt
 3. apply the "standard" HaploCoV workflow afterwards
@@ -573,6 +609,10 @@ and then
 
 `head -n XXXXXX HaploCoVformattedData.txt | tail -n YYYYYY > myIntervalOfTime` #Extract the data, see above
 where XXXXXX and YYYYYY are actually the line numbers of the slice of the file you need. Please see above for how to derive these numbers from the output of `cut` + `grep` + `head`/`tail`
+ 
+or alternatively, with subset.pl:
+ 
+ `perl subset.pl -infile HaploCoVformattedData.txt --startD 2022-05-01  --endD 2022-06-30 --outfile myIntervalOfTime`
 
 Once you have a file with only the data on interest -"myIntervalOfTime" in this case- you can simply run augmentClusters.pl. If you want to identify groups of highly variable sequences, you can set the --size and --dist parameters accordingly (see above for more details).<br> 
 In this example I will be searching for groups supported by at least 5 distinct genomic (--size 5) sequences, and carrying at least 6 additional allelic variants with respect to the assigned lineage/designation (--dist 6). However --size and --dist can be increased or decreased according to your needs.
@@ -585,15 +625,21 @@ at this point you can use LinToFeats.pl and report.pl to identify novel designat
 
 `perl report.pl --infile highlyVariableGroups_feats.tsv --outfile highlyVariableGroups_prioritization.txt `
 
-The file highlyVariableGroups_prioritization.txt will report the novel designations with an additional increase in their HaploCoV score. If-any, these novel designations should be probably added to the reference nomenclature.
+The file highlyVariableGroups_prioritization.txt will report the novel designations with a significant increase in their HaploCoV score. If-any, these novel designations should be probably added to the reference nomenclature.
 
 ## Possible applications. #2 Analysing data from a specific country
 
 If you want to analyse data from only a specific country, this can be easily done by using allele variants files found under the alleleVariants/country folder. Again you will need to subset your HaploCoV formatted data accordingly, and retain only data from the country of interest. 
 This should be relatively easy. If for example we want to analyse only data from Thailand we can use the following commands:
 
-`grep -P "\tThailand\t" HaploCoVformattedData.txt > ThaiData` #extract data from Thailand
+`grep -P "\tThailand\t" HaploCoVformattedData.txt > ThaiData` #extract data from Thailand 
+ 
+ or
+ 
+ `perl subset.pl --infile HaploCoVformattedData.txt --country Thailand --outfile ThaiData`
 
+And then
+ 
 `perl augmentClusters.pl --metafile ThaiData --posFile Thailand_list.txt --outfile ThaiClusters.txt`
 
 At this point we can resume the "standard" workflow of HaploCoV, and apply LinToFeats.pl and report.pl :
@@ -605,7 +651,17 @@ At this point we can resume the "standard" workflow of HaploCoV, and apply LinTo
 
 ## Possible applications. #3 Can I combine #1 and #2? 
 
-Yes of course! Just select for a country of interest after you subset by date (i.e see the paragraph Can I combine #1,#2 and 3? above)
+Yes of course! You can apply all of the above to any type of selection. For example:
+ 
+ 1. use highly variable alleles, but limited to data from a specific country
+ 2. use highly variable alleles, but limited to data from a specific lineage
+ 3. use country-specific alleles on a specific lineage and only in any interval of time of your interest
+ 
+By using subset.pl or/and the commands outlined above it should be easy to subset the data and then apply augmentClusters.pl in any way that suites your needs.
+And obviously in case of doubts/questions and or need for additional files that are not included in HaploCoV you can always drop me a mail or alternatively open an issue here on Github
+ 
+# Regards, from the HaploCoV development "team"
+ 
  
 
 
