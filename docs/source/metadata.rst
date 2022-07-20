@@ -14,7 +14,7 @@ An example of the data format used by HaploCoV (HaploCoV format) is reported in 
    :align: center
 
 The file is delineated by tabulations. Allele variants are reported as a comma separated list. 
-The format is as follows<br>: 
+The format is as follows: 
 *genomicposition_ref|alt* i.e. *1_A|T* for example indicates a A to T substitution in position 1 of the reference genome<br>
 
 Dates and time in HaploCoV
