@@ -9,9 +9,9 @@ HaploCoV format for metadata
 
 An example of the data format used by HaploCoV (HaploCoV format) is reported in the table below:
 
-column 1 |column 2 |column 3 |column 4 |column 5 |column 6 |column 7 |column 8 |column 9 |column 10 |column 11 |
----------|---------|---------|---------|---------|---------|---------|---------|---------|----------|----------|
-genome ID|collection date|offset days from collection|deposition date| offset days from deposition|continent|macro-geographic region|country|region|lineage|list of allele variants|
+.. figure:: _static/table2.png
+   :scale: 70%
+   :align: center
 
 The file is delineated by tabulations. Allele variants are reported as a comma separated list. 
 The format is as follows<br>: 
@@ -31,7 +31,7 @@ If you need to know the date of isolation (and offset with respect to day 0) of 
 
 ::
 
-tail -n 1 linearDataSorted.txt | cut -f 2,3
+ tail -n 1 linearDataSorted.txt | cut -f 2,3
 
 For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
 
@@ -62,7 +62,7 @@ addToTable.pl accepts the following options:
 
 ::
 
-perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt 
+ perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt 
 
 The final output will consist in a metadata table in HaploCoV format.  This table is required for all the subsequent analyses.
 
@@ -71,7 +71,7 @@ Please be aware that typically a single thread/process can align genomes and der
 
 **NextStrain data: NextStrainToHaploCoV.pl**
 
-If you have obtained your metadata files from Nexstrain instead of GISAID you will not need to process the data by addToTable.pl. Metadata tables from Nexstrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. Download is available from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>_`. 
+If you have obtained your metadata files from Nexstrain instead of GISAID you will not need to process the data by addToTable.pl. Metadata tables from Nexstrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. Download is available from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. 
 Please be aware that however Nexstrain can re-distribute only publicly available data, which at the moment account for about 1/3 of all the data in GISAID.
 Data from Nexstrain still need to be converted in *HaploCoV* format. For this purpose you can use the utility *NextStrainToHaploCoV.pl*
 Contrary to addToTable.pl, NextStrainToHaploCoV.pl does not feature incremental addition of data: this was not implemented since the full Nexstrain table can be converted in *HaploCoV* format in 3 to 5 minutes. 
@@ -87,6 +87,6 @@ A typical command line for NextStrainToHaploCoV.pl is something like:
 
 ::
 
-NextStrainToHaploCoV.pl --infile metadata.tsv --outfile linearDataSorted.txt
+ NextStrainToHaploCoV.pl --infile metadata.tsv --outfile linearDataSorted.txt
 
 The output file will be in *HaploCoV* format and can be used by computeAF.pl to compute allele frequencies 
