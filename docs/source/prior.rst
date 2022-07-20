@@ -11,6 +11,7 @@ The final output consist in a simple text file, in tsv format where high scoring
 **Options**
 
 *report.pl* accepts the following input parameters:
+
 * *--infile* name of the input file. This is the output file of LinToFeats.pl
 * *--suffix* suffix used to identify novel lineages/subvariants by augmentClusters.pl (see --prefix)
 * *--scaling* defaults to "scalingFactors.csv", this configuration file in included in the github repo
@@ -22,6 +23,6 @@ A typical run of report.pl should look something like:
 
 ::
 
-perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt
+ perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt
 
 The main output file *lvar_prioritization.txt will* a list of the SARS-CoV-2 variants that show a significant increase in their genomic score with respect to a parent variant. These variants are more likely to pose an increased risk from an epidemiological perspective.
