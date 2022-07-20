@@ -10,6 +10,7 @@ If you are not familiar with the unix shell, you can take advantage of the *subs
 
 **options**
 Subset.pl allows the application/definition of the following filters:
+
 * *--Marea:* name of a macro geographic area as defined in “areaFile”;
 * *--country:*  name of a country;
 * *--region:* name of a region;
@@ -67,7 +68,8 @@ The output should look something like this:
    :scale: 80%
    :align: center
 
-and should provide a complete list of the "countries" that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by 
+and should provide a complete list of the "countries" that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by:
+
 1. finding the name/s of the country/countries in the list
 2. using grep.
 
@@ -88,16 +90,17 @@ The same approach can be applied likewise to any geographic level metadata/colum
  
 subset.pl supports subsetting/selection by macroArea (--Marea), country (--country), and region (--region), which correspond to columns 7,8 and 9 in the HaploCoV metadata file.
 
-**#2 Lineage/HG specific analyses: can I analyse a lineage of interest?**
+#2 Lineage/HG specific analyses: can I analyse a lineage of interest?
+=====================================================================
 
-Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\" symbol to "." in the regular expression to be passed to grep.
+Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to grep.
 For example if you are interested in "B.1.1.7" only you can subset you data like this:
 
 ::
 
  grep -P "\tB\.1\.1\.7\t"  HaploCoVformattedData.txt > B117data
 
-The "\t" symbol indicates a tabulation. It is used here since we want to make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metadata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
+The "\\t" symbol indicates a tabulation. It is used here since we want to make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metadata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
 The method described in **#1 :  Basic statistics: how do I summarize geographic data?** can be adapted and reapplied here to double check that our output file only includes genomes assigned to the lineage of interest. We just need to extract a different column: (number 10) in this case:
 
 ::
