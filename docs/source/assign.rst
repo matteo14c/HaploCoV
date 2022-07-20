@@ -25,15 +25,14 @@ To assign genomes to a lineages/group/classes you need to run
 
 ::
 
-assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned
+ assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned
  
 The output consists of a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *No* indicates no alternative assignments were idenfied, and hence that the genome was unambiguously assigned to a single group/lineage.
 
-column 1 |column 2 |column 3 |column 4 |column 5 |column 6 |column 7 |column 8 |column 9 |column 10 |column 11 |
----------|---------|---------|---------|---------|---------|---------|---------|---------|----------|----------|
-genome ID|collection date|delta days from collection|deposition date| delta days from deposition|continent|country|region|lineage|list of allele variants|alternative lineages|
-genome_1|2022-06-01|788|2022-06-11|798|Europe|Italy|Lombardy|BA.2|v1,v2,vn|no|
-genome_1|2022-05-01|758|2022-05-11|768|Europe|Italy|Lombardy|BA.2.9|v1,v2,vn|BA.2.9.1|
+.. figure:: _static/table3.png
+   :scale: 60%
+   :align: center
+
 
 **Execution times, and multithreading** 
 
@@ -52,7 +51,7 @@ To execute it you can use:
 
 ::
 
-p_assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --nproc 8 --out  linearDataSorted.txt_reAssigned
+ p_assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --nproc 8 --out  linearDataSorted.txt_reAssigned
 
 Input files are the same as those provided to *assign.pl*. Output format is in the same format described above.
 
