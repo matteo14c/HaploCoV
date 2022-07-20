@@ -6,7 +6,9 @@ The tool partitions genomes according to geographic metadata, and computes allel
 All the final outputs as well as all intermediate files, are saved in an output folder that can be specified by the user at run time with the option --outdir (see below). User also have the option to select the minimum frequency (as in allele frequency) and "persistency" (number of weeks above the AF threshold) thresholds for the identification of high frequency variants.
 
 **Options**
+
 The script accepts the following parameters:
+
 * *--file* name of the metadata file (please see above) 
 * *--maxT* upper bound in days for the time interval to consider in the analysis (days are counted starting from 12-30-2019). A value of 1 corresponds to 12-31-2019. A value of 365 to 12-30-2020. And so on. 
 * *--minT* lower bound for the time interval. days are counted using the same logic described form maxT
@@ -20,7 +22,7 @@ A typical run of computeAF.pl should look something like:
 
 ::
 
-perl computeAF.pl --file linearDataSorted.txt #(where linearDataSorted.txt is is the file with metadata in HaploCoV format)
+ perl computeAF.pl --file linearDataSorted.txt #(where linearDataSorted.txt is is the file with metadata in HaploCoV format)
 
 
 The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
@@ -38,17 +40,17 @@ For example:
 
 ::
 
-wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt
+ wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt
 
 
 2. area_list.txt 
 
 ::
 
-wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt
+ wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt
 
 3. countries_list.txt 
 
 ::
 
-wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt
+ wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt
