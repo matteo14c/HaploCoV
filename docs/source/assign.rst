@@ -36,12 +36,13 @@ The output consists of a table in HaploCoV format, similarly to the input. The g
 
 **Execution times, and multithreading** 
 
-On a single core/thread *assign.pl* can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl *if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required to assign 11M genomes.
+On a single core/thread *assign.pl* can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required to assign 11M genomes.
 
 **p_assign.pl**
 
 Multi-threading, the p_assign.pl utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
 The following input parameters are accepted:
+
 * *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
 * *--metafile*: a metdata file in HaploCov format
 * *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**)
