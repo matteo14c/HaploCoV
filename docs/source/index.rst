@@ -76,6 +76,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    data.rst
    configuration.rst
    perlMummer.rst
+   etimes.rst
 
 .. toctree::
    :maxdepth: 2
