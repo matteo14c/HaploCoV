@@ -35,8 +35,11 @@ If you need to know the date of isolation (and offset with respect to day 0) of 
 
 For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
 
-#1 GISAID data: addToTable.pl
-=============================
+1 Importing data
+================
+
+GISAID data: addToTable.pl
+==========================
 
 addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. A helper script, *align.pl* is used to align sequences to the reference genome assembly of SARS-CoV-2 and derive allele variants.
 
@@ -69,7 +72,8 @@ The final output will consist in a metadata table in HaploCoV format.  This tabl
 **Execution times** 
 Please be aware that typically a single thread/process can align genomes and derive allele variants of about 20k SARS-CoV-2 genomes per hour (160k genomes on 8 cores, or 320k on 16 cores). This would mean that processing the complete collection of the more than 11M genomes included in the GISAID database on June 10th 2022  from scratch will take about 20 days if only one core/process is used. Computation scales linearly, hence 3 days would be needed if 8 processes are used, and 1.5 days if 16 are used. Importantly, since data are added incrementally, this operation needs to be performed only once. 
 
-**NextStrain data: NextStrainToHaploCoV.pl**
+NextStrain data: NextStrainToHaploCoV.pl
+========================================
 
 If you have obtained your metadata files from Nexstrain instead of GISAID you will not need to process the data by addToTable.pl. Metadata tables from Nexstrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. Download is available from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. 
 Please be aware that however Nexstrain can re-distribute only publicly available data, which at the moment account for about 1/3 of all the data in GISAID.
