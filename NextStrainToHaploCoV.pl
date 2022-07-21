@@ -111,6 +111,7 @@ sub fix_strain
 sub fix_date
 {
 	my $date=$_[0];
+	$date = "NA" if $date eq "XXXX-XX-XX";
 	my @vl=(split(/\-/,$date));
 	if ($#vl!=2)
 	{
@@ -153,12 +154,14 @@ sub build_listVar
 		#print "$v $ref $pos $alt\n";
 		#die();
 		$ovar.="$pos\_$ref|$alt,";
+		#print "$v $ovar\n";
 	}
 	if ($ins ne "")
 	{
 		my @ivars=(split(/\,/,$ins));
 		foreach my $i (@ivars)
 		{
+			next unless $i=~/\:/;
 			my ($pos,$alt)=(split(/\:/,$i));
 			my $ref=$alt;
 			$ref=~s/[ACTGN]/\./g;
@@ -170,16 +173,18 @@ sub build_listVar
 		my @dvars=(split(/\,/,$del));
 		foreach my $d (@dvars)
                 {
+			next unless $d=~/\-/;
                         my ($s,$e)=(split(/-/,$d));
 			my $length=$e-$s+1;
 			my $ref=substr($seq,$s-1,$length);
                         my $alt=$ref;
                         $alt=~s/[ACTGN]/\./g;
-                        $ovar.="$s\_$ref|$alt";
+			$ovar.="$s\_$ref|$alt";
                 }
 
 	}
 	chop($ovar);
+	#print "$ovar\n";
 	return($ovar);
 }
 
