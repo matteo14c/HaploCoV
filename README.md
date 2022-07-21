@@ -9,6 +9,8 @@ This repository contains a collection of simple Perl scripts that can be used to
 * derive **potentially epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** 
 * and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice.
 
+Please be aware that an interactive version of this manual with the lastest documentation is also available at [readthedocs](https://haplocov.readthedocs.io/en/latest/)
+
 ## Important! Prerequisites
 ### To run HaploCoV you **must meet all** of the following prerequisites:
 
@@ -68,6 +70,23 @@ HaploCoV is written in the Perl programming language. Hence you will need Perl t
 Please follow this [link](https://sourceforge.net/projects/mummer/files/ "Mummer Download") for detailed instruction on how to install and run Mummer. A detailed manual can also be found in CorGAT main documentation at [readthedocs](https://corgat.readthedocs.io/en/latest/prerequisites.html "Install Mummer").
 
 ### #4 Computational resources
+
+While the HaploCoV workflow can be reasonably executed on a modern, state of the art, laptop please be aware that some of the input files might be extremely large in size. For example, the complete fasta file with all SARS-CoV-2 genome sequences avaiable from the GISAID database has a size in the excess of 300 Gb. While complete metadata files from GISAID are over 8 Gb in size.
+Moreover, some tasks/processes can potentially take up to a few days (see for example #6 Assign genomes to new groups) on a single processor. In the light of the above considerations we would kindly invite users to make sure that they have access to the required computational resources before executing the HaploCoV workflow. The table below briefly summarizes the requirements in terms of time, RAM memory and disk-space required by eacht tool in HaploCoV. 
+
+Tool | Input files | RAM memory (peak) | Time | Output |
+-----|-------------|-------------------|------|--------|
+addToTable.pl|sequences.fasta -> 332 G; metadata.tsv -> 8.0G| 6.0-8.0G| ~20k SARS-CoV-2 genomes per hour on a single CPU|6.0-8.0G|
+NextStrainToHaploCoV.pl| metadata.tsv->6.0-8.0G| <1G| ~10 min|3.0-4.0G|
+computeAF.pl|HaploCoV-formatted meta-data: 3.0-8.0G|4.0-6.0G| ~20 min| ~2.0G|
+augmentClusters.pl|HaploCoV-formatted meta-data: 3.0-8.0G| 6.0-8.0G|~20 min|novel lineages: few Kbs|
+assign.pl / p_assign.pl|HaploCoV-formatted meta-data: 3.0-8.0G|<1.0G|4M genomes per hour|HaploCoV-formatted meta-data: 3.0-8.0G|
+LinToFeats.pl|novel lineages: few Kbs|<1.0G|<5min|Lineage features, a few Kbs|
+report.pl|Lineage features, a few Kbs|<1.0G|<2min|prioritized lineages: a few Kbs|
+subset.pl|HaploCoV-formatted meta-data: 3.0-8.0G|<1.0G|5-10 min|HaploCoV-formatted meta-data: <3.0-8.0G|
+
+If you already have all your metadata in HaploCoV format, executing the full workflow should require less than 2hrs. However execution times might change depending on your computational environment. 
+
 
 <hr>
 
@@ -131,6 +150,8 @@ genome ID|collection date|offset days from collection|deposition date| offset da
 The file is delineated by tabulations. Allele variants are reported as a comma separated list. 
 The format is as follows<br>: 
 *genomicposition_ref|alt* i.e. *1_A|T* for example indicates a A to T substitution in position 1 of the reference genome<br>
+
+A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: [HaploCoVFormatted.txt]([http://159.149.160.88/HaploCoVFormatted.txt.gz) in the form o a  with `gzip` compressed file. When de-compressed the file should be around 2.9G in size.  
 
 ## Dates and time in HaploCoV
 
