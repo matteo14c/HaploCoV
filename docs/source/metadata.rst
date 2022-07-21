@@ -17,6 +17,8 @@ The file is delineated by tabulations. Allele variants are reported as a comma s
 The format is as follows: 
 *genomicposition_ref|alt* i.e. *1_A|T* for example indicates a A to T substitution in position 1 of the reference genome
 
+A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: `HaploCoVFormatted.txt <http://159.149.160.88/HaploCoVFormatted.txt.gz>`_ in the form o a  with `gzip` compressed file. When de-compressed the file should be around 2.9G in size. 
+
 Dates and time in HaploCoV
 ==========================
 
