@@ -6,7 +6,7 @@ use strict;
 my %arguments=
 (
 "--file"=>"na",         # name of the input file
-"--maxT"=>900,      	# max time
+"--maxT"=>925,      	# max time
 "--minT"=>-10, 		# min time
 "--interval"=>10,
 "--minCoF"=>1,
@@ -53,7 +53,7 @@ sub buildlistPos
 	my $maxL=0;
 	while(<IN>)
 	{
-		my($d,$lvar)=(split(/\t/))[2,-1];
+		my($d,$lvar)=(split(/\t/))[2,10];
 		if ($d ne "NA" && $d>$maxL)
 		{
 			$maxL=$d
@@ -107,7 +107,7 @@ sub process_data
 	while(<IN>)
 	{
 		chomp();
-		my($d,$area,$country,$lvar)=(split(/\t/))[2,6,7,-1];
+		my($d,$area,$country,$lvar)=(split(/\t/))[2,6,7,10];
                 next if $d eq "NA";
 		next if $d<$min_time;
 		while ($d>=$Tend)

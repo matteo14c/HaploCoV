@@ -25,6 +25,8 @@ my $ofile=$arguments{"--outfile"};
 my $N=$arguments{"--nproc"};
 my $dayFrom=$arguments{"--dayFrom"};
 
+
+
 check_exists_command('mkdir') or die "$0 requires mkdir to create a temporary directory\n";
 check_exists_command('sort') or die  "$0 requires sort to order the output file\n";
 check_exists_command('split') or die "$0 requires split to split the input fasta file\n";
@@ -275,6 +277,10 @@ sub parallel_align
 	my $ofile=$_[1];
 	my $numP=$_[2];
 	my @infiles=@{split_file($infile,$numP)};
+	unless (-d "Tgenomes")
+	{
+		system ("mkdir Tgenomes")==0||die();
+	}
 	my @childs=();
 	my @outfiles=();
 	for (my $i=0;$i<$numP;$i++)

@@ -23,24 +23,32 @@ check_input_arg_valid();
 
 
 
-my $infile=$arguments{"infile"};
-my $area=$arguments{"area"};
-my $country=$arguments{"country"};
-my $region=$arguments{"region"};
-my $startD=$arguments{"startD"};
-my $endD=$arguments{"endD"};
+my $infile=$arguments{"--infile"};
+my $area=$arguments{"--area"};
+my $country=$arguments{"--country"};
+my $region=$arguments{"--region"};
+my $startD=$arguments{"--startD"};
+my $endD=$arguments{"--endD"};
 my $oS=$startD;
 my $oE=$endD;
-$startD=fix_date($startD);
-$endD=fix_date($startD);
-$startD=diff_d($startD);
-$endD=diff_d($endD);
-my $lineage=$arguments{"lineage"};
-my $outfile=$arguments{"outfile"};
+
+if ($startD ne "na")
+{
+	$startD=fix_date($startD);
+	$startD=diff_d($startD);
+}
+if ($endD ne "na")
+{
+	$endD=fix_date($endD);
+	$endD=diff_d($endD);
+}
+my $lineage=$arguments{"--lineage"};
+my $outfile=$arguments{"--outfile"};
+
 
 die("Could not convert $startD\n") if $startD eq "NA";
 die("Could not convert $endD\n") if $endD eq "NA";
-die ("$oS>$oE please provide a valid start and end date\n") if ($startD > $endD); 
+die ("$oS>$oE please provide a valid start and end date\n") if ($startD > $endD && $startD ne "na" && $endD ne "na"); 
 
 
 subset($infile,$area,$country,$region,$startD,$endD,$lineage,$outfile);
@@ -57,15 +65,17 @@ sub subset
 	my $lineage=$_[6];
 	my $outfile=$_[7];
 	open(IN,$infile);
-	open(OUT,$outfile);
+	open(OUT,">$outfile");
 	while(<IN>)
 	{
 		my ($id,$date,$offset,$depo,$odepo,$continent,$farea,$fcountry,$fregion,$flineage,$mut)=(split(/\t/,$_));
+		#print if $lineage eq $flineage;
 		next if $area ne "na" && $area ne $farea;
 		next if $country ne "na" && $country ne $fcountry;
 		next if $lineage ne "na" && $lineage ne $flineage;
-		next if $fregion ne "na" && $fregion ne $region;
-		next if ($offset>$endD || $offset<$startD) && $endD ne "na" && $startD ne "na";
+		next if $region ne "na" && $fregion ne $region;
+		next if $offset>$endD  && $endD ne "na"; 
+		next if $offset<$startD && $startD ne "na";
 		print OUT;
 	}
 }

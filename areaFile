@@ -3,7 +3,7 @@ USA	NAnorth
 Germany	Euc
 Denmark	Euc
 Switzerland	Euc
-Japan	Ase
+Japan	AsiaEast
 Canada	NAnorth
 Sweden	EuNO
 France	Euc
@@ -36,7 +36,7 @@ Portugal	EuSO
 Luxembourg	Euc
 SouthAfrica	AfrSouth
 Iceland	EuNO
-SouthKorea	Ase
+SouthKorea	AsiaEast
 Turkey	EuSO
 Finland	EuNO
 Russia	EuEa
@@ -50,8 +50,8 @@ Qatar	AsiaME
 Chile	SAM
 UnitedArabEmirates	AsiaME
 Bulgaria	EuEa
-HongKong	Ase
-China	Ase
+HongKong	AsiaEast
+China	AsiaEast
 Bangladesh	AsiaSO
 Estonia	EuEa
 Croatia	EuEa
@@ -104,7 +104,7 @@ Iraq	AsiaME
 Botswana	AfrSouth
 Angola	AfrCent
 Philippines	AsiaSE
-Taiwan	Ase
+Taiwan	AsiaEast
 Pakistan	AsiaSO
 TurksandCaicosIslands	NAcent
 Maldives	AsiaSO
