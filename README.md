@@ -231,7 +231,8 @@ The script accepts the following parameters:
 ### Execution
 A typical run of computeAF.pl should look something like:
 <br><br>
-`perl computeAF.pl --file linearDataSorted.txt `          (where linearDataSorted.txt is is the file with metadata in HaploCoV format)
+`perl computeAF.pl --file linearDataSorted.txt `          
+(where linearDataSorted.txt is is the file with metadata in HaploCoV format)
 <br><br>
 The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
 * allele frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt)
