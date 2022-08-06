@@ -472,5 +472,5 @@ sub print_help
         print "Mandatory parameters are --seq, --metadata  and --outfile\n";
         print "the file needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";
-        print "1# input is metadata.tsv:\nperl addToTable.pl --metadata metadata.tsv --sequences sequences.fasta --outfile HaploCoV_formattedMetadata\n\n";
+        print "1# input is metadata.tsv:\nperl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --outfile HaploCoV_formattedMetadata\n\n";
 }
