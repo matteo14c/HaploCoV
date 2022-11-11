@@ -1,5 +1,8 @@
 # HaploCoV: a set of utilities and methods to identify novel variants of SARS-CoV-2
 
+## Important
+Please be aware that this readme will cover only the basic set-up and execution of HaploCoV. The full manual is available at [readthedocs](https://haplocov.readthedocs.io/en/latest/) (interactive verions) or MISSINGLINK (pdf).
+
 ## What this tool can do for you
 
 HaploCoV is a collection Perl scripts that can be used to:
@@ -7,10 +10,7 @@ HaploCoV is a collection Perl scripts that can be used to:
 * pinpoint **regional variation** and flag genomic variant with **"high frequency"** locally or globally, 
 * **extend an existing classification system** based on high frequency regional genomic variants and/or any list equivalent list provided by the user , 
 * derive **potentially epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** 
-* and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice.
-
-## Important
-Please be aware that this readme will cover only the basic set-up and execution of HaploCoV. The full manual is available at [readthedocs](https://haplocov.readthedocs.io/en/latest/) (interactive verions) or MISSINGLINK (pdf). 
+* and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice. 
 
 ## HaploCoV
 
