@@ -2,130 +2,30 @@
 
 ## What this tool can do for you
 
-This repository contains a collection of simple Perl scripts that can be used to:
-* **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify allelic variants**, 
-* identify **regional alleles** reaching a **"high frequency"** locally or globally, 
-* **extend an existing classification** based on high frequency regional alleles and/or any list of alleles provided by the user , 
+HaploCoV is a collection Perl scripts that can be used to:
+* **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify genomic variants**, 
+* pinpoint **regional variation** and flag genomic variant with **"high frequency"** locally or globally, 
+* **extend an existing classification system** based on high frequency regional genomic variants and/or any list equivalent list provided by the user , 
 * derive **potentially epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** 
 * and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice.
 
-Please be aware that an interactive version of this manual with the lastest documentation is also available at [readthedocs](https://haplocov.readthedocs.io/en/latest/)
+## Important
+Please be aware that this readme will cover only the basic set-up and execution of HaploCoV. The full manual is available at [readthedocs](https://haplocov.readthedocs.io/en/latest/) (interactive verions) or MISSINGLINK (pdf). 
 
-## Important! Prerequisites
-### To run HaploCoV you **must meet all** of the following prerequisites:
+## HaploCoV
 
-### #1 Have access to SARS-CoV-2 genome sequences and associated metadata
-Right now the GISAID database [link](https://www.gisaid.org/) represents the most complete and up to date point of access to obtain SARS-CoV-2 data. Authorized users can download the complete collection of SARS-CoV-2 genome assemblies and associated metadata by following the procedure illustrated in the figure below.<br>
-![alt text](https://github.com/matteo14c/HaploCoV/blob/dcda4c6f1518e31882ddccacb5d7a8a72aa6998c/images/fig1.png)
-
-After de-compresson, 2 files should be obtained: 
-1. metadata.tsv a metadata table in .tsv format and; 
-2. sequences.fasta a multi-fasta file with SARS-CoV-2 genome sequences.
-These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/obtains all the data used for subsequent analyses.
-
-### Required metadata
-Please be aware that some metadata are **mandatory** to execute HaploCoV and that columns names in your metadata file **MUST** abide to the structure/names described below. Mandatory metadata:
-* a valid unique identifier for every isolate, column name: *"Virus name"*;
-* a collection date, column name *"Collection date"*;
-* a submission date, column *"Submission date"*;
-* location: the geographic place from where the isolated was collected; Column name: *"Location"*;
-* a valid lineage/group/class associated with the genome. Column name: *"Pango lineage"* 
-
-Dates must be provided in YYYY-MM-DD format. Locations in the following format: Continent/Country/Region.<br> Missing information must be indicated by NA (not available).<br>An example of a valid metadata table is reported below
-
-Virus name | Collection date | Submission date | Location | Pango Lineage |
------------|-----------------|-----------------|----------|---------------|
-hcov/somename_1| 2022-05-26| 2022-06-01 | Europe/Italy/Lombardy | BA.2.9
-hcov/somename_2| NA | 2022-06-01 | Europe/Italy/Apulia | BA.2.9.1|
-
-### Important: providing "external" data  
-
-While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however  metadata must always comply with the prerequisites indicated above and valid metadata tables must include 5 columns with the following names:
-* "Virus name";
-* "Collection date";
-* "Submission date";
-* "Location";
-* "Pango Lineage";
-
-### Important: using data from Nextstrain
-
-Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and metadata from Nexstrain, please refer to here: [link](https://nextstrain.org/sars-cov-2/) for more information.
-Metadata in "Nexstrain format" can be obtained from here: [link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need to execute *addToTable.pl* on this file**. The file however needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
-
-### #2 Have all of the configuration files included in this repository
-
-HaploCoV requires a set of configuration files to run. Tools/utility will quit and halt their execution if these configuration files are not found. All configuration files need to be in the **same folder** from where the utilities are executed.
-These files include:
-
-1. globalAnnot: a file with functional annotation of the complete collection of SARS-CoV-2 variants. This file can be generated by using CorGAT (see Chiara et al 2020), for your convenience, and up to date copy is  included in the this repository. The file is updated on a weekly basis (every Wednesday).  The most recent copy is automatically downloaded by LinToFeats.pl at every execution. 
-2. areaFile: This configuration file defines macro-geographic areas as described in Chiara et al 2022. The file can be edited (see Execution of custom analyses) to specify user defined macro-geographic regions.  
-3. linDefMut: contains defining mutations for every Pango Lineage. Updated on a weekly basis (every Wednesday). 
-
-While all the tools in HaploCoV that use these files will attempt to download the most recent version directly from this github repository, users are kindly asked to *double check* that all the configuration files are in place before executing their analyses.
-
-### #3 Have a working installation of Perl and mummer
-
-HaploCoV is written in the Perl programming language. Hence you will need Perl to run it. Perl should be already installed by default on any unix and Mac OSX system. Please follow this [link](https://www.perl.org/get.html) for instructions on how to install Perl 
-
-Please follow this [link](https://sourceforge.net/projects/mummer/files/ "Mummer Download") for detailed instruction on how to install and run Mummer. A detailed manual can also be found in CorGAT main documentation at [readthedocs](https://corgat.readthedocs.io/en/latest/prerequisites.html "Install Mummer").
-
-### #4 Computational resources
-
-While the HaploCoV workflow can be reasonably executed on a modern, state of the art, laptop please be aware that some of the input files might be extremely large in size. For example, the complete fasta file with all SARS-CoV-2 genome sequences avaiable from the GISAID database has a size in the excess of 300 Gb. While complete metadata files from GISAID are over 8 Gb in size.
-Moreover, some tasks/processes can potentially take up to a few days (see for example #6 Assign genomes to new groups) on a single processor. In the light of the above considerations we would kindly invite users to make sure that they have access to the required computational resources before executing the HaploCoV workflow. The table below briefly summarizes the requirements in terms of time, RAM memory and disk-space required by eacht tool in HaploCoV. 
-
-Tool | Input files | RAM memory (peak) | Time | Output |
------|-------------|-------------------|------|--------|
-addToTable.pl|sequences.fasta -> 332 G; metadata.tsv -> 8.0G| 6.0-8.0G| ~20k SARS-CoV-2 genomes per hour on a single CPU|6.0-8.0G|
-NextStrainToHaploCoV.pl| metadata.tsv->6.0-8.0G| <1G| ~10 min|3.0-4.0G|
-computeAF.pl|HaploCoV-formatted meta-data: 3.0-8.0G|4.0-6.0G| ~20 min| ~2.0G|
-augmentClusters.pl|HaploCoV-formatted meta-data: 3.0-8.0G| 6.0-8.0G|~20 min|novel lineages: few Kbs|
-assign.pl / p_assign.pl|HaploCoV-formatted meta-data: 3.0-8.0G|<1.0G|4M genomes per hour|HaploCoV-formatted meta-data: 3.0-8.0G|
-LinToFeats.pl|novel lineages: few Kbs|<1.0G|<5min|Lineage features, a few Kbs|
-report.pl|Lineage features, a few Kbs|<1.0G|<2min|prioritized lineages: a few Kbs|
-subset.pl|HaploCoV-formatted meta-data: 3.0-8.0G|<1.0G|5-10 min|HaploCoV-formatted meta-data: <3.0-8.0G|
-
-If you already have all your metadata in HaploCoV format, executing the full workflow should require less than 2hrs. However execution times might change depending on your computational environment. 
-
-
-<hr>
-
-## Running HaploCoV
-
-This software package is composed of **6(*+2*)** very simple scripts. Prerequisites are stated above. 
+This software package is composed of **8(*+2*)** utilities. Prerequisites are stated below (see Prerequisites).
+Input files need to be formatted to the format used by HaploCoV by applying either  **addToTable.pl** or **NexstainToHaploCoV.pl** (depending on the input, see below). 
+Then the complete HaploCoV workflow can then be executed by running **HaploCoV.pl** (reccommended) or, if you prefer by applying each of the tool included in the repository in the right order (see advanced usage). 
+Figure 1 provides a conceptual representation of the HaploCoV workflow and the list of the tools used to execute each task.
 
 ## Input files
 
-Three main inputs are required:
+HaploCoV requires 3 input files:
 * **the reference assembly** of the SARS-CoV-2 genome in fasta format
 * a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference
 * a **.tsv** file with metadata associated to the SARS-CoV-2 genome sequences included in the multifasta
-
-### Reference genome
-The reference genome of SARS-CoV-2 can be obtained from:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
-on a unix system you can download this file, by
-
-`wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz`
-
-followed by
-
-`gunzip GCF_009858895.2_ASM985889v3_genomic.fna.gz`
-
-Please notice that however the *addToTable.pl* utility is going to download the file for you, if a copy of the reference genome is not found in the current folder. However, since the "wget" command is required this is supposed to work only unix and unix alike systems.
-
-### Metadata and sequences
-SARS-CoV-2 genomic sequences and associated metadata can be obtained from the GISAID (https://www.gisaid.org/) database. The following columns are required/expected to be found in the metadata file:
-* **Virus name** : identifiers of viral isolates. These names **MUST** match the names included in the multifasta file
-* **Location** : geographic place where the sample was collected. The expected format is continent/country/region
-* **Collection date** : date of collection of the sample. Format: YYYY-MM-DD
-* **Submission date** : date of submsision of the sample to the the database.  Format: YYYY-MM-DD
-* **Pango lineage** : Pango lineage (or group according to a nomenclature of choice) assigned to viral isolates
-
-If any of the columns indicated above (names must be exactly matched) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. Please be aware that this does not mean that you necessarily need to provide data from the GISAID database as the main input (see below), but just that the metadata that you provide must have columns names consistent with those reported above.
-If you do not have access to GISAID, you can obtain publicly available SARS-CoV-2 data processed according to their "ncov" workflow from Nextstrain [link]([https://nextstrain.org/sars-cov-2/). 
-### Important: Nextstain data 
-since metadata from Nextstrain have slightly different format than that used by HaploCov, you will need to convert them in "HaploCov" format by using *NextStrainToHaploCoV.pl*.
+See the "How do I get the input files?" section for more details on how to obtain these files.
 
 Should you find any of this software useful for your work, please cite:
 >**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.**
@@ -133,12 +33,13 @@ Should you find any of this software useful for your work, please cite:
 Should you find any issue, please contact me at matteo.chiara@unimi.it , or open an issue here on github.
 <hr>
 
-## Step by step procedure
+
+## Running HaploCoV
 
 ## #1 Compile a metadata table in HaploCoV format
 
-All the tools and utilities in HaploCov operate on a large metadata table in tsv format (*HaploCoV* format from here onward). This table contains the required metadata (extracted from "metadata.tsv" or equivalent files) and the collection of allele variants for every SARS-CoV-2 genome included in the analyses.  
-If you obtained your data from **GISAID** you can obtain a metadata table in *Haplocov* format by using the *addToTable.pl* utility. If data were downloaded from Nexstrain, you can use *NextStrainToHaploCov.pl* instead (see below).
+All the tools and utilities in HaploCov operate on a large metadata table in tsv format (*HaploCoV* format from here onward). 
+If you obtained your data from **GISAID** you can format your data in *Haplocov* format by using the *addToTable.pl* utility. If data were downloaded from Nexstrain, you can use *NextStrainToHaploCov.pl* instead (see below).
 
 ## HaploCoV format for metadata
 An example of the data format used by HaploCoV (HaploCoV format) is reported in the table below:
@@ -153,27 +54,9 @@ The format is as follows<br>:
 
 A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: [HaploCoVFormatted.txt](http://159.149.160.88/HaploCoVFormatted.txt.gz) in the form o a  with `gzip` compressed file. When de-compressed the file should be around 2.9G in size.  
 
-## Dates and time in HaploCoV
-
-HaploCoV can only read dates in the YYYY-MM-DD format. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represent day 0. This date represents the beginning of the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019).<br>
-For example Tue 31th Dec 2019 is day 1 according to HaploCoV notation and Sun 29th Dec 2019, represents day -1. In the HaploCoV metadata format, the 3rd column reports the offset in days between the isolation of a specific isolate and Dec 30th 2019; similarly the 5th column reports the offset from Dec 30th 2019 to the "deposition" of the genome sequence in a public database (typically in GISAID).<br>
-Metadata tables in HaploCov format are sorted in descending order by the 3rd column (offset of the collection date). This means that the "most ancient" genome will always be at the top of the file, while the most recently isolated at the bottom.<br>
-If you need to know the date of isolation (and offset with respect to day 0) of the most recent genome included in the dataset you can simply use this command in a unix-like shell environment:
-<br><br>
-` tail -n 1 linearDataSorted.txt | cut -f 2,3`
-<br><br>
-For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
-
 ## GISAID data: addToTable.pl
 
-addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. A helper script, *align.pl* is used to align sequences to the reference genome assembly of SARS-CoV-2 and derive allele variants.
-
-### Aligning SARS-CoV-2 genomes to the reference 
-The helper script *aling.pl* is used to derive allele variants by *addToTable.pl*; although you do not need to run it directly, please make sure that you have a copy of align.pl in the same folder from where *addToTable.pl* is executed. Identification of allele variants is performed by means of the MUMMER program. Execution will halt if MUMMER is not installed. Please see above for how to install MUMMER.
-All input files **MUST** be in the **same folder** from which the program is executed. 
-
-### Incremental addition of data
-addToTable.pl can add novel data/metadata  incrementally to a pre-existing table in "HaploCoV" format. This feature is extremely useful, since it allows users to add data incrementally to their HaploCoV installation, without the need to re-execute analyses from scratch. To incrementally add data, users just need to provide a non empty output file. **IF** the output file is not empty,  addToTable.pl will process the file and add only those genomes which are not already listed/present in your medatata table. Matching is by sequence identifier (column Virus name).  **Alternatively** the --dayFrom parameter can be used to specify a minimum "start day", and only genomes isolated after that day will be processed and included in the output file. Please refer to the section "Dates and time in HaploCov" to check how dates are handled in HaploCoV
+addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. 
 
 ### Options
 addToTable.pl accepts the following options:
@@ -184,19 +67,21 @@ addToTable.pl accepts the following options:
 * **--dayFrom**: include only genomes collected after this day
 * **--outfile**: name of the output file
 
-### A typical run of addToTable.pl should look something like:
+### Execution:
+An example command looks like:
 <br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `<br><br> 
 The final output will consist in a metadata table in HaploCoV format.  This table is required for all the subsequent analyses.
 
+### Important: Incremental addition of data
+addToTable.pl can add novel data/metadata  incrementally to a pre-existing table in "HaploCoV" format. This feature is extremely useful, since it allows users to add data incrementally to their HaploCoV installation, without the need to re-execute analyses from scratch. To incrementally add data, users just need to provide a non empty output file. **IF** the output file is not empty,addToTable.pl will process only those genomes which are not already listed/present in your medatata table. Matching is by sequence identifier (column Virus name).
+
 ### Execution times 
-Please be aware that typically a single thread/process can align genomes and derive allele variants of about 20k SARS-CoV-2 genomes per hour (160k genomes on 8 cores, or 320k on 16 cores). This would mean that processing the complete collection of the more than 11M genomes included in the GISAID database on June 10th 2022  from scratch will take about 20 days if only one core/process is used. Computation scales linearly, hence 3 days would be needed if 8 processes are used, and 1.5 days if 16 are used. Importantly, since data are added incrementally, this operation needs to be performed only once. 
+On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour. Computation scales linearly: 160k genomes on 8 cores, or 320k on 16 cores. This means that processing the complete collection of the more than 13M genomes included in the GISAID database on November 11th 2022  from scratch will take about 20 days if only one processor is used;  3 days would be needed if 8 processes are used; and 1.5 days if 16 are used. Importantly this operation needs to be performed only once, since the tool supports the incremental addition of data. 
 
 ## NextStrain data: NextStrainToHaploCoV.pl
 
-If you have obtained your metadata files from Nexstrain instead of GISAID you will not need to process the data by addToTable.pl. Metadata tables from Nexstrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. Download is available from here[link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). 
-Please be aware that however Nexstrain can re-distribute only publicly available data, which at the moment account for about 1/3 of all the data in GISAID.
-Data from Nexstrain still need to be converted in *HaploCoV* format. For this purpose you can use the utility *NextStrainToHaploCoV.pl*
-Contrary to addToTable.pl, NextStrainToHaploCoV.pl does not feature incremental addition of data: this was not implemented since the full Nexstrain table can be converted in *HaploCoV* format in 3 to 5 minutes. 
+If you have obtained your metadata files from Nexstrain ( [link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz) ), you can need to use the utility *NextStrainToHaploCoV.pl* to convert them in HaploCoV format.
+Unlike addToTable.pl, NextStrainToHaploCoV.pl does not feature incremental addition of data: this was not implemented since the full Nexstrain table can be converted in *HaploCoV* format in 3 to 5 minutes. 
 
 ### Options
 NextStrainToHaploCoV.pl accepts the following options
@@ -212,7 +97,47 @@ A typical command line for NextStrainToHaploCoV.pl is something like:
 The output file will be in *HaploCoV* format and can be used by computeAF.pl to compute allele frequencies 
 
 
-## #2 Compute high frequency alleles
+## #2 Use HaploCoV.pl to apply the full pipeline
+
+Once data have been converted in HaploCoV format, the complete workflow can be executed by applying **HaploCoV.pl**. 
+HaploCoV.pl is the workhorse of HaploCoV and is the recommended way to execute our software. 
+Users can specify a list of geographic regions/areas or countries and intervals of time by providing a configuration file in text format (--locales). HaploCoV.pl will process the configuration file and apply the complete HaploCoV workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file.  This file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their "VOCness score" and/or "prevalence", and which are probably worth to be  monitored. More details on the interpretation of this report are provided in the section "how to interpret HaploCoV's results/what to do next".
+HaploCoV.pl accepts also an additional configuration file called "parameters file" (--param) which is used to set the parameters/options of each tool in the pipeline. A "default" configuration file (called parameters) is included in this Github repository, which should suit most use case.  Users who need to modify the defaults and apply custom settings are encouraged to read the section "Advanced analyses/fine tuning of HaploCoV" for a more comprehensive discussion.
+
+
+### Options
+HaploCoV.pl accepts the following options
+--file: name of the input file (metadata file in HaploCoV format)
+--locales: configuration file with the list of regions and countries to analyse
+--param: configuration file with the set of parameters to be applied by HaploCoV in your analysis
+--path: path to your HaploCoV installation
+
+### locales file
+
+Locale(s) configuration files need to have a tabular format and contain 5 colums. An example of a valid file is illustrated below:
+column 1|column 2 |column 3  |column 4|column 5|
+--------|---------|----------|--------|--------|
+location|qualifier|start-date|end-date|custom,areas_list.txt
+
+location: the name of a place, can be a country, a region or a macrogeographic area (see "geography in HaploCoV") for more details
+qualifier: qualifier of the geographic entity, valid values include region, country or area
+stard-date: lower limit of the interval of time on which to execute the analysis (see "dates in HaploCoV")
+end-date: upper limit of the interval of time
+
+Please refer to the full manual of HaploCoV if a more detailed explanation is required.
+
+### parameters file
+
+## Execution
+
+An example of a valid command line:
+
+` perl HaploCov.pl --file referenceFile_assignedByMe.txt --locales italy.loc `
+
+The outpu
+
+
+## Step by step analysis (advanced )
 
 High frequency alleles are computed by *computeAF.pl* this program requires the metadata table in *HaploCoV* format compiled by addToTable.pl (or NextStrainToHaploCoV.pl) as the main input.
 The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main ouput consist of lists of "high frequency" allele variants at different level of geographic granularity: global (all genomes), macro(macro geographic areas) and countries(country) are taken into account. Macro areas are specified by the "areaFile" file included in the current repo.
