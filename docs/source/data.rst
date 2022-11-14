@@ -1,3 +1,33 @@
+Input files
+===========
+
+HaploCoV requires 3 main input:
+
+* **the reference assembly** of the SARS-CoV-2 genome in fasta format
+* a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference
+* a **.tsv** file with metadata associated to the SARS-CoV-2 genome sequences included in the multifasta
+
+Reference genome
+================
+HaploCoV can download the reference assembly of the SARS-CoV-2 genome for you when/if required (see the addToTable.pl utility for more details). However, in the (hopefully) unlikely event that this should not work you can obtain a copy of the reference genome from:
+https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
+on a unix system you can download this file, by
+
+::
+
+ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
+
+followed by
+
+::
+
+ gunzip GCF_009858895.2_ASM985889v3_genomic.fna.gz
+
+::
+
+Remember that you need to have this file (GCF_009858895.2_ASM985889v3_genomic.fna) in the same folder from where you execute HaploCoV (i.e. HaploCoV if you stick with the default)
+
+
 Input data
 ==========
 
@@ -24,12 +54,19 @@ Please be aware that some metadata are **mandatory** to execute HaploCoV and tha
 * location: the geographic place from where the isolated was collected; Column name: *"Location"*;
 * a valid lineage/group/class associated with the genome. Column name: *"Pango lineage"* 
 
-Dates must be provided in YYYY-MM-DD format. Locations in the following format: Continent/Country/Region. 
-Missing information must be indicated by *NA* (not available).An example of a valid metadata table is reported below
+Dates must be provided in YYYY-MM-DD format. 
+Locations in the following format: Continent/Country/Region. 
+Missing information must be indicated by *NA* (not available).
+Sequences unique identifiers can not be replaced by *NA* values.
+
+An example of a valid metadata table is reported below
 
 .. figure:: _static/table1.png
    :scale: 80%
    :align: center
+
+If any of the columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
+This does not mean that you necessarily need to provide data from the GISAID database as the main input (see below) to HaploCoV, but just that the metadata that you provide **must have** columns names consistent with those reported above.
 
 Important: providing "external" data  
 ====================================
@@ -44,5 +81,5 @@ While HaploCoV was designed to work with data from GISAID, the tool can in princ
 Important: using data from Nextstrain
 =====================================
 
-Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
-Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need to execute *addToTable.pl* on this file**. The file however needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
+Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
+Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need** to download also the genomic sequences and align them to the reference genome. However Nextstrain data, still needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
