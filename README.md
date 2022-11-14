@@ -2,7 +2,7 @@
 
 ## What this tool can do for you
 
-This repository contains a collection of simple Perl scripts that can be used to:
+This repository contains a collection of Perl scripts and utilities that can be used to:
 * **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify allelic variants**, 
 * identify **regional alleles** reaching a **"high frequency"** locally or globally, 
 * **extend an existing classification** based on high frequency regional alleles and/or any list of alleles provided by the user , 
