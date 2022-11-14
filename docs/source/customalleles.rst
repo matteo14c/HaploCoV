@@ -24,7 +24,7 @@ For example a C to T nucleotide substitution in position 241, should be indicate
 Precomputed sets of allelic variants
 ====================================
 
-The main repository of HaploCoV incorporates precomputed sets of allelicc variants which can be used to identify novel potential groups of SARS-CoV-2 genomic sequences with different features.
+The main repository of HaploCoV incorporates precomputed sets of allelic variants which can be used to identify novel potential groups of SARS-CoV-2 genomic sequences with different features.
 
 These precomputed sets of alleles can broadly be categorized into 3 main classes:
 
