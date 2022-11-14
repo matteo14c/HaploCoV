@@ -37,6 +37,21 @@ If you need to know the date of isolation (and offset with respect to day 0) of 
 
 For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
 
+Geography and places
+====================
+
+Geography and geography related information are stored in columns 6 to 9 in HaploCoV formatted files. Each column correspond (ideally) to a different level of geographic granularity:
+* column 6: continent
+* column 7: macro-geographic area
+* column 8: country
+* column 9: region
+
+Geographic data are inferred directly from your metadata table, by processing the Location column (see above). Locations indicate the place from where isolates of SARS-CoV-2 were retrieved, and must be indicated in the following format:
+*Continent / Country/ Region
+in your metadata. If "locations" are indicated in a different format, HaploCoV will not be able to process the information and will append NA values in columns 6 to 9.
+It is also important to underline that HaploCoV does not perform any correction on the spelling/consistency of geographic data. Hence it is down to the user to provide input data that are as accurate and correct as possible.
+
+
 1 Importing data
 ================
 
