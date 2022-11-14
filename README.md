@@ -1,7 +1,7 @@
 # HaploCoV: a set of utilities and methods to identify novel variants of SARS-CoV-2
 
 ## Important
-Please be aware that this readme will cover only the basic set-up and execution of HaploCoV. The full manual is available at [readthedocs](https://haplocov.readthedocs.io/en/latest/) (interactive verions) or MISSINGLINK (pdf).
+Please be aware that this readme will cover only the basic set-up and execution of HaploCoV. The extended manual is available at [readthedocs](https://haplocov.readthedocs.io/en/latest/) (interactive verions) or MISSINGLINK (pdf).
 
 ## What this tool can do for you
 
@@ -16,7 +16,7 @@ HaploCoV is a collection Perl scripts that can be used to:
 
 This software package is composed of **8(*+2*)** utilities. Prerequisites for making HaploCoV run properly are stated below (see Prerequisites).
 In brief, input files need to be formatted to the format used by HaploCoV by applying either **addToTable.pl** or **NexstainToHaploCoV.pl** (depending on the input, see below). 
-Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (reccommended) or, if you prefer, by running each single tool in the HaploCoV workflow in the right order yourself (please see the manual for a complete reference).
+Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (reccommended) or, if you prefer, by running each single tool in the HaploCoV workflow, in the right order, yourself (please see the extended manual for a complete reference).
 Figure 1 provides a conceptual representation of the HaploCoV workflow and the tools used to execute each task.
 
 ## Input files
@@ -80,8 +80,8 @@ On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour
 
 ## NextStrain data: NextStrainToHaploCoV.pl
 
-If you have downloaded your metadata files from Nexstrain ( [link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz) ), need to use the utility *NextStrainToHaploCoV.pl* to convert them in HaploCoV format.
-Unlike addToTable.pl, NextStrainToHaploCoV.pl does not support incremental addition of data: this was not implemented since the full  table provided by NextStrain can be converted in *HaploCoV* format in 3 to 5 minutes. 
+If you have downloaded your metadata files from Nexstrain ( [link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz) ), you need to use the utility *NextStrainToHaploCoV.pl* to convert them in HaploCoV format.
+Unlike addToTable.pl, NextStrainToHaploCoV.pl does not support incremental addition of data to a pre-existing file: this was not implemented since the full data by NextStrain can be converted in *HaploCoV* format in 3 to 5 minutes. 
 
 ### Options
 NextStrainToHaploCoV.pl accepts the following options
@@ -101,8 +101,8 @@ The output file will be in *HaploCoV* format and can be used by computeAF.pl to 
 
 Once data have been converted in HaploCoV format, the complete workflow can be executed by applying **HaploCoV.pl**. 
 HaploCoV.pl is the workhorse of HaploCoV and is the recommended way to execute our software. 
-Users can specify a list of geographic regions/areas or countries and intervals of time to be included in their analyses by providing a configuration file in text format (--locales). HaploCoV.pl will process the configuration file and apply the complete HaploCoV workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file.  This file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their "VOCness score" and/or "prevalence", and which are probably worth to be  monitored. More details on the interpretation of this report are provided in the section "how to interpret HaploCoV's results/what to do next".
-HaploCoV.pl accepts also an additional configuration file called "parameters file" (--param) which is used to set the parameters/options of each tool in the pipeline. A "default" configuration file (called parameters) is included in the Github repository, which should suit most use case.  Users who need to modify the defaults and apply custom settings are encouraged to read the section "Advanced analyses/fine tuning of HaploCoV" for a more comprehensive discussion.
+Users can specify a list of geographic regions/areas or countries and intervals of time to be considered in their analyses by providing a configuration file in text format (--locales). HaploCoV.pl will process the configuration file and apply the complete HaploCoV workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file.<br>  This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their "VOCness score" and/or "prevalence", and which are probably worth to be  monitored. More details on the interpretation of this report are provided in the section "how to interpret HaploCoV's results/what to do next".
+HaploCoV.pl accepts also an additional configuration file called "parameters file" (--param) which is used to set the parameters/options of each tool in the pipeline. A "default" configuration file (called parameters) is included in this Github repository, which should suit most use case.  Users who need to modify the defaults and apply custom settings are encouraged to read the section "Advanced analyses/fine tuning of HaploCoV" for a more comprehensive discussion.
 
 
 ### Options
@@ -118,28 +118,26 @@ Locale(s) configuration files need to have a tabular format and contain 5 colums
 column 1|column 2 |column 3  |column 4  |column 5        |
 --------|---------|----------|----------|----------------|
 location|qualifier|start-date|end-date  |genomic-variants|
-Italy   |country  |2022-01-01|2022-11-11|custom          |
+Italy   |country  |2022-01-01|2022-11-11|areas_list.txt  |
 Thailand|country  |2022-01-01|2022-11-11|custom          |
+workd   |area     |2022-01-01|2022-11-11|custom          |
 
-location: a country, a region or a macrogeographic area (see "geography in HaploCoV") for more details
+* location: a country, a region or a macrogeographic area (see "geography in HaploCoV") for more details
 qualifier: qualifier of the geographic entity, accepted values are: region, country or area. Again, refer to "geography in HaploCoV" for more details.
-start-date: lower limit of the interval of time on which to execute the analysis (see "dates in HaploCoV")
-end-date: upper limit of the interval of time
-genomic-variants: a list of files with high frequency genomic variants. Comma separated. Each file is used to derive novel candidate lineages compared to a reference nomenclature.  A distinct report file (.rep) will be generated for every file in this list, and the name of the variant file is always appended to the name of the report. This is because the number and types of novel candidate lineages that HaploCoV can derive strictly depends on the list of high frequency genomic variants provided in input. Hence it is highly advisable to keep track of what genomic-variants file was used.
-Please se the section "genomic variation and high frequency variant" for additional explanations on how "genomic-variants" files are used. 
+* start-date: lower limit of the interval of time on which to execute the analysis (see "dates in HaploCoV")
+* end-date: upper limit of the interval of time
+* genomic-variants: a list of files with high frequency genomic variants. Comma separated. Each file is used to derive novel candidate lineages compared to a reference nomenclature.  A distinct report file (.rep) will be generated for every file in this list, and the name of the variant file is always appended to the name of the report. Pre-computed genomic variants files are provided in the main HaploCoV installation. Please se the section "genomic variation and high frequency variant" for additional explanations on how "genomic-variants" files are used. Users have also the option of executing "custom" analysis and derive a list of "interesting" genomic variants on the go, based on their selection. In this case custom needs to be indicated in the 5th column. See below   
 The file locales.txt included in this repository provides a valid example of a locales configuration file. 
 
-
-
 ## Important: special/reserved keywords
-You can specify **world** in the first column of your locales file if you do not need to partition SARS-CoV-2 isolates based on their geographic origin. All the sequences in the metadata file will be analysed irrespective of the geography.
+When the reserved word **world**  is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geography.
 
-In column five (genomic-variants) you can use the reserved world "custom" if you prefer to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility, as in this case high frequency genomic variants are determined dynimically based on a user selection. Please read the section "genomic variation and high frequency variant" for a more in-depth explanation.
+In the 5th (genomic-variants) you can use the reserved world "custom" if you prefer to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility, as in this case high frequency genomic variants are determined dynimically based on a user selection. Please read the section "genomic variation and high frequency variant" for a more in-depth explanation.
 
 
 ### parameters file
 
-This file sets the parameters to be used by the various tool in HaploCoV. A default file with a standard configuration (parameters) is included in this repository. Please see the section "advanced analyses and customisation" for instructions on how to modify the default settings.
+This file sets the parameters to be used by the various tools in HaploCoV. A default file with a standard configuration (parameters) is included in this repository. This file should suit most use case/scenario. Please see the section "Advanced analyses and customisation" for instructions on how to modify the default settings.
 
 ## Execution
 
@@ -162,7 +160,7 @@ To do all of the above:
 
 ### then
 
-2. `perl computeAF.pl --file linearDataSorted.txt --locales italy.loc `
+2. ` perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `
 
 ### Finally
 Read the report (.rep) file
