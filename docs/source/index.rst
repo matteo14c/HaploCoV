@@ -26,11 +26,11 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
 .. toctree::
    :maxdepth: 2
-   :caption: Before you start: prerequites and configuration
+   :caption: Before you start:
 
    data.rst
-   configuration.rst
    perlMummer.rst
+   configuration.rst
    etimes.rst
 
 .. toctree::
