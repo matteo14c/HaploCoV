@@ -48,10 +48,10 @@ sub read_scaling
 	while(<IN>)
 	{
         	chomp();
-        	my ($key,$val)=(split())[0,1];
+        	my ($key,$val1,$val2)=(split())[0,1,2];
         	$key=~s/"//g;
         	$key=~s/\./:/;
-        	$hold{$key}=$val;
+        	$hold{$key}=[$val1,$val2];
         }
 	return(\%hold);
 }
@@ -83,22 +83,27 @@ sub update_scaling
 	{
         	chomp();
         	my @data=(split(/\t/));
-        	next if $data[0]=~/\.$prefix\d+/;
+		#next if $data[0]=~/\.$prefix\d+/;
         	foreach my $k (keys %$hold)
         	{
                 	die(@data) if $k eq "";
                 	my $pos=$decode{$k};
-                	if ($data[$pos]>$hold->{$k})
+			#print "$pos $k $hold->{$k}[0]\n";
+                	if ($data[$pos]> $hold->{$k}[0])
                 	{
-				$hold->{$k}=$data[$pos];
+				$hold->{$k}[0]=$data[$pos];
                 	}
+			if ($data[$pos]<$hold->{$k}[1])
+			{
+				$hold->{$k}[1]=$data[$pos];
+			}
 		
 		}
         }
 	open(OUT,">scaling.upd.csv");
 	foreach my $k (keys %$hold)
 	{
-		print OUT "$k\t".$hold->{$k}."\n";
+		print OUT "$k\t".$hold->{$k}[0]."\t".$hold->{$k}[1]."\n";
 	}
 }
 
@@ -119,7 +124,27 @@ sub compute_vocness
         	foreach my $k (keys %$hold)
         	{
                 	my $pos=$decode->{$k};
-                	$vocness+=$data[$pos]/$hold->{$k};
+			my $min=$hold->{$k}[1];
+			my $max=$hold->{$k}[0];
+			my $addV=0;
+			if (abs($min)<abs($max))
+			{
+				if ($max !=0)
+				{
+				
+                			$addV=($data[$pos]-$min)/$max;
+				}
+			}else{
+				if ($min !=0)
+				{
+					$addV=($data[$pos]*-1-$max)/$min*-1;
+				}
+			}
+			$vocness+=$addV;
+			if ($addV>1)
+			{
+				print "\t controlla $k $data[$pos] $max $min $addV\n";
+			}
 
         	}
         	$vocness{$lin}=$vocness;
@@ -136,9 +161,10 @@ sub print_pass
 	my $prefix=$_[1];
 	my $outfile=$_[2];
 	open(OUT,">$outfile");
-	print OUT "newLab Parent scoreNew scorePar scoreDiff\n";
+	print OUT "newLab Parent scoreNew scorePar scoreDiff PASS\n";
         foreach my $variant (keys %vocness)
 	{
+		my $PASS="NO";
 		#print "$variant\n";
 		next unless $variant=~/\.$prefix\d+/;
         	my $Pvariant=$variant;
@@ -147,10 +173,8 @@ sub print_pass
         	my $legacyScore=$vocness{$Pvariant};
         	next unless $vocness{$Pvariant};
         	my $diff=$score-$legacyScore;
-		if (($score-$legacyScore)/$legacyScore>=0.1 && $score>=7.5)
-		{
-                	print OUT "$variant $Pvariant $score $legacyScore $diff\n";
-		}	
+		$PASS="PASS" if $diff>=3 && $score>=12;
+                	print OUT "$variant $Pvariant $score $legacyScore $diff $PASS\n";
 	}
 }
 
@@ -185,20 +209,20 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--infile"};
-                die("Invalid variants file provided. $f does not exist!");
+                die("Reason:\nInvalid input file provided. $f does not exist!");
         }
 	if ($arguments{"--scaling"} eq "na" ||  (! -e ($arguments{"--scaling"})))
         {
                 print_help();
                 my $f=$arguments{"--scaling"};
-                die("Invalid configuration file provided. $f does not exist!");
+                die("Reason:\nInvalid configuration file provided. $f does not exist!");
         }
 
         if ($arguments{"--outfile"} eq "na")
         {
                 print_help();
                 my $f=$arguments{"--outfile"};
-                die("Invalid outfile name provided. $f please provide a valide name using --outfile");
+                die("Reason:\nInvalid outfile name provided. $f please provide a valide name using --outfile");
         }
 
 }

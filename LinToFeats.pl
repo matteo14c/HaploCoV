@@ -36,6 +36,8 @@ my %annot_index=();
 #############################################################
 #
 
+
+
 if (-e $annotfile)
 {
 	%annot_index=%{index_annot($annotfile)};
@@ -62,6 +64,7 @@ sub index_annot
 		my $key="$vls[0]\_$vls[1]\|$vls[2]";
 		my $string=join("\t",@vls);
 		$index{$key}=$string;
+		#print "$key\t$string\n";
 	}
 	return (\%index);
 
@@ -76,6 +79,7 @@ sub read_annot
 		my $annot=$annot_index{$v};
 		push(@annots,$annot);
 	}
+	#print "A:@annots\n";
 	return(\@annots)
 }
 
@@ -110,12 +114,24 @@ sub print_scores
 	my $outfile=$_[1];
 	my $corgat=$_[2];
 	my $annotfile=$_[3];
+	
+
+	#make a fn to read threshold file
+	#atm tresholds are specified manually
+	my @consTS=(-4.813559,-1.364910,-0.458441,4.256);
+	my @entropyTS=(0,0.2912772,0.3669866,0.5250387);
+	my @affinityTS=(-4.54,-1.9925);
+	my @iggTS=(-8.995146,-6.89269,-5.42886);
+	my @igmTS=(-13.8675,-9.33606,-6.6189);
 
 	my @genes=qw(orf1ab spike geneE geneM geneN metaORF);
 	my @quals=qw(numEpi numIncr numDecr numS numNS numDam  numINF numPos numNeg numDom numTotal);
 
 	open(OUT,">$outfile");
 	print OUT "lineage\tnum\tTRS\tCLV\tAF90\tAF50\tAF25\tAF10\tGLN\ttotal\tnumS\tnumNS\tnumD\tnumIF\tnumGlobal\tEpiGlobal\tnumEpiG";
+	print OUT "\tcons1pc\tcons5pc\tcons10pc\tcons99pc\tconsTot\tshapeRlow\tshapeRmed\tshapeRhigh\tshapeRTot";
+	print OUT "\tentropyLow\tentropy90\tentropy95\tentropy99\tentropyTot\taffinity99\taffinity95\taffinityTot";
+	print OUT "\tigg01\tigg05\tigg10\tiggtot\tigm01\tigm05\tigm10\tigmtot\tspikeLow\tspikeMed\tspikeHigh\tspikeTot";
 
 	foreach my $g (@genes)
 	{
@@ -144,6 +160,16 @@ sub print_scores
 		my $AF50=0;
 		my $AF25=0;
 		my $AF10=0;
+
+		# nuove annotazioni
+		my @cons_array=(0,0,0,0,0);
+		my @entropy_array=(0,0,0,0,0);
+		my @affinity_array=(0,0,0);
+		my @igg_array=(0,0,0,0);
+		my @igm_array=(0,0,0,0);	
+		my @mutSpike=(0,0,0,0);
+		my @shape_array=(0,0,0,0);
+		
 		my $total=0;
 		my $S=0;
 		my $N=0;
@@ -174,14 +200,51 @@ sub print_scores
 			my $affectedGene="NA";
 			my $predictedeffect="NA";
 
-			my ($pos,$ref,$alt,$annot,$af,$epi,$hyphy,$mfei,$increase,$decrease,$prevalence,$uniprot)=(split(/\t/,$line));
-		
+			my ($pos,$ref,$alt,$annot,$af,$epi,$hyphy,$mfe,$increase,$decrease,$prevalence,$uniprot,$cons,$shape1,$shape2,$igg,$igm,$swissD,$swissGly,$swissClean)=(split(/\t/,$line));
+			
+			#print "$annot\n";
+				
+			#conservation	
+			$cons_array[-1]+=$cons;
+			$cons_array[0]++ if $cons<=$consTS[0];
+			$cons_array[1]++ if $cons>$consTS[0] && $cons<=$consTS[1];
+			$cons_array[2]++ if $cons>$consTS[1] && $cons<=$consTS[2];
+			$cons_array[3]++ if $cons>=$consTS[3];
+
+			#shape
+			$shape_array[-1]+=$shape2;
+			$shape_array[0]++ if $shape2<=0.4;
+			$shape_array[1]++ if $shape2 >0.4 && $shape2<=0.85;
+			$shape_array[2]++ if $shape2 >0.85;
+
+			#entropy
+			$entropy_array[-1]+=$shape1;
+			$entropy_array[0]++ if $shape1<=$entropyTS[0];
+			$entropy_array[1]++ if $shape1>=$entropyTS[1] && $shape1<$entropyTS[2];
+			$entropy_array[2]++ if $shape1>=$entropyTS[2] && $shape1<$entropyTS[3];
+			$entropy_array[3]++ if $shape1>=$entropyTS[3];
+
+			#igg
+			$igg_array[-1]+=$igg/$total;
+			$igg_array[0]++ if $igg<=$iggTS[0];
+			$igg_array[1]++ if $igg>$iggTS[0] && $igg <=$iggTS[1];
+			$igg_array[2]++ if $igg>$iggTS[1] && $igg <=$iggTS[2];
+
+			#igm
+			$igm_array[-1]+=$igm/$total;
+			$igm_array[0]++ if $igm<=$igmTS[0];
+			$igm_array[1]++ if $igm>$igmTS[0] && $igm <=$igmTS[1];
+			$igm_array[2]++ if $igm>$igmTS[1] && $igm <=$igmTS[2];
+
+
 			my @annots=(split/\;/,$annot);
-			$numG++ if $af>=90;
-			next if $af>=90;
+			#print "@annots $#annots\n";
+			$numG++ if $af>=95;
+			next if $af>=95;
 			my $gene="";
 			foreach my $annot (@annots)
 			{
+				#print "\t$annot\n"; #if $annot=~/spike/;
 				$gene=(split(/\:/,$annot))[0];
 				next if $gene =~/nsp/;
 				next if $gene eq "orf1a";
@@ -199,14 +262,14 @@ sub print_scores
 					$annot{"$gene"}[3]++;
 					$annot{"$gene"}[10]++;
 					$S++;
-                        		last;
+					last;
 				}elsif ($annot=~/stop/ || $annot=~/frameshift/){
 					$affectedGene=$gene;
 					$annot{"$gene"}[5]++;
 					$annot{"$gene"}[10]++;
 					$D++;
 					$addEpi=1;
-                        		last;
+					last;
 				}elsif ($annot=~/inframe/){
 					$affectedGene=$gene;
                                 	$annot{"$gene"}[6]++;	
@@ -214,9 +277,34 @@ sub print_scores
 					$F++;
 					#print "$F $annot\n";
 					$addEpi=1;
-                                	last;
-				}	
+					last;
+			
+				}
 			}
+			foreach my $annot (@annots)
+			{
+				#print "$annot\n";
+				#print "$annot\n" if $annot=~/spike/ || $annot=~/affinity/;
+				if ($annot=~/affinity:/){
+                                        my $affinityScore=(split(/\:/,$annot))[1];
+					next if $affinityScore eq "no";
+					#print "AFF\t$affinityScore\t$annot\n";
+                                        $affinity_array[-1]+=$affinityScore;
+                                        $affinity_array[0]++ if $affinityScore<=$affinityTS[0];
+                                        $affinity_array[1]++ if $affinityScore>$affinityTS[0] && $affinityScore<=$affinityTS[1];
+                                }elsif ($annot=~/spike.*high/){
+                                        $mutSpike[0]++;
+                                        $mutSpike[-1]++;
+                                }elsif ($annot=~/spike.*medium/){
+                                        $mutSpike[1]++;
+                                        $mutSpike[-1]++;
+                                }elsif ($annot=~/spike.*low/){
+                                        $mutSpike[2]++;
+                                        $mutSpike[-1]++;
+                                }
+
+			}
+
 			$epiG+=$epi if $addEpi==1;
 			$numEpi++ if $addEpi==1;
 			$annot{$gene}[0]+=$epi if $addEpi==1 && $gene ne "";
@@ -239,10 +327,11 @@ sub print_scores
 			}elsif($hyphy=~/negative/){
 				$annot{"$gene"}[8]++;
 			}
-			if ($uniprot=~/domain/){
+			if ($uniprot=~/domain/ || $swissD ne "NA"){
 				$annot{"$gene"}[9]++;
 			}
 			my @prevalences=(split(/;/,$prevalence));
+			my $numi=@prevalences;
 			foreach my $p (@prevalences)
 			{ 
 				my $v=(split(/\:/,$p))[2];
@@ -251,29 +340,40 @@ sub print_scores
 				my $fa=$AF[1];
 				if ($fa>=90)
 				{
-					$AF90++;
+					$AF90+=1/$numi;
 				}elsif ($fa<90 && $fa>=50){
-					$AF50++;
+					$AF50+=1/$numi;
 				}elsif ($fa<50 && $fa>=25){
-					$AF25++;
+					$AF25+=1/$numi;
 				}elsif ($fa<25 && $fa>=10){
-					$AF10++;
+					$AF10+=1/$numi;
 				}
 			}	
 
 		}
 		if (($total-$numG)>0)
 		{
-			$AF90=$AF90/($total-$numG);
-			$AF50=$AF50/($total-$numG);
-			$AF25=$AF25/($total-$numG);
-			$AF10=$AF10/($total-$numG);
+			#$AF90=$AF90/($total-$numG);
+			#$AF50=$AF50/($total-$numG);
+			#$AF25=$AF25/($total-$numG);
+			#$AF10=$AF10/($total-$numG);
 		}
 		if ($numEpi>0)
 		{
 			$epiG=$epiG/$numEpi;
 		}
 		print OUT "$lin\t$numlin\t$numTRS\t$numCLV\t$AF90\t$AF50\t$AF25\t$AF10\t$GLN\t$total\t$S\t$N\t$D\t$F\t$numG\t$epiG\t$numEpi";
+		my @allNannots=(@cons_array,@shape_array,@entropy_array,@affinity_array,@igg_array,@igm_array,@mutSpike);
+		#print "C: @cons_array\n";
+		#print "S: @shape_array\n";
+		#print "E: @entropy_array\n";
+		#print "A: @affinity_array\n";
+		#print "G: @igg_array\n";
+		#print "M: @igm_array\n";
+		#print "Sp: @mutSpike\n";	
+		my $nLA=join("\t",@allNannots);
+		print OUT "\t$nLA";
+
 		foreach my $g (@genes)
 		{
 			my @vals=@{$annot{$g}};
@@ -294,18 +394,18 @@ sub download_annot
 {
 	if (-e "globalAnnot")
 	{
-		system("rm globalAnnot")==0||die("could not remove old annotation files\n");
+		#system("rm globalAnnot")==0||die("could not remove old annotation files\n");
 	}
 	if (-e "globalAnnot.gz")
 	{
-		system("rm globalAnnot.gz")==0||die("could not remove old annotation files\n");
+		#system("rm globalAnnot.gz")==0||die("could not remove old annotation files\n");
 	}
         print "Will now dowload CorGAT annotation of SARS-CoV-2 variants, from Github\n";
         print "Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
         check_exists_command('gunzip') or die "$0 requires gunzip to unzip the genome\n";
-        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/globalAnnot.gz")==0||die("Could not retrieve the reference annotation used by HaploCov\n");
-        system("gunzip globalAnnot.gz")==0 ||die("Could not unzip globalAnnot");
+	#system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/globalAnnot.gz")==0||die("Could not retrieve the reference annotation used by HaploCov\n");
+	#system("gunzip globalAnnot.gz")==0 ||die("Could not unzip globalAnnot");
 
 }
 
@@ -344,20 +444,20 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--infile"};
-                die("Invalid variants file provided. $f does not exist!");
+                die("Reason:\nInvalid variants file provided. $f does not exist!");
         }
         if ($arguments{"--outfile"} eq "na")
         {
                 print_help();
                 my $f=$arguments{"--outfile"};
-                die("Invalid outfile name provided. $f please provide a valide name using --outfile");
+                die("Reason:\nInvalid outfile name provided. $f please provide a valide name using --outfile");
         }
         if ( !(-e $arguments{"--corgat"}."annotate.pl") && !(-e $arguments{"--annotfile"})  )
         {
                 print_help();
                 my $m=$arguments{"--corgat"};
 		my $k==$arguments{"--annotfile"};
-                die("Can not find annotate.pl in your CorGAT installation at $corgat and your --annotfile $k does not exist\nThis means that variant annotation can not be performed\nPlease read the manual\n");
+                die("Reason:\nCan not find annotate.pl in your CorGAT installation at $corgat and your --annotfile $k does not exist\nThis means that variant annotation can not be performed\nPlease read the manual\n");
         }
 }
 

@@ -1,0 +1,14 @@
+computeAF.pl
+augmentClusters.pl
+--size	10
+--dist	4
+LinToFeats.pl
+report.pl
+p_assign.pl
+--nproc	24
+increase.pl
+--days	5
+--minFC	2
+--minP	0.05
+--nInt	3
+--pass	F

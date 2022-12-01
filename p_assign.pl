@@ -154,6 +154,13 @@ sub check_input_arg_valid
                 die("Can not allocate a negative number of processors. $n provided!");
 
 	}
+	if ($arguments{"--out"} eq "na")
+        {
+                print_help();
+                my $f=$arguments{"--out"};
+                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+        }
+
 
 }
 
@@ -166,12 +173,14 @@ sub print_help
         print " and a metadata file (see align.pl) with metadata associated to.\n";
         print " each genome file\n";
         print "##INPUT PARAMETERS\n\n";
-        print "--dfile <<filename\t input file with the list of variants and their characteristic mutations\n(this is the output of augmentClusters.pl)\n";
+        print "--dfile <<filename>>\t input file with the list of variants and their characteristic mutations\n(this is the output of augmentClusters.pl)\n";
         print "--metafile <<filename>>\tfile with metadata in .tsv format\n";
 	print "--nproc <<number>>\t number of processors/cores to use\n";
         print "\n##OUTPUT PARAMETERS\n\n";
         print "--out <<name>>\tName of the output file. Defaults to ASSIGN_out.tsv\n";
-        print "\n##EXAMPLES:\n\n";
-        print "perl p_assign.pl --dfile defining.txt --metafile linearDataSorted.txt --nproc 8\n"
+	print "\n##IMPORTANT\n";
+        print "--dfile --metafile and --out are mandatory parameters\n";
+        print "\n##EXAMPLE:\n";
+        print "perl p_assign.pl --dfile defining.txt --metafile linearDataSorted.txt --nproc 8 --out assigned.txt\n"
 }
 

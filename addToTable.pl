@@ -158,7 +158,7 @@ sub metadataToLists
 	while (<IN>)
 	{
 		$c++;
-		print "#$c sequences aquired\n" if $c%1000000==0;
+		print "#$c sequences acquired\n" if $c%1000000==0;
 		my @data=(split(/\t/));
 		my $id=$data[$Iv];
 		$id=fix_strain($id);
@@ -422,25 +422,31 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--metadata"};
-                die("No valid input file provided. $f does not exist!");
+                die("Reason:\nNo valid input file provided. $f does not exist!");
         }
 	if ($arguments{"seq"} eq "na" || (! -e $arguments{"--seq"}))
         {
                 print_help();
                 my $f=$arguments{"--seq"};
-                die("No valid input  list file provided. $f does not exist!");
+                die("Reason:\nNo valid input  list file provided. $f does not exist!");
         }
 	if ($arguments{"--nproc"}<0)
 	{
 		print_help();
 		my $m=$arguments{"--nproc"};
-		die("Num threads can not be <0. $m provided\n");
+		die("Reason:\nNum threads can not be <0. $m provided\n");
 	}
 	if ($arguments{"--dayFrom"}<-3500)
         {
                 print_help();
                 my $m=$arguments{"--dayFrom"};
-                die("Start day can not be <-3500. $m provided\n");
+                die("Reason:\nStart day can not be <-3500. $m provided\n");
+        }
+	if ($arguments{"--outfile"} eq "na")
+        {
+                print_help();
+                my $f=$arguments{"--outfile"};
+                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
         }
 }
 
@@ -467,10 +473,10 @@ sub print_help
         print "--seq <<filename>>\t fasta file\n";
         print "--dayFrom <<integer>>\t keep only genomes isolated after this day. Default -2500\n";
 	print "--nproc <<integer>>\t number of processes to align genomes and call variants. Default 8 \n";
-	print "--outfile <<filename>>\t output metadata file in HaploCoV format. If the file is not empty\n";
+	print "--outfile <<filename>>\t output metadata file in HaploCoV format. If the file is not empty\n\n";
 	print "novel data/metadata will be appended to the bottom of the file\n";
         print "Mandatory parameters are --seq, --metadata  and --outfile\n";
-        print "the file needs to be in the current folder.\n\n";
+        print "the files needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";
         print "1# input is metadata.tsv:\nperl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --outfile HaploCoV_formattedMetadata\n\n";
 }

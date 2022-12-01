@@ -55,7 +55,7 @@ sub populate_matrix
         	$iclus++;
 	}
 	return(\@initscores,\@decode,\%pos);
-#print "@initscores\n";
+	#print "@initscores\n";
 
 }
 
@@ -72,7 +72,7 @@ sub assign
 		chomp();
         	my @scores=@initscores;
         	my @vls=(split(/\t/));
-        	my $lvar=$vls[-1];
+        	my $lvar=$vls[10];
 		#########################################################
         	# score variants seen in this genome
 		my @vars=(split(/\,/,$lvar));
@@ -100,6 +100,7 @@ sub assign
 
         	foreach my $s (@scores)
         	{
+			#print "$i $s\n";
 			if ($s>$max)
 			{
                 		$imax=$i;
@@ -167,14 +168,21 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--metafile"};
-                die("Invalid metadata file provided. $f does not exist!");
+                die("Reason:\nInvalid metadata file provided. $f does not exist! Please provide a valid input file with --metafile\n");
         }
 	if ($arguments{"--dfile"} eq "na" ||  (! -e ($arguments{"--dfile"})))
         {
                 print_help();
                 my $f=$arguments{"--dfile"};
-                die("Invalid metadata file provided. $f does not exist!");
+                die("Reason:\nInvalid metadata file provided. $f does not exist!");
         }
+	if ($arguments{"--out"} eq "na")
+        {
+                print_help();
+                my $f=$arguments{"--out"};
+                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+        }
+
 
 }
 
@@ -190,7 +198,9 @@ sub print_help
         print "--metafile <<filename>>\tfile with metadata in .tsv format\n";
         print "\n##OUTPUT PARAMETERS\n\n";
         print "--out <<name>>\tName of the output file. Defaults to ASSIGNEDScore_out.tsv\n";
-        print "\n##EXAMPLES:\n\n";
-	print "perl assign_HGs_2021.pl --dfile defining.txt --metafile metadata.tsv\n"
+	print "\n##IMPORTANT\n";
+	print "all the parameters are required\n";
+        print "\n##EXAMPLE:\n";
+	print "perl assign.pl --dfile defining.txt --metafile metadata.tsv --out metadata.assigned\n"
 }
 

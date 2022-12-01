@@ -279,8 +279,14 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--file"};
-                die("No valid input file provided. $f does not exist!");
+                die("Reason:\nNo valid input file provided. $f does not exist!");
         }
+	if ($arguments{"--outfile"} eq "na")
+	{
+		print_help();
+		my $f=$arguments{"--outfile"};
+                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+	}
 }
 
 sub print_help

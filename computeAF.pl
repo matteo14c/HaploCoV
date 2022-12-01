@@ -6,7 +6,7 @@ use strict;
 my %arguments=
 (
 "--file"=>"na",         # name of the input file
-"--maxT"=>925,      	# max time
+"--maxT"=>"na",      	# max time
 "--minT"=>-10, 		# min time
 "--interval"=>10,
 "--minCoF"=>1,
@@ -84,6 +84,11 @@ sub process_data
 	my $outdir=$_[7];
 	my @Ws=();
 	my @zeros=();
+
+	if ($max_time eq "na")
+	{
+		$max_time=pick_time($file);
+	}
 
 	for(my $t=$min_time;$t<=$max_time;$t+=$increment)
         {
@@ -191,6 +196,22 @@ sub process_data
 
 }
 
+sub pick_time
+{
+	$file=$_[0];
+	if (check_exists_command("tail"))
+	{
+		system("tail -n 1 $file >> tmp.file")==0||die();
+		open(IN,"tmp.file");
+		my $lline=<IN>;
+		my $date=(split(/\t/,$lline))[2];
+		return($date);
+
+	}else{
+		die ("To guess the endDate I need to use the tail command. But I can not find tail in your environment/shell. Please provide a valid endDate by using the --maxT parameter\n");
+	}
+}
+
 ######################################################################
 ## Functions for input control and help
 ##
@@ -226,31 +247,31 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--file"};
-                die("No valid input file provided. $f does not exist!");
+                die("Reason:\nNo valid input file provided. $f is not a valid input. Specify a valid input with --file!");
         }
 	if ($arguments{"--maxT"}<0)
 	{
 		print_help();
 		my $m=$arguments{"--maxT"};
-		die("Max Time can not be <0. $m provided\n");
+		die("Reason:\nMax Time can not be <0. $m provided\n");
 	}
 	if ($arguments{"--interval"}<0)
         {
                 print_help();
                 my $m=$arguments{"--interval"};
-                die("Interval can not be <0. $m provided\n");
+                die("Reason:\nInterval can not be <0. $m provided\n");
         }
 	if ($arguments{"--minCoF"}<0)
         {
                 print_help();
                 my $m=$arguments{"--minCoF"};
-                die("Minimum AF can not be <0. $m provided\n");
+                die("Reason:\nMinimum AF can not be <0. $m provided\n");
         }
 	if ($arguments{"--minP"}<0)
         {
                 print_help();
                 my $m=$arguments{"--minP"};
-                die("Minimum persistence can not be <0. $m provided\n");
+                die("Reason:\nMinimum persistence can not be <0. $m provided\n");
         }
 
 }
