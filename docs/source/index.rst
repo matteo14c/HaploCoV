@@ -48,6 +48,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    impatient1.rst
    haplocov.rst
    
+   
 .. toctree::
    :maxdepth: 2
    :caption: HaploCoV: tools
