@@ -6,11 +6,11 @@ Please be aware that this readme covers only the standard set-up and execution o
 ## What this tool can do for you
 
 HaploCoV is a collection Perl scripts that can be used to:
-* **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify genomic variants**, 
-* pinpoint **regional variation** and flag genomic variant with **"increased frequency"** locally or globally,  
-* **identify epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** (using a custom scoring system), 
-* **extend an existing classification system** to include novel designations/variants,
-* and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice. 
+1. **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify genomic variants**, 
+2. pinpoint **regional variation** and flag genomic variant with **"increased frequency"** locally or globally,  
+3. **identify epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** (using a custom scoring system), 
+4. **extend an existing classification system** to include novel designations/variants,
+5. and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice. 
 
 ## HaploCoV
 
