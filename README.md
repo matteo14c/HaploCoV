@@ -138,12 +138,14 @@ The output file *linearDataSorted.txt* will be in *HaploCoV* format.
 
 ### HaploCoV.pl
 
-Once data have been converted in HaploCoV format, the complete workflow can be executed by applying **HaploCoV.pl**. 
+Once data have been converted in HaploCoV format, the complete workflow can be executed by applying **HaploCoV.pl**.<br> 
 HaploCoV.pl is the workhorse of HaploCoV and is the recommended way to execute our software.<br> 
-Users can specify a list of geographic regions/areas or countries and intervals of time to be considered in their analyses by providing a configuration file in text format (--locales). HaploCoV.pl will process the configuration file and apply the complete workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file.<br>  This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their "VOCness score" and/or "prevalence", and which are probably worth to be  monitored. More details on the interpretation of this report are provided in the section "How to interpret HaploCoV's results/what to do next".
+Users can specify a list of geographic regions/areas or countries and intervals of time to be considered in their analyses by providing a configuration file in text format (--locales).<br> 
+HaploCoV.pl will process the configuration file and apply the complete workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file.<br>  
+This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their "VOCness score" and/or "prevalence", and which are probably worth to be  monitored. More details on the interpretation of this report are provided in the section "How to interpret HaploCoV's results/what to do next".<br>
 
 ### Important note
-HaploCoV.pl does also feature additional "advanced" options that are not covered in this readme for the sake of time/simplicity. We kindly invite users to read the complete manual of HaploCoV as available at [xxx] for a more in depth and thorough explanation of what HaploCoV can do for you.  Users who need to modify the defaults and apply custom settings should refer to the section "Advanced analyses/fine tuning of HaploCoV" in particular.
+HaploCoV.pl does also feature additional "advanced" options that are not covered in this readme for the sake of time/simplicity. We kindly invite users to read the complete manual of HaploCoV as available at \[link\] for a more in depth and thorough explanation of what HaploCoV can do for you.  Users who need to modify the defaults and apply custom settings should refer to the section "Advanced analyses/fine tuning of HaploCoV" in particular.
 
 <hr>
 
@@ -196,30 +198,30 @@ world   |area     |2022-01-01|2022-11-11|custom          |
 * qualifier: qualifier of the geographic entity, accepted values are: region, country or area. Again, refer to "geography in HaploCoV" for more details. 
 * start-date: lower limit of the interval of time on which to execute the analysis (see "dates in HaploCoV")
 * end-date: upper limit of the interval of time
-* genomic-variants: a list of files with high frequency genomic variants. Comma separated. Each file is used to derive novel candidate lineages compared to a reference nomenclature.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e if the name of your genomic variants file is \"myVar\" the name of the report will be \"_myVar.rep" (see below).
+* genomic-variants: a list of files with high frequency genomic variants. Comma separated. Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e if the name of your genomic variants file is \"myVar\" the name of the report will be \"_myVar.rep" (see below).
 
 The file locales.txt included in this repository provides a valid example of a locales configuration file. 
 
 ### Genomic variants files (Configuration II)
 
-HaploCoV uses collections of genomic variants with high frequency in a specific country/region/locale to define and identify novel candidate variants/lineages of SARS-CoV-2. 
+HaploCoV uses collections of genomic variants with high frequency in a specific country/region/locale to define and identify novel candidate variants/lineages of SARS-CoV-2.<br> 
 For your convenience, a collection of "pre-computed" files is available in the main repository. If you want to use one of these files, you simply have to enter the file/files name in the fifth column of your "locales" configuration file. HaploCoV will detect the file and run all the analyses. 
 
 Precomputed sets of genomic variants/files can broadly be categorized into 3 main classes:
 
-* Highly variable genomes. These are allelic variants found in at least 25 "highly divergent" genomic sequences (w.r.t the reference strain to which they are assigned). These files are stored under the folder: HighVar.
-* Country specific allele variants. Allele variants reaching a frequency of 1% or higher, for at least 15 days in a country at any time point from Mon 2019-12-30. These files are stored under the folder: country. 
-* Increased frequency alleles. Allelic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: HighFreq. 
+* *Highly variable genomes.* These are allelic variants found in at least 25 "highly divergent" genomic sequences (w.r.t the reference strain to which they are assigned). These files are stored under the folder: HighVar.
+* *Country specific genomic variants.* Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a country at any time point from Mon 2019-12-30. These files are stored under the folder: country. 
+* *Increased prevalence genomic variants.* Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: HighFreq. 
 
 Please se the section "Genomic variation and high frequency (genomic) variants" in the extedend manual of HaploCoV for additional information. 
 
-Alternatively, if the pre-computed files do not suit their use case,  users do also have the option of derive "custom" sets of genomic variants by analysing the selected locale and time-frame. In this case the keyword "custom" needs to be indicated in the 5th column (see below), and high frequency genomic variants will be computed on the current selection.   
+Alternatively, if the pre-computed files do not suit their use case,  users do also have the option of derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword "custom" needs to be indicated in the 5th column (see below), and high frequency genomic variants will be computed on the current selection.   
 
 ### Important: special/reserved keywords
 
-When the reserved word **world**  is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geography.
+When the reserved word **world**  is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geographic origin.
 
-In the 5th (genomic-variants) you can use the reserved world "custom" if you prefer to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility, as in this case high frequency genomic variants are determined dynimically based on the user selection. Please read the section "Genomic variation and high frequency (genomic) variant" in the extended manual for additional explanations.
+In the 5th (genomic-variants) you can use the reserved world "custom" if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility. When custom is specified high frequency genomic variants are determined dynimically based on the user selection. Please read the section "Genomic variation and high frequency (genomic) variant" in the extended manual for additional explanations.
 
 ### Advanced configuration
 
@@ -227,7 +229,7 @@ This readme covers only the standard/basic requirements for the execution of Hap
 
 <hr>
 
-# How to interpret HaploCoV's results/what to do next.
+# How to interpret HaploCoV's results
 
 The main output of HaploCoV consists in a file in .rep format. This is a simple text file that provides relevant information about novel (candidate) SARS-CoV-2 variants that demonstrated:
 
@@ -326,6 +328,13 @@ This section reports the latest prevalence of the candidate variant/lineage as e
         <br>`AsiaSO::India 2021-04-30 0.0294-(136)`<br>
 
 indicates that the latest prevalence of the candidate lineage/variant at April 30th 2021, was 0.029 (~3%) in South Asia and India. 
+
+<hr>
+
+# What to do next
+
+If you identified an novel variant of SARS-CoV-2 with "interesting" genomic features, you should probably report the variant to Health authorithies and to the scientific community.
+#da completare
 
 <hr>
 
