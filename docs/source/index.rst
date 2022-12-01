@@ -28,29 +28,34 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
 .. toctree::
    :maxdepth: 2
-   :caption: Before you start\: configuration
+   :caption: Data and formats
 
    data.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Prerequisites
+   
    perlMummer.rst
    configuration.rst
    etimes.rst
    
 .. toctree::
    :maxdepth: 2
-   :caption: Before you start\: formats
+   :caption: HaploCoV: format
    
    metadata.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: HaploCov\: workflow
+   :caption: HaploCov: workflow
    
    impatient.rst
    haplocov.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: HaploCoV\: tools
+   :caption: HaploCoV: tools
    
    impatient2.rst
    hfalleles.rst
@@ -62,7 +67,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
 .. toctree::
    :maxdepth: 2
-   :caption: Advanced analyses
+   :caption: HaploCoV: advanced
 
    subsetting.rst
    customreports.rst
