@@ -28,7 +28,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
 .. toctree::
    :maxdepth: 2
-   :caption: Before you start: configuration
+   :caption: Before you start\: configuration
 
    data.rst
    perlMummer.rst
@@ -37,20 +37,20 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    
 .. toctree::
    :maxdepth: 2
-   :caption: Before you start: formats
+   :caption: Before you start\: formats
    
    metadata.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: HaploCov: workflow
+   :caption: HaploCov\: workflow
    
    impatient.rst
    haplocov.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: HaploCoV: tools
+   :caption: HaploCoV\: tools
    
    impatient2.rst
    hfalleles.rst
