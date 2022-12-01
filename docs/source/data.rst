@@ -1,11 +1,11 @@
-Input files
-===========
+Where do I get the data
+=======================
 
-HaploCoV requires 3 main input:
+HaploCoV requires 3 main files:
 
-* **the reference assembly** of the SARS-CoV-2 genome in fasta format
-* a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference
-* a **.tsv** file with metadata associated to the SARS-CoV-2 genome sequences included in the multifasta
+* **the reference assembly** of the SARS-CoV-2 genome in fasta format;
+* a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference;
+* a **.tsv** file with metadata for the genome sequences in the multifasta;
 
 Reference genome
 ================
@@ -25,16 +25,16 @@ followed by
 
 ::
 
-Remember that you need to have this file (GCF_009858895.2_ASM985889v3_genomic.fna) in the same folder from where you execute HaploCoV (i.e. HaploCoV if you stick with the default)
+Remember that you need to have this file (GCF_009858895.2_ASM985889v3_genomic.fna) in the same folder from which  HaploCoV is executed (i.e. HaploCoV if you stick with the default)
 
 
-Input data
-==========
+Input
+=====
 
-To run HaploCoV you **must have access** to SARS-CoV-2 genome sequences and associated metadata
+To run HaploCoV you **need** SARS-CoV-2 genome sequences and associated metadata.
 
-Right now the  `GISAID <https://gisaid.org>`_ database represents the most complete and up to date point of access to obtain SARS-CoV-2 data. 
-Authorized users can download the complete collection of SARS-CoV-2 genome assemblies and associated metadata by following the procedure illustrated in the figure below.
+Right now the  `GISAID <https://gisaid.org>`_ database is the most complete and up to date point of access to obtain SARS-CoV-2 data. 
+Authorized users can download the complete collection of SARS-CoV-2 genome assemblies and their metadata by following the procedure illustrated in the figure below.
 
 .. figure:: _static/fig1.png
    :scale: 80%
@@ -43,11 +43,13 @@ Authorized users can download the complete collection of SARS-CoV-2 genome assem
 After de-compresson, 2 files should be obtained: 
 1. *metadata.tsv* a metadata table in .tsv format and; 
 2. *sequences.fasta* a multi-fasta file with SARS-CoV-2 genome sequences.
-These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/obtains all the data used for subsequent analyses.
+These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/formats all the data used for subsequent analyses.
 
 Required metadata
 =================
-Please be aware that some metadata are **mandatory** to execute HaploCoV and that columns names in your metadata file **MUST** abide to the structure/names described below. Mandatory metadata:
+Please be aware that some metadata are **mandatory** to execute HaploCoV and that columns names in your metadata file **MUST** abide to the structure/names described below. 
+
+Mandatory metadata:
 * a valid unique identifier for every isolate, column name: *"Virus name"*;
 * a collection date, column name *"Collection date"*;
 * a submission date, column *"Submission date"*;
@@ -66,20 +68,24 @@ An example of a valid metadata table is reported below
    :align: center
 
 If any of the columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
-This does not mean that you necessarily need to provide data from the GISAID database as the main input (see below) to HaploCoV, but just that the metadata that you provide **must have** columns names consistent with those reported above.
+This does not mean that HaploCoV can process only data from the GISAID database (see below), but only that the metadata that you provide **must have** columns names consistent with those indicated above.
 
 Important: providing "external" data  
 ====================================
 
-While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however  metadata must always comply with the prerequisites indicated above and valid metadata tables must include 5 columns with the following names:
+While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however metadata must always comply with the format described above.
+Valid metadata tables must include 5 columns with the following names:
 * "Virus name";
 * "Collection date";
 * "Submission date";
 * "Location";
 * "Pango Lineage";
 
+Names must match exacly. HaploCoV is case-insensitive.
+
 Important: using data from Nextstrain
 =====================================
 
 Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
-Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need** to download also the genomic sequences and align them to the reference genome. However Nextstrain data, still needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
+Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need** to download also the genomic sequences and align them to the reference genome. 
+However Nextstrain data, still needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
