@@ -43,12 +43,11 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
 .. toctree::
    :maxdepth: 2
-   :caption: HaploCoV: workflow
+   :caption: HaploCov: workflow
    
-   impatient1.rst
+   impatient.rst
    haplocov.rst
-   
-   
+
 .. toctree::
    :maxdepth: 2
    :caption: HaploCoV: tools
