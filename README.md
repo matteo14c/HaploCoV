@@ -333,9 +333,14 @@ indicates that the latest prevalence of the candidate lineage/variant at April 3
 
 # What to do next
 
-If you identified an novel variant of SARS-CoV-2 with "interesting" genomic features, you should probably report the variant to Health authorithies and to the scientific community.
-#da completare
+If you identified a novel variant of SARS-CoV-2 with "interesting" genomic features, you should probably report the variant to Health authorithies in your country and to the scientific community.<br>
+Normally https://virological.org/ or https://github.com/cov-lineages/pango-designation/issues/ would be the right place to start.
+If you need to extract the data (and metadata) of the novel candidate lineage/variant from the HaplocoV formatted metadata table, you can take advantage of the *subset.pl* utility in this repo.  A complete description of this tool and its functionalities is reported in the extended manual of HaploCoV.<br>
+Additionally you could also use  *assign.pl* or *p_assign.pl* to assign/re-assign SARS-CoV-2 variants to lineages, based on a custom file of "lineage defining" genomic variants and check/verify how many SARS.CoV-2 genomes worldwide are associated with your new candidate lineage.
+Finally the increase.pl utility can be used to calculate the "prevalence" of your novel/candidate variant/variants, in space and time. 
+All these topics are covered in the extended manual of HaploCoV. Please take a look to the manual in order to see how to make the best of the tools and utilities in HaploCoV
 
 <hr>
 
-### Regards, from the HaploCoV development "team"
+### If you are reading this, you have made your way through the manual! 
+### Congratulations and regards!. The HaploCoV "development team"
