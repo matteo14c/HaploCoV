@@ -246,20 +246,87 @@ Headers and sections of the file are specified/set by \"#\" symbols. The 4 first
 2. passed only the score threshold
 3. passed only the prevalence thresholds
 
-After the header, 3 different sections follow, which correspond t each reporting detailed information about each distinct variant in 
+After the header, 3 distinct sections follow in the same order indicated by the above numbered least.  Each section is introduced by a # symbol, and concluded by the sentence: "A detailed report follows".
+In the report each candidate lineage/variant is introduced by a # followed by a progressive number and its name. Names are according to the convention explained in the section "novel variants and names" of the manual: name of the parental, dot, one letter suffix(N by default), progressive number. I.e B.1.N1 descends from B.1 and so on.
 
-
-## Main features
-
+Two distinct and complementary reports are provided for every variant
 
 ### Scores and novel genomic variants
 
+This section reports the following information:
+
+1. The parental lineage of a candidate variant (*Parent:*). The parental is the lineage/variant from which the lineage/variant defined by HaploCoV descends
+As an example:
+
+`Parent: B.1 ` indicates that the parental lineage is B.1
+
+2. The VOCness score of the parental, and candidate new lineage/variant (*Score parent:* and *Score subV:* , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
+
+An example of a output line is reported below:
+`Score parent: 3.28 - Score subV: 15.10 `
+
+
+3. A detailed comparison of the genomic variants gained or lost by the novel candidate lineage/designation w.r.t its parent. Which includes the following data:
+<br>3.1. *defined by*: reports the complete list of defining genomic variants of the novel lineage/designation
+<br>3.2. *gained (wrt parent)*: genomic variants that are new compared with the parent lineage
+<br>3.3. *lost (wrt parent)*: genomic variants associated with the parent lineage/designation, but not with the novel candidate lineage/designation
+
+Genomic variants are provided in as a list separated by " " and in the same format indicated above:
+<br> 
+\<genomicposition\>_\<ref\>\|\<alt\>  <br>
+i.e. 1_A\|T indicates a A to T substitution in position 1 of the reference genome.<br>
+
+An example ot the outout is reported below: 
+
+`Genomic variants:`
+        <br><br>`defined by: 210_G\|T 241_C\|T 3037_C\|T 4181_G\|T 21618_C\|G 22995_C|A 19220_C\|T `
+        <br><br>`gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T `
+        <br><br>`lost (wrt parent): `
+        
+In this case the novel candidate lineage/variant is defined by 3 additional genomic variants compared to its parental
+
+
 ### Prevalence
 
+This part of the report summarizes the observed prevalence of novel candidate variants/lineages over a time span defined by the user(4 weeks by default) at different locales. The aim is to identify/flag variants that had a high prevalence (default 1% or more) and which demonstrated a significant increase in their spread (2 fold or more).
+Please refere to the manual, and specifically to "How to report prevalence over time and space, increase.pl" for more detailed instructions on how the prevalence of a variant is computed and reported by HaploCoV, and more importantly for how to configure and set parameters.
+The prevalence report comprises 3 sections.
+
+### Prevalence above the threshold (1% by default)
+
+Here we report the number of distinct intervals and the complete list of locales where/when a prevalence above the minimum prevalence threshold was observed.
+
+For example:
+<br>`AsiaSO::India::Delhi:5 AsiaSO::India::WestBengal:1`
+
+Indicates that the novel candidate lineage/variant had a prevalence above the minimum cut-off value at 5 distinct intervals in Delhi and at only a single interval in 
+West Bengal
+
+The sentece XXX is used to indicated that no data are available and/or that the novel variant did not show an prevalence above the minimum threshold at any time.
+
+### Increase (2 fold by default)
+
+For every interval/span of time (default 4 weeks) where the novel candidate lineage/variant was had a prevalence above the user defined threshold, and an increase of X folds (X=2 by default) or higher the prevalence this section reports:
+
+The place were the increase was observed, the prevalence at the initial time point of the interval, and the prevalence at the last time point of the interval
+
+For example:
+<br>`Interval: 2021-04-01 to 2021-04-28, increase at 1 locale(s) `<br>
+ <br>`List of locale(s): AsiaSO::India::Delhi:0.03-(76),0.08-(117)`<br>
+
+Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence
+
+The sentece XXX is used when no data are available and/or the novel variant did not show an increase in its prevalence.
+
+### Prevalence in time
+
+This section reports the latest prevalence of the candidate variant/lineage as estimated by HaploCoV. For example:
+<br>`Latest prevalence:`<br>
+        <br>`AsiaSO 2021-04-30 0.0294-(136)`<br>
+        <br>`AsiaSO::India 2021-04-30 0.0294-(136)`<br>
+
+indicates that the latest prevalence of the candidate lineage/variant at April 30th 2021, was 0.029 (~3%) in South Asia and India. 
+
 <hr>
 
-
-
-<hr>
-
-## Regards, from the HaploCoV development "team"
+### Regards, from the HaploCoV development "team"
