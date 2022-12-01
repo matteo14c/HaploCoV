@@ -8,13 +8,15 @@ Welcome to HaploCoV's documentation!
 
 **HaploCoV**: provides a collection of Perl utilities that can be used to:
 
-1. **align** SARS-CoV-2 genome asssemblies with the reference genomic sequence and **identify genomic variants**, 
-2. identify **regional variation** reaching a **"high frequency"** locally or globally, 
-3. extend an existing classification with **novel candidate lineages/viral variants**, 
-4. use genomic features and prevalence data to pinpoint those that might be **epidemiologically relevant** 
+1. **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify genomic variants**, 
+2. pinpoint **regional variation** and flag genomic variant with **"increased frequency"** locally or globally,  
+3. **identify epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** (using a custom scoring system), 
+4. **extend an existing classification system** to include novel designations/variants,
 5. and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice.
 
-HaploCoV is composed of **6(+3)** utilities, which are combined in a workflow. The complete workflow can be executed with just a couple of commands. 
+HaploCoV is composed of **9(+3)** utilities, which are combined in a workflow. The complete workflow can be executed with just a couple of commands (or several commands for more complex use cases).
+In brief, input files need to be formatted according to the format used by HaploCoV by applying either **addToTable.pl** or **NexstainToHaploCoV.pl** (depending on the input, see below). 
+Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (reccommended) or, if you prefer, by running each individual tool in the HaploCoV workflow in the right order yourself
 Please see the following sections for point to point instructions and tips for the execution of HaploCov.
 
 Should you find any issue, please contact me at matteo.chiara@unimi.it , or open an issue here on github
@@ -26,31 +28,44 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
 .. toctree::
    :maxdepth: 2
-   :caption: Before you start:
+   :caption: Before you start: configuration
 
    data.rst
    perlMummer.rst
    configuration.rst
    etimes.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Before you start: formatting the data
+   
+   metadata.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: Running
+   :caption: Running the complete WF (1)
    
-   metadata.rst
+   impatient1.rst
+   haplocov.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Running the complete WF (2)
+   
+   impatient2.rst
    hfalleles.rst
    novel.rst
    features.rst
    prior.rst
    assign.rst
-   impatient.rst
+   increase.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: Executing custom analyses
+   :caption: Executing advanced analyses
 
    subsetting.rst
-   customalleles.rst
+   customreports.rst
 
 
 Indices and tables
