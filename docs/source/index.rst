@@ -42,7 +42,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    
 .. toctree::
    :maxdepth: 2
-   :caption: HaploCoV: format
+   :caption: HaploCoV: input
    
    metadata.rst
 
@@ -50,7 +50,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    :maxdepth: 2
    :caption: HaploCov: workflow
    
-   impatient1.rst
+   impatient2.rst
    haplocov.rst
 
 .. toctree::
