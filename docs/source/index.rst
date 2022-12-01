@@ -37,20 +37,20 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    
 .. toctree::
    :maxdepth: 2
-   :caption: Before you start: formatting the data
+   :caption: Before you start: formats
    
    metadata.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: Running the complete WF (1)
+   :caption: HaploCoV: workflow
    
    impatient1.rst
    haplocov.rst
    
 .. toctree::
    :maxdepth: 2
-   :caption: Running the complete WF (2)
+   :caption: HaploCoV: tools
    
    impatient2.rst
    hfalleles.rst
@@ -62,7 +62,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
 .. toctree::
    :maxdepth: 2
-   :caption: Executing advanced analyses
+   :caption: Advanced analyses
 
    subsetting.rst
    customreports.rst
