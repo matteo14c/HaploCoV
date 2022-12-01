@@ -304,7 +304,6 @@ For example:
 Indicates that the novel candidate lineage/variant had a prevalence above the minimum cut-off value at 5 distinct intervals in Delhi and at only a single interval in 
 West Bengal
 
-The sentece XXX is used to indicated that no data are available and/or that the novel variant did not show an prevalence above the minimum threshold at any time.
 
 ### Increase (2 fold by default)
 
@@ -318,7 +317,8 @@ For example:
 
 Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence
 
-The sentece XXX is used when no data are available and/or the novel variant did not show an increase in its prevalence.
+The sentence ` The candidate variant/lineage did not show an increase in prevalece greater than the threshold at any interval or locale
+` is used when no data are available and/or the novel variant did not show an increase in its prevalence.
 
 ### Prevalence in time
 
