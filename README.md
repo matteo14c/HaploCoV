@@ -49,7 +49,7 @@ The main output consists in a report file, that summarizes the prevalence and fe
 
 ### Finally
 Read the report (.rep) file.
-Identify/track any interesting/additional novel variant that you identified
+Track any interesting/additional novel variant that you identified
 (Optional, read the full manual for more detailed analyses).
 See the following sections for complete details.
 
