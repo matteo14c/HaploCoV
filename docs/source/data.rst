@@ -28,8 +28,11 @@ followed by
 Remember that you need to have this file (GCF_009858895.2_ASM985889v3_genomic.fna) in the same folder from which  HaploCoV is executed (i.e. HaploCoV if you stick with the default)
 
 
-Input
-=====
+Genomes and metadata
+====================
+
+GISAID
+======
 
 To run HaploCoV you **need** SARS-CoV-2 genome sequences and associated metadata.
 
@@ -70,6 +73,14 @@ An example of a valid metadata table is reported below
 If any of the columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
 This does not mean that HaploCoV can process only data from the GISAID database (see below), but only that the metadata that you provide **must have** columns names consistent with those indicated above.
 
+
+Nextstrain
+==========
+
+Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
+Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need** to download also the genomic sequences and align them to the reference genome. 
+However Nextstrain data, still needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
+
 Important: providing "external" data  
 ====================================
 
@@ -81,11 +92,4 @@ Valid metadata tables must include 5 columns with the following names:
 * "Location";
 * "Pango Lineage";
 
-Names must match exacly. HaploCoV is case-insensitive.
-
-Important: using data from Nextstrain
-=====================================
-
-Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
-Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need** to download also the genomic sequences and align them to the reference genome. 
-However Nextstrain data, still needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
+Names must match exacly. HaploCoV is case-sensitive.
