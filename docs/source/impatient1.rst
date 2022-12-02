@@ -19,5 +19,5 @@ To do all of the above:
 
 ::
 
-2. perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc
+ 2. `perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `
 
