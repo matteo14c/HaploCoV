@@ -144,9 +144,6 @@ Users can specify a list of geographic regions/areas or countries and intervals 
 HaploCoV.pl will process the configuration file and apply the complete workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file.<br>  
 This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their "VOCness score" and/or "prevalence", and which are probably worth to be  monitored. More details on the interpretation of this report are provided in the section "How to interpret HaploCoV's results/what to do next".<br>
 
-### Important note
-HaploCoV.pl does also feature additional "advanced" options that are not covered in this readme for the sake of time/simplicity. We kindly invite users to read the complete manual of HaploCoV as available at \[link\] for a more in depth and thorough explanation of what HaploCoV can do for you.  Users who need to modify the defaults and apply custom settings should refer to the section "Advanced analyses/fine tuning of HaploCoV" in particular.
-
 <hr>
 
 ### Options
@@ -168,21 +165,6 @@ Since in this case the type of analysis was set to "custom" and the target geogr
 
 <hr>
 
-### Output (and intermediate files folder)
-
-The name of the main output by HaploCoV.pl is set automatically by the program by combining the value provided in the "location" (1rst) column, with value/values reported in the "genomic-variants" (5th) column of your locales configuration file. In the example above 3 different output files will be obtained:
-* Italy_areas_list.txt.rep
-* Thailand_custom.rep
-* world_custom.rep
-
-Each execution of HaploCoV usually generates several temporary/indermediate files. Normally you will not need to read/process/use these files, however for your convenience, all the intermediate files will be in be saved in a distinct folder. The same conventions applied for naming the main output files is used also to give names to the  intermediate folders. 
-In the example outlined above, indermediate files will be saved in 3 different folders, called:
-* Italy_areas_list.txt_results
-* Thailand_custom_results
-* world_custom_results
-
-<hr>
-
 ### Configuration (Locales file)
 
 Locale(s) configuration files are used by HaploCoV.pl to set the main parameters for the execution of your analyses. These files need to have a tabular format and contain 5 colums separated by tabulations. An example of a valid locales file is illustrated below:
@@ -201,6 +183,21 @@ world   |area     |2022-01-01|2022-11-11|custom          |
 * genomic-variants: a list of files with high frequency genomic variants. Comma separated. Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e if the name of your genomic variants file is \"myVar\" the name of the report will be \"_myVar.rep" (see below).
 
 The file locales.txt included in this repository provides a valid example of a locales configuration file. 
+
+### Output (and intermediate files folder)
+
+The name of the main output by HaploCoV.pl is set automatically by the program by combining the value provided in the "location" (1rst) column, with value/values reported in the "genomic-variants" (5th) column of your locales configuration file. In the example above 3 different output files will be obtained:
+* Italy_areas_list.txt.rep
+* Thailand_custom.rep
+* world_custom.rep
+
+Each execution of HaploCoV usually generates several temporary/indermediate files. Normally you will not need to read/process/use these files, however for your convenience, all the intermediate files will be in be saved in a distinct folder. The same conventions applied for naming the main output files is used also to give names to the  intermediate folders. 
+In the example outlined above, indermediate files will be saved in 3 different folders, called:
+* Italy_areas_list.txt_results
+* Thailand_custom_results
+* world_custom_results
+
+<hr>
 
 ### Genomic variants files (Configuration II)
 
