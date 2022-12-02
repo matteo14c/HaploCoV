@@ -11,12 +11,13 @@ This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages sho
 
 **Options**
 
-HaploCoV.pl accepts the following options
-* --file: name of the input file (metadata file in HaploCoV format)
-* --locales: configuration file with the list of regions and countries to analyse
-* --param: configuration file with the set of parameters to be applied by HaploCoV in your analysis
-* --path: path to your HaploCoV installation
-* --varfile: additional file with defining genomic variants
+HaploCoV.pl accepts the following options:
+
+* *--file:* name of the input file (metadata file in HaploCoV format)
+* *--locales:* configuration file with the list of regions and countries to analyse
+* *--param:* configuration file with the set of parameters to be applied by HaploCoV in your analysis
+* *--path:* path to your HaploCoV installation
+* *--varfile:* additional file with defining genomic variants
 
 **Execution**
 
@@ -24,7 +25,7 @@ An example of a valid command line is reported below:
 
 ::
 
- perl HaploCov.pl --file linearDataSorted.txt --locales italy.lo
+ perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc
 
 Since in this case the type of analysis was set to "custom" and the target geographic region to Italy (in italy.loc, see "Locales file" below). The final output will be reported in a file called \"Italy\_custom.rep\".
 
@@ -74,6 +75,7 @@ Output (and intermediate files folder)
 ======================================
 
 The name of the main output by HaploCoV.pl is set automatically by the program by combining the value provided in the *"location"* (1rst) column, with value/values reported in the *"genomic-variants"* (5th) column of your locales configuration file. In the example above 3 different output files will be obtained:
+
 1. Italy_areas_list.txt.rep
 2. Thailand_custom.rep
 3. world_custom.rep
@@ -82,11 +84,12 @@ Each execution of HaploCoV usually generates several temporary/indermediate file
 
 The same conventions applied for naming the main output files is used also to give names to the  intermediate folders. 
 In the example outlined above, indermediate files will be saved in 3 different folders, called:
+
 1. Italy_areas_list.txt_results
 2. Thailand_custom_results
 3. world_custom_results
 
-Addittional explanations concerning the intermediate files produced by HaploCoV and what to make of them are provided in the section: "Intermediate files and what to make of them."
+Additional explanations concerning the intermediate files produced by HaploCoV and what to make of them are provided in the section: "Intermediate files and what to make of them."
 
 Genomic variants files (Configuration II)
 =========================================
@@ -148,7 +151,7 @@ In the report each candidate lineage/variant is introduced by a # followed by a 
 Names are according to the convention explained in the section "Novel variants and names", briefly: 
 
 ``name of the parental`` , ``dot`` , ``one letter suffix(N by default)`` , ``progressive number`` . 
-I.e **B.1.N1** descends from **B.1** and so on.
+| I.e **B.1.N1** descends from **B.1** and so on.
 
 Main features of the newly identified lineages/variants are reported in two conceptually distinct sections: **Scores** and **Prevalence** 
 
@@ -165,15 +168,12 @@ As an example:
 2. The VOCness score of the parental, and candidate new lineage/variant (**Score parent:** and **Score subV:** , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
 
 An example of a output line is reported below:
-``Score parent: 3.28 - Score subV: 15.10`` 
+| ``Score parent: 3.28 - Score subV: 15.10`` 
 
 3. A detailed comparison of the genomic variants gained or lost by the novel candidate lineage/designation w.r.t its parent. Which includes the following data:
-
-|  3.1. **defined by**: reports the complete list of defining genomic variants of the novel lineage/designation
-  
-|  3.2. **gained (wrt parent)**: genomic variants that are new compared with the parent lineage
-  
-|  3.3. **lost (wrt parent)**: genomic variants associated with the parent lineage/designation, but not with the novel candidate lineage/designation
+| 3.1. **defined by**: reports the complete list of defining genomic variants of the novel lineage/designation 
+| 3.2. **gained (wrt parent)**: genomic variants that are new compared with the parent lineage
+| 3.3. **lost (wrt parent)**: genomic variants associated with the parent lineage/designation, but not with the novel candidate lineage/designation
 
 Genomic variants are provided in as a list separated by " " and in the same format indicated above:
 
@@ -182,13 +182,13 @@ Genomic variants are provided in as a list separated by " " and in the same form
 
 An example ot the outout is reported below: 
 
-|``Genomic variants:`` 
-|
-|        ``defined by: 210_G\|T 241_C\|T 3037_C\|T 4181_G\|T 21618_C\|G 22995_C|A 19220_C\|T`` 
-|
-|        ``gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T`` 
-|
-|        ``lost (wrt parent):`` 
+| ``Genomic variants:`` 
+| 
+|  ``defined by: 210_G\|T 241_C\|T 3037_C\|T 4181_G\|T 21618_C\|G 22995_C|A 19220_C\|T`` 
+| 
+|  ``gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T`` 
+| 
+|  ``lost (wrt parent):`` 
         
 In this case the novel candidate lineage/variant is defined by 3 additional genomic variants compared to its parental
 
