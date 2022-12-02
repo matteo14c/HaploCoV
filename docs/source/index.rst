@@ -50,7 +50,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    :maxdepth: 2
    :caption: HaploCov: workflow
    
-   impatient2.rst
+   impatient1.rst
    haplocov.rst
 
 .. toctree::
