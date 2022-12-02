@@ -115,12 +115,41 @@ When the reserved word **world** is used in the 1rst column of your locales all 
 
 In the 5th (genomic-variants) you can use the reserved world **custom** if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility. When **custom** is specified high frequency genomic variants are determined dynimically based on the user selection.
 
+Advanced configuration
+=======================
+
+HaploCoV.pl executes all the tools and utilities in HaploCoV for you and in the right order. However, the workflow is relatively complex, and every tool uses a series of parameters that need to be set, or are set by default.
+The **parameters** file is a special configuration file that can be used to set and configure all the parameters used by each and every single tool in the workflow.
+A default file with a standard configuration (called **parameters**) is included in the main repository. This file should suit most use case/scenario. However users are free to edit it according to their needs.
+
+The format is quite straightforward, each tool is indicated by in a line, and the parameters to be set in the following lines. When no parameters are specified, the defaults are used In example:
+
+| ``computeAF.pl`` 
+| ``augmentClusters.pl`` 
+| ``--size  10`` 
+| ``--dist  4``
+
+will set *computeAF.pl* to use its default parameters; while for *augmentClusters.pl* --dost will be set to 4 and --size to 10.
+
+
+
+Defining genomic variants file
+==============================
+
+The --varfile option can be set instuct HaploCoV to report an additional file with the list of novel candidate SARS-CoV-2 variants identified by the tool, and the set of defining genomic variant.
+The --varfile can be set to one of 3 possible values:
+* "n" the additional/ancillary file is not produced (default);
+* "b" the additional file is produced, only variants that passed both the thresholds (score and prevalence) are reported in the file
+* "a" the additional file is produces, variants that passed any of the thresholds (score or prevalence) are reported in the file
+
+For an extendend explanation of the meaning, format and possible usage/application of this additional output file, users are kindly invited to read the extended manual of HaploCoV.
+
+If required/useful users can also obtain the complete list of the novel candidate variants, and the list of genomic variants that define them in a separate file (--varfile option).<br>
+An additional configuration file to set the parameters/options of each single tool in the pipeline can also be provided. This file can be specified with the --param option. The default is to use the configuration file \"*parameters*\", included in this Github repository, which should suit most use case.
+
 
 Intermediate files and what to make of them
 ===========================================
-
-Advanced configuration
-======================
 
 
 How to interpret HaploCoV's results
