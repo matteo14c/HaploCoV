@@ -37,8 +37,8 @@ If you need to know the date of isolation (and offset with respect to day 0) of 
 
 For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
 
-1 Importing data
-================
+Importing data
+==============
 
 GISAID data: addToTable.pl
 ==========================
@@ -63,7 +63,7 @@ addToTable.pl accepts the following options:
 * *--dayFrom*: include only genomes collected after this day
 * *--outfile*: name of the output file
 
-**A typical run of addToTable.pl should look something like:**
+**An example of a valid command line should look something like:**
 
 ::
 
@@ -89,7 +89,7 @@ NextStrainToHaploCoV.pl accepts the following options
 
 **Execution**
 
-A typical command line for NextStrainToHaploCoV.pl is something like:
+A command line for NextStrainToHaploCoV.pl is something like:
 
 ::
 
