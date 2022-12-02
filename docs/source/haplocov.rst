@@ -151,6 +151,7 @@ In the report each candidate lineage/variant is introduced by a # followed by a 
 Names are according to the convention explained in the section "Novel variants and names", briefly: 
 
 ``name of the parental`` , ``dot`` , ``one letter suffix(N by default)`` , ``progressive number`` . 
+
 | I.e **B.1.N1** descends from **B.1** and so on.
 
 Main features of the newly identified lineages/variants are reported in two conceptually distinct sections: **Scores** and **Prevalence** 
@@ -168,6 +169,7 @@ As an example:
 2. The VOCness score of the parental, and candidate new lineage/variant (**Score parent:** and **Score subV:** , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
 
 An example of a output line is reported below:
+
 | ``Score parent: 3.28 - Score subV: 15.10`` 
 
 3. A detailed comparison of the genomic variants gained or lost by the novel candidate lineage/designation w.r.t its parent. Which includes the following data:
@@ -178,6 +180,7 @@ An example of a output line is reported below:
 Genomic variants are provided in as a list separated by " " and in the same format indicated above:
 
 \<genomicposition\>_\<ref\>\|\<alt\> 
+
 | i.e. 1_A\|T indicates a A to T substitution in position 1 of the reference genome.
 
 An example ot the outout is reported below: 
@@ -205,6 +208,7 @@ The prevalence report comprises 3 sections.
 Here we report the number of distinct intervals and the complete list of locales where/when a prevalence above the minimum prevalence threshold was observed.
 
 For example:
+
 | ``AsiaSO::India::Delhi:5 AsiaSO::India::WestBengal:1`` 
 
 Indicates that the novel candidate lineage/variant had a prevalence above the minimum cut-off value at 5 distinct intervals in Delhi and at only a single interval in West Bengal
@@ -218,8 +222,9 @@ For every interval/span of time (default 4 weeks) where the novel candidate line
 * and the prevalence at the last time point of the interval;
 
 For example:
-|  ``Interval: 2021-04-01 to 2021-04-28, increase at 1 locale(s)`` 
-|  ``List of locale(s): AsiaSO::India::Delhi:0.03-(76),0.08-(117)`` 
+
+| ``Interval: 2021-04-01 to 2021-04-28, increase at 1 locale(s)`` 
+| ``List of locale(s): AsiaSO::India::Delhi:0.03-(76),0.08-(117)`` 
 
 Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence.
 
@@ -228,6 +233,7 @@ The sentence ` The candidate variant/lineage did not show an increase in prevale
 **Prevalence in time**
 
 This section reports the latest prevalence of the candidate variant/lineage as estimated by HaploCoV. For example:
+
 |  ``Latest prevalence:``
 |      ``AsiaSO 2021-04-30 0.0294-(136)`` 
 |      ``AsiaSO::India 2021-04-30 0.0294-(136)`` 
