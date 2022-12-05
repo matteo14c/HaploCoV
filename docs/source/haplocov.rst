@@ -36,7 +36,8 @@ Locale(s) configuration files are used by HaploCoV.pl to set the main parameters
 These files are used to configure the place/places and intervals of time that HaploCoV will include in the analyses. There is no limit to the maximum number of geographic locations, and time-frames that can be analysed. As outlined in the example below, however each need to be indicated by in a separate line in your configuration file.
 
 Locales files need to have a tabular format and contain 5 colums separated by tabulations. The file locales.txt included in the Github repository provides a valid example of a locales configuration file. 
- An example of a valid locales file is illustrated below:
+
+| An example of a valid locales file is illustrated below:
  
  .. list-table:: Locales File
    :widths: 35 35 50 50 70
@@ -63,7 +64,8 @@ Locales files need to have a tabular format and contain 5 colums separated by ta
      - 2022-01-01
      - custom
 
-The file includes the following columns, in this set order
+The file includes the following columns, in this set order:
+
 1. **location**: a country, a region or a macrogeographic area (see "geography in HaploCoV")
 2. **qualifier**: qualifier of the geographic entity, accepted values are: region, country or area. 
 3. **start-date:** lower limit of the interval of time on which the analysis are executed (see "dates in HaploCoV")
