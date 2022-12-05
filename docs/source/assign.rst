@@ -36,9 +36,9 @@ The output consists of a table in HaploCoV format, similarly to the input. The g
 
    * - Heading genome ID
      - Heading collection date
-     - Heading delta days (collection)
+     - Heading offset days (collection)
      - Heading deposition date
-     - Heading delta days (deposition)
+     - Heading offset days (deposition)
      - Heading continent
      - Heading macro-area
      - Heading country
