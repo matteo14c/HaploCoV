@@ -8,6 +8,7 @@ Moreover, some tasks/processes can potentially take up to a few days (see for ex
 .. list-table:: Computational Resources
    :widths: 40 40 40 40 40
    :header-rows: 1
+   
    * - Heading Tool
      - Heading Input files
      - Heading RAM (peak memory)
@@ -18,51 +19,7 @@ Moreover, some tasks/processes can potentially take up to a few days (see for ex
      - 6.0G - 8.0G
      - ~20 genomes per hour (on a single CPU)
      - 6.0G - 8.0G
-   * - NextStrainToHaploCoV.pl
-     - metadata.tsv ~10G
-     - < 1G
-     - ~10 min 
-     - 3.0 - 4.0G
-   * - computeAF.pl
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-     - 4.0G - 6.0G
-     - ~20 min 
-     - ~ 2.0G
-   * - augmentClusters.pl
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-     - 6.0G - 8.0G
-     - ~20 min 
-     - ~10 K
-   * - assign.pl / p_assign.pl
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-     - < 1.0G
-     - 4M genomes /per hour
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-   * - LinToFeats.pl
-     - lineages/variants definition ~10 Kb
-     - < 1.0G
-     - < 5 min
-     - ~20 K
-   * - report.pl
-     - lineages/variants features ~20 Kb
-     - < 1.0G
-     - < 2 min
-     - ~20 K
-   * - subset.pl
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-     - < 1.0G
-     - 5-10 min
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-   * - increase.pl
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-     - < 1.0G
-     - 10-15 min
-     - 10 M. Prevalence report     
-   * - HaploCoV.pl
-     - HaploCoV-formatted metadata. 4.0G - 9.0G
-     - 6.0G - 8.0G
-     - 3 hours on full data
-     - 20 K. HaploCoV report
+  
 
 If you already have all your metadata in HaploCoV format, executing the full workflow should require less than 3hrs.
 If you use a "locales" file to restrict the analyses to a specific time-interval or geographic region, execution times should be considerably reduced (see HaploCoV: workflow).
