@@ -25,4 +25,29 @@ A typical run of report.pl should look something like:
 
  perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt
 
-The main output file *lvar_prioritization.txt will* a list of the SARS-CoV-2 variants that show a significant increase in their genomic score with respect to a parent variant. These variants are more likely to pose an increased risk from an epidemiological perspective.
+The main output file *lvar_prioritization.txt will* a list all the newly identified (by HaploCoV) designations in your reference nomenclature, and their score. 
+The output file is a table with 6 columns
+
+.. list-table:: Locales File
+   :widths: 35 35 50 50 70
+   :header-rows: 1
+
+   * - Heading newLab
+     - Heading Parent
+     - Heading scoreNew
+     - Heading scorePar
+     - Heading scoreDiff
+     - Heading PASS
+   * - B.1.N.1
+     - B.1
+     - 15
+     - 1.5
+     - 13.5
+The table reports:
+
+1. the name of the novel designation according to HaploCoV
+2. the name of the parent lineage in the nomeclature
+3. the VOC-ness score of the novel lineage
+4. the VOC-ness score of the parent
+5. the difference in score
+6. whether the difference is above the threshold (PASS) or not (NO)
