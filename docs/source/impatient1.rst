@@ -23,5 +23,6 @@ To run the full workflow you will need to execute at least 2 commands:
 
  2. `perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `
  
+ 
  See below for more details
 
