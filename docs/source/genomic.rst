@@ -13,7 +13,7 @@ These files have a very streamlined format which is briefly illustrated below. E
 | *5000\_A|G*
 |
 
-where **positiion**= genomic coordinate on the reference genome, **ref**= reference sequence on the genome and **alt**= alternative sequence on the genome.
+where **positiion**\= genomic coordinate on the reference genome, **ref**\= reference sequence on the genome and **alt**\= alternative sequence on the genome.
 
 A "*genomic variants* file consists of 2 columns separated by tabulations. The first column reports a genomic variant, the second the list of places (country, macro-areas, etc) where the genomic variant shows a prevalence above the threshold. Genomic variants are reported in no specific order.
 An example of a genomic variants file looks like:
