@@ -8,6 +8,7 @@ HaploCoV format for metadata
 ============================
 
 An example of the data format used by HaploCoV (HaploCoV format) is illustrated in the table below:
+
 .. list-table:: Locales File
    :widths: 30 30 30 30 30 30 30 30 30 30 30
    :header-rows: 1
@@ -23,6 +24,7 @@ An example of the data format used by HaploCoV (HaploCoV format) is illustrated 
      - Heading region
      - Heading lineage
      - Heading genomic variants
+
 
 The file is delineated by tabulations. Allele variants are reported as a comma separated list. 
 The format is as follows: 
