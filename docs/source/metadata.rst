@@ -10,33 +10,43 @@ HaploCoV format for metadata
 An example of the data format used by HaploCoV (HaploCoV format) is illustrated in the table below:
 
 .. list-table:: Locales File
-   :widths: 30 30 30 30 30 30 30 30 30 30 30
+   :widths: 30 30 30 30 30 30 30 30 30 30 30 30
    :header-rows: 1
 
    * - Heading genome ID
      - Heading collection date
-     - Heading delta days (collection)
+     - Heading offset days (collection)
      - Heading deposition date
-     - Heading delta days (deposition)
+     - Heading offset days (deposition)
      - Heading continent
      - Heading macro-area
      - Heading country
      - Heading region
      - Heading lineage
      - Heading genomic variants
-   * -
-     -
-     -
-     -
-     -
-     -
-     -
-     -
-     -
-     -
+   * - genome1
+     - 2022-06-01
+     - 788
+     - 2022-06-11
+     - 798
+     - Europe
+     - EuSo
+     - Italy
+     - Lombardy
+     - BA.2.9
+     - v1,v2,vn 
+   * - genome2
+     - 2022-05-01
+     - 758
+     - 2022-05-11
+     - 768
+     - Europe
+     - EuSo
+     - Italy
+     - Lombardy
+     - BA.2
+     - v1,v2,vn 
     
-
-
 The file is delineated by tabulations. Allele variants are reported as a comma separated list. 
 The format is as follows: 
 *genomicposition_ref|alt* i.e. *1_A|T* for example indicates a A to T substitution in position 1 of the reference genome
