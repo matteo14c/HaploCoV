@@ -100,13 +100,14 @@ HaploCoV uses collections of genomic variants with high frequency in a specific 
 
 For your convenience, a collection of *"pre-computed"* files is available in the main repository. If you want to use one of these files, you simply have to enter the file/files name in the fifth column of your *"locales"* configuration file. HaploCoV will detect the file and run all the analyses for you. 
 
-Precomputed sets of genomic variants/files can broadly be categorized into 3 main classes:
+Precomputed sets of genomic variants/files can broadly be categorized into 4 main classes:
 
 1. **Highly variable genomes.** These are allelic variants found in at least 25 *highly divergent* genomic sequences (w.r.t the reference strain to which they are assigned). These files are stored under the folder: **HighVar**.
-2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a country at any time point from Mon 2019-12-30. These files are stored under the folder: **country**. 
+2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. These files are stored under the folder: **country**. 
 3. **Increased prevalence genomic variants.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.** 
+4. **globally frequent genomic variants** These are provided in the main github repository of HaploCoV, and include: *global_list.txt*: (frequent globally), *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one county
 
-Please se the section "Genomic variation and high frequency (genomic) variants" above for additional information. 
+Please se the section "Genomic variants file" above for additional information. 
 
 If the pre-computed files do not suit their use case, users do also have the option of derive **custom** sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword **custom** needs to be indicated in the 5th column of the *locales* file (see below). High frequency genomic variants will be computed based on the current selection.   
 
