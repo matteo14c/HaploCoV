@@ -59,8 +59,11 @@ Moreover, some tasks/processes can potentially take up to a few days (see for ex
      - < 1.0G
      - 10-15 min
      - 10 M. Prevalence report      
-
-
+   * - HaploCoV.pl
+     - HaploCoV-formatted metadata. 4.0G - 9.0G
+     - 6.0G - 8.0G
+     - 3 hours on full data
+     - 20 K. HaploCoV report
 
 If you already have all your metadata in HaploCoV format, executing the full workflow should require less than 3hrs.
 If you use a "locales" file to restrict the analyses to a specific time-interval or geographic region, execution times should be considerably reduced (see HaploCoV: workflow).
