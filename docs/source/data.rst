@@ -48,6 +48,13 @@ After de-compresson, 2 files should be obtained:
 2. *sequences.fasta* a multi-fasta file with SARS-CoV-2 genome sequences.
 These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/formats all the data used for subsequent analyses.
 
+Alternatively users can also download a set of genomes of interest directly by selecting the corresponding entries from the web interface of GISAID. In this case, we strongly suggest to download the "Patient status metadata" file to provide all the required information.
+See Figure below
+
+.. figure:: _static/gisaid2.png
+   :scale: 80%
+   :align: center
+
 Required metadata
 =================
 Please be aware that some metadata are **mandatory** to execute HaploCoV and that columns names in your metadata file **MUST** abide to the structure/names described below. 
@@ -57,7 +64,7 @@ Mandatory metadata:
 * a collection date, column name *"Collection date"*;
 * a submission date, column *"Submission date"*;
 * location: the geographic place from where the isolated was collected; Column name: *"Location"*;
-* a valid lineage/group/class associated with the genome. Column name: *"Pango lineage"* 
+* a valid lineage/group/class associated with the genome. Column name: *"Pango lineage"* or *"Lineage"*
 
 Dates must be provided in YYYY-MM-DD format. 
 Locations in the following format: Continent/Country/Region. 
@@ -66,9 +73,25 @@ Sequences unique identifiers can not be replaced by *NA* values.
 
 An example of a valid metadata table is reported below
 
-.. figure:: _static/table1.png
-   :scale: 80%
-   :align: center
+ .. list-table:: Locales File
+   :widths: 50 50 50 50 25
+   :header-rows: 1
+
+   * - Heading location
+     - Heading qualifier
+     - Heading start-date
+     - Heading end-date
+     - Heading genomic-variants
+   * - Italy
+     - 2022-11-01
+     - 2022-11-11
+     - Europe/ Italy /Lombardy
+     - BF.1
+   * - Thailand
+     - 2022-05-11
+     - 2022-11-26
+     - Asia / Thailand / Buriram
+     - BA.5
 
 If any of the columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
 This does not mean that HaploCoV can process only data from the GISAID database (see below), but only that the metadata that you provide **must have** columns names consistent with those indicated above.
@@ -78,8 +101,8 @@ Nextstrain
 ==========
 
 Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
-Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need** to download also the genomic sequences and align them to the reference genome. 
-However Nextstrain data, still needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
+Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. Since these data have already been processed by Nexstrain using their *ncov workflow*, genomic variants are already included in the metadata file and hence **you will not need** to download genomic sequences and align them to the reference genome. 
+However Nextstrain data still needs to be converted in "HaploCoV" format.  This can be done by using *NextStrainToHaploCoV.pl* (see below).
 
 Important: providing "external" data  
 ====================================
