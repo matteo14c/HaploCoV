@@ -29,6 +29,23 @@ Moreover, some tasks/processes can potentially take up to a few days (see for ex
      - 4.0G - 6.0G
      - ~20 min 
      - ~ 2.0G 
+   * - augmentClusters.pl
+     - HaploCoV-formatted metadata. 4.0G - 9.0G
+     - 6.0G - 8.0G
+     - ~20 min 
+     - ~10 K
+   * - assign.pl / p_assign.pl
+     - HaploCoV-formatted metadata. 4.0G - 9.0G
+     - < 1.0G
+     - 4M genomes /per hour
+     - HaploCoV-formatted metadata. 4.0G - 9.0G
+   * - LinToFeats.pl
+     - lineages/variants definition ~10 Kb
+     - < 1.0G
+     - < 5 min
+     - ~20 K
+
+
 
 If you already have all your metadata in HaploCoV format, executing the full workflow should require less than 3hrs.
 If you use a "locales" file to restrict the analyses to a specific time-interval or geographic region, execution times should be considerably reduced (see HaploCoV: workflow).
