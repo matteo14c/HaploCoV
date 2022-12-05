@@ -1,17 +1,18 @@
 6 Assign genomes to new groups
 ===============================
 
-HaploCoV incorporates *assign.pl* an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature which might have been derived by augmentClusters.pl. 
+*assign.pl* an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by augmentClusters.pl. 
 The utility applies a simple algorithm based on phenetic distances (described in Chiara et al 2021). For every group, users need to provide a list of "characteristic" allele variants, here defined as those present in more than 50% of the genomes that form the group.
 For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
 
-*assign.pl* takes 2 main input files: 1 a simple file with "group/lineage" defining variants; 2 a metadata table, in HaploCoV format. See linDefMut in the current github repository for an example of a file with lineage defining variants. The format is exactly the same as that of the output files produced augmentClusters.pl.
+*assign.pl* takes 2 main input files: 1 a simple file with "group/lineage/variang" defining genomic variants; 2 a metadata table, in HaploCoV format. See linDefMut in the current github repository for an example of a file with lineage defining variants (or the Genomic variants file section). 
+The output is in HaploCoV format.
 
 **Assigning Pango Lineages** 
-*linDefMut* in the current github repository provides a complete list of defining allele variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a weekly basis.
+The file*linDefMut* in the current github repository provides a complete list of defining genomic variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a bi-weekly basis.
 
 **Assigning Haplogroups as defined in Chiara et al 2021**
-*HaploDefMut* in the current github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in Chiara el al 2021. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a weekly basis.
+*HaploDefMut* in the current github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in Chiara el al 2021. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a bi-weekly basis.
 
 **Options**
 *assign.pl* takes the following options:
@@ -36,7 +37,7 @@ The output consists of a table in HaploCoV format, similarly to the input. The g
 
 **Execution times, and multithreading** 
 
-On a single core/thread *assign.pl* can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required to assign 11M genomes.
+Using a single core/thread *assign.pl* can assign the complete collection of more than 15M of genomes included in GISAID to pango lineages in about 4 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than ten minutes are required to assign 11M genomes.
 
 **p_assign.pl**
 
@@ -57,6 +58,6 @@ To execute it you can use:
 Input files are the same as those provided to *assign.pl*. Output format is in the same format described above.
 
 .. warning::
-Since *p_assign.pl* does directly make use of *assign.pl* whent it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error is *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
+Since *p_assign.pl* does directly make use of *assign.pl* when it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error is *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
 
 All input files **MUST** be in the **same folder** from which the program is executed. 
