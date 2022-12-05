@@ -105,7 +105,7 @@ Precomputed sets of genomic variants/files can broadly be categorized into 4 mai
 1. **Highly variable genomes.** These are allelic variants found in at least 25 *highly divergent* genomic sequences (w.r.t the reference strain to which they are assigned). These files are stored under the folder: **HighVar**.
 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. These files are stored under the folder: **country**. 
 3. **Increased prevalence genomic variants.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.** 
-4. **globally frequent genomic variants** These are provided in the main github repository of HaploCoV, and include: *global_list.txt*: (frequent globally), *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one county
+4. **globally frequent genomic variants** These are provided in the main github repository of HaploCoV, and include: *global_list.txt*: frequent worldwide, *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one county
 
 Please se the section "Genomic variants file" above for additional information. 
 
