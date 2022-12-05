@@ -34,8 +34,8 @@ The output file *Thai_HaploCoV_formattedMetadata* will include only genomes coll
 
 
  
-#1 Geographically restricted analyses: how to analyse a specific Area, Country or region of interest
-====================================================================================================
+Geographically restricted analyses: how to analyse a specific Area, Country or region of interest
+=================================================================================================
 
 .. warning::
 Please be aware that HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived *-as they are-* from their respective repositories. If you encounter any inconsistencies or errors in the naming of continents, countries or regions please contact data submitters and/or curators of the database from which data were obtained.
@@ -90,8 +90,8 @@ The same approach can be applied likewise to any geographic level metadata/colum
  
 subset.pl supports subsetting/selection by macroArea (--Marea), country (--country), and region (--region), which correspond to columns 7,8 and 9 in the HaploCoV metadata file.
 
-#2 Lineage/HG specific analyses: can I analyse a lineage of interest?
-=====================================================================
+Lineage/HG specific analyses: can I analyse a lineage of interest?
+==================================================================
 
 Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to grep.
 For example if you are interested in "B.1.1.7" only you can subset you data like this:
@@ -114,8 +114,8 @@ The output should be:
    :align: center
 
 
-#3 Time constrained analyses: 
-=================================
+Time constrained analyses: 
+===========================
 
 If you want to analyse only genomes/isolates collected between any interval of time, you can subset an HaploCoV formatted file accordingly. 
 Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since HaploCoV formatted files are sorted by collection date, in descending order,all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
@@ -156,8 +156,8 @@ The procedure described above requires some confidence with the unix shell, if y
  perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --outfile myIntervalOfTime
 
 
-#4 Can I combine #1,#2 and #3?
-=============================
+Can I combine all of the above?
+===============================
 
 Yes of course. Suppose that you want to analyse:
 
