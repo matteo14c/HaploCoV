@@ -130,28 +130,42 @@ The format is quite straightforward, each tool is indicated by in a line, and th
 | ``augmentClusters.pl`` 
 | ``--size  10`` 
 | ``--dist  4``
+|
 
-will set *computeAF.pl* to use its default parameters; while for *augmentClusters.pl* --dost will be set to 4 and --size to 10.
+will set *computeAF.pl* to use its default parameters; 
+while for *augmentClusters.pl* --dist will be set to 4 and --size to 10.
 
+For a complete list of all the parameters accepted by every tool, please refer to the corresponding section in the manual.
 
 
 Defining genomic variants file
 ==============================
 
-The --varfile option can be set instuct HaploCoV to report an additional file with the list of novel candidate SARS-CoV-2 variants identified by the tool, and the set of defining genomic variant.
-The --varfile can be set to one of 3 possible values:
+The --varfile option can be set instuct HaploCoV to report an additional file with the list of novel candidate SARS-CoV-2 variants identified by the tool, and the set of their defining genomic variant.
+
+--varfile can be set to one of 3 possible values:
+
 * "n" the additional/ancillary file is not produced (default);
-* "b" the additional file is produced, only variants that passed both the thresholds (score and prevalence) are reported in the file
-* "a" the additional file is produces, variants that passed any of the thresholds (score or prevalence) are reported in the file
+* "b" the additional file is produced, only variants that passed both the thresholds (score and prevalence) are reported 
+* "a" the additional file is produces, variants that passed any of the thresholds (score or prevalence) are reported 
 
-For an extendend explanation of the meaning, format and possible usage/application of this additional output file, users are kindly invited to read the extended manual of HaploCoV.
-
-If required/useful users can also obtain the complete list of the novel candidate variants, and the list of genomic variants that define them in a separate file (--varfile option).<br>
-An additional configuration file to set the parameters/options of each single tool in the pipeline can also be provided. This file can be specified with the --param option. The default is to use the configuration file \"*parameters*\", included in this Github repository, which should suit most use case.
+For a more extendend explanation of the meaning, format and possible usage/application of this output file, users are kindly invited to read the section: "Genomic variants file".
 
 
 Intermediate files and what to make of them
 ===========================================
+
+For every run of HaploCoV and a folder with 6 indermediate files will be created (see above). Although, normally you are not required to use these files, a brief explanation concerning their meaning and content is reported in the following section.
+All these files are produced by different tools in the HaploCoV workflow. More detailed explanations can also be found in the corresponding (to each tool) section in the manual. 
+
+Indermediate files produced by HaploCoV.pl (prefix of the name might change according to the input file, suffix are reported):
+
+| 1. *areas_list.txt* : this file is produced by computeAF.pl. It reports the complete list of genomic variants of high frequency (above 1% for more than 30 days by default) that were identified by analising the interval of time and geographic locales included in your "locales" file. This file is produced only if the type of analysis (5th column of your locales file is set to custom.
+| 2. *\_results.txt* : the file with this suffix, is the result of augmentClusers.pl, and includes all the designations (already included in the nomenclature of novel) that were identified by that tool. Names of candidate novel lineages/variants are according to the conventions defined in *Novel variants and names*
+| 3. *\_assigned.txt* : this file is produced by assign.pl. Following the identification of novel candidates lineages/variants, HaploCoV re-assigns all the genomes included in your analyses using the additional designation. Results are saved in this file. The file is in *HaploCoV* format, the lineage/designation assigned to each genome is updated.
+| 4. *\_features.csv* : this file reports *high level* genomic features associated with each lineage/candidate lineage included in the \_results.txt file. Features are computed
+| 5. *\_PASS.csv* : reports the VOC-ness score computed by report.pl for every lineage/new candidate lineage included in \_results.txt
+| 6. *\_txt.prev*: provided the prevalence report computed by *increase.pl* Prevalence data are computed only for the lineage/candidate lineages included in *\_results.txt* and only at the locales and time-intervals included in the analysis
 
 
 How to interpret HaploCoV's results
@@ -175,7 +189,7 @@ Headers and sections of a .rep file are specified/set by *"#"* symbols. The 4 fi
 2. passed only the score threshold
 3. passed only the prevalence thresholds
 
-After the header, 3 distinct sections follow in the same order indicated by the above numbered least.  
+After the header, 3 distinct sections follow in the same order indicated by the above numbered list.  
 
 Each section is introduced by a *"#"* symbol, and concluded by the sentence: **"A detailed report follows"**.
 In the report each candidate lineage/variant is introduced by a # followed by a progressive number and its name. 
