@@ -44,6 +44,21 @@ Moreover, some tasks/processes can potentially take up to a few days (see for ex
      - < 1.0G
      - < 5 min
      - ~20 K
+   * - report.pl
+     - lineages/variants features ~20 Kb
+     - < 1.0G
+     - < 2 min
+     - ~20 K
+   * - subset.pl
+     - HaploCoV-formatted metadata. 4.0G - 9.0G
+     - < 1.0G
+     - 5-10 min
+     - HaploCoV-formatted metadata. 4.0G - 9.0G
+   * - increase.pl
+     - HaploCoV-formatted metadata. 4.0G - 9.0G
+     - < 1.0G
+     - 10-15 min
+     - 10 M. Prevalence report      
 
 
 
