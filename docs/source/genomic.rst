@@ -44,9 +44,11 @@ HaploCoV does also feature additional sets of genomic variants/files, which migh
 These files are found under the folder "alleleVariantSet" and include:
 
 | 1. **Highly variable genomes.** These are genomic variants found in at least 25 *highly divergent* genomic sequences that have 6 or more additional genomic variants w.r.t the reference strain to which they are assigned. Highly divergent genomic variants are computed by considering non overlapping intervals of 60 days. For example 960\_1200\_list.txt from the list of genomic variants from genome sequences isolated from 960 to 1200 days after Mon 2019-12-30 (day 0 according to HaploCoV, see `here<https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov>`_). These files are stored under the folder: **HighVar**.
+|
 | 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. In these case each file represents a country, unlike country_list.txt, which reports genomic variants that were frequent at any country. Each file covers a interval of These files are stored under the folder: **country**. 
+|
 | 3. **Increased prevalence genomic variants.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. Each file These files are stored under the folder: **HighFreq.**  
-
+|
 Lineage/variants in HaploCoV
 =============================
 
