@@ -1,7 +1,9 @@
 For impatient people
 ====================
 
-To do all of the above: 
+To run the full workflow you will need to execute at least 2 commands: 
+
+**To import data**
 
 **GISAID data**
 
@@ -15,9 +17,11 @@ To do all of the above:
 
  1. ` perl NextStrainToHaploCoV.pl --metadata metadata.tsv --outfile linearDataSorted.txt `
 
-**finally**
+**and then**
 
 ::
 
  2. `perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `
+ 
+ See below for more details
 
