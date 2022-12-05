@@ -6,9 +6,8 @@ For example, the complete fasta file with all SARS-CoV-2 genome sequences avaiab
 Moreover, some tasks/processes can potentially take up to a few days (see for example #6 Assign genomes to new groups) on a single processor. In the light of the above considerations we would kindly invite users to make sure that *they have access* to the required computational resources before executing the HaploCoV workflow. The table below briefly summarizes the requirements in terms of time, RAM memory and disk-space required by eacht tool in HaploCoV, and for the complete workflow 
 
 .. list-table:: Computational Resources
-   :widths: 30 30 30 30 30 30 30 30 30 30 30
+   :widths: 40 40 40 40 40
    :header-rows: 1
-
    * - Heading Tool
      - Heading Input files
      - Heading RAM (peak memory)
