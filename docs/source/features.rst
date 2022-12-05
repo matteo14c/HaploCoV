@@ -1,9 +1,9 @@
 4 Compute genomic features of SARS-CoV-2 lineages and sublineages
 =================================================================
 
-The LinToFeats.pl utility computes "high level" genomic features of SARS-CoV-2 lineages/sub-lineages derived by augmentClusters.pl.
-A complete list of such high level features along with a brief description is provided in the *features.csv* file attached to this repo.
-The tool uses pre-computed annotations of SARS-CoV-2 variants obtained by CorGAT to derive its scores. Such annotations are available from the current repository (file: *globalAnnot*),and are updated on a weekly basis. At every execution the most recent version of the annotations is downloaded automatically. 
+The LinToFeats.pl utility computes "high level" genomic features of SARS-CoV-2 lineages.
+A complete list of such high level features along with a brief description is provided in the *features.csv* file in the main Github repo of HaploCoV.
+The tool uses pre-computed annotations of SARS-CoV-2 variants obtained by CorGAT to derive its scores. Such annotations are available from the *globalAnnot* file,and are updated on a bi-weekly basis. At every execution the most recent version of the annotations is downloaded automatically. 
 
 
 LinToFeats.pl takes the output of augmentClusters.pl as its main input, the output file is a simple tab delineated table where for every lineage/group in input, genomic features are computed.
@@ -16,7 +16,7 @@ The program requires only 3 parameters:
 * *--annotfile* file with CorGAT annotations of SARS-CoV-2 variants. Defaults to globalAnnot
 
 **Execution**
-A typical run of LinToFeats.pl should look something like:
+An example of valid a command line for the execution of LinToFeats.pl is:
 
 ::
 
