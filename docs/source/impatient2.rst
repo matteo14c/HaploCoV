@@ -29,7 +29,7 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
 ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/area_list.txt`
 
 
-**and \"finally\"**
+**and \"Finally\"**
 **Identify novel designations (3); compute features/voc-ness score(5); assign the novel designations(6); compute the prevalence (7);**
 
 ::
@@ -48,13 +48,15 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
 
  6. `perl assign.pl --dfile lvar.txt --metafile linearDataSorted.txt --outfile --out HaploCoVAssignedVariants.txt `
 
-**OR** 
+**OR alternatively** 
 
 ::
 
  6. `perl p_assign.pl --dfile  lvar.txt --metafile linearDataSorted.txt --nproc 12 --out HaploCoVAssignedVariants.txt `
 
 ::
+
+**Prevalence report**
 
  7. `perl increase.pl --file HaploCoVAssignedVariants.txt `
  
