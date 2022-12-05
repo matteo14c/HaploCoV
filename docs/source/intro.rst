@@ -21,8 +21,3 @@ variants of SARS-CoV-2.
 
 The reccomended way to execute HaploCoV is through HaploCoV.pl. This tool automates the execution of the complete workflow implemented by Haplocov.
 However, users are also free to execute each single distinct task by themselves if they prefer. Each tool has its own entry in the manual
-
-Execution times
-===============
-
-
