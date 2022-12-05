@@ -348,4 +348,4 @@ All these topics are covered in the manual of HaploCoV. Please take a look to th
 <hr>
 
 ### If you are reading this, you have made your way through the manual! 
-### Congratulations and regards!. The HaploCoV "development team"
+### Congratulations and regards! The HaploCoV "development team"
