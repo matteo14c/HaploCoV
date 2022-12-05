@@ -110,10 +110,10 @@ Important: providing "external" data
 While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however metadata must always comply with the format described above.
 Valid metadata tables must include 5 columns with the following names:
 
-* "Virus name";
-* "Collection date";
-* "Submission date";
-* "Location";
-* "Pango Lineage" or "Lineage";
+* *"Virus name"*;
+* *"Collection date"*;
+* *"Submission date"*;
+* *"Location"*;
+* *"Pango Lineage" or "Lineage"*;
 
 Names must match exacly. HaploCoV is case-sensitive.
