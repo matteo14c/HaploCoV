@@ -60,6 +60,7 @@ Required metadata
 Please be aware that some metadata are **mandatory** to execute HaploCoV and that columns names in your metadata file **MUST** abide to the structure/names described below. 
 
 Mandatory metadata:
+
 * a valid unique identifier for every isolate, column name: *"Virus name"*;
 * a collection date, column name *"Collection date"*;
 * a submission date, column *"Submission date"*;
@@ -96,7 +97,6 @@ An example of a valid metadata table is reported below
 If any of the columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
 This does not mean that HaploCoV can process only data from the GISAID database (see below), but only that the metadata that you provide **must have** columns names consistent with those indicated above.
 
-
 Nextstrain
 ==========
 
@@ -109,10 +109,11 @@ Important: providing "external" data
 
 While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however metadata must always comply with the format described above.
 Valid metadata tables must include 5 columns with the following names:
+
 * "Virus name";
 * "Collection date";
 * "Submission date";
 * "Location";
-* "Pango Lineage";
+* "Pango Lineage" or "Lineage";
 
 Names must match exacly. HaploCoV is case-sensitive.
