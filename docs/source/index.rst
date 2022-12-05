@@ -44,13 +44,15 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    
    perlMummer.rst
    configuration.rst
-   etimes.rst
+   
    
 .. toctree::
    :maxdepth: 2
    :caption: HaploCoV: input
    
    metadata.rst
+   genomic.rst
+   etimes.rst
 
 .. toctree::
    :maxdepth: 2
