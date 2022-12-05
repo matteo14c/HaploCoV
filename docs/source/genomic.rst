@@ -11,15 +11,16 @@ These files have a very streamlined format which is briefly illustrated below. E
 
 | \<position\>\_\<ref\>|\<alt\>
 | *5000\_A|G*
+|
 
-where positiion= genomic coordinate on the reference genome, ref= reference sequence on the genome and alt= alternative sequence on the genome.
+where **positiion**= genomic coordinate on the reference genome, **ref**= reference sequence on the genome and **alt**= alternative sequence on the genome.
 
-A "*genomic variants* consists of 2 columns separated by tabulations. The first column reports a genomic variant, the second the list of places (country, macro-areas, etc) where the genomic variant shows a prevalence above the threshold. Genomic variants are reported in no specific order.
+A "*genomic variants* file consists of 2 columns separated by tabulations. The first column reports a genomic variant, the second the list of places (country, macro-areas, etc) where the genomic variant shows a prevalence above the threshold. Genomic variants are reported in no specific order.
 An example of a genomic variants file looks like:
 
 | 22204\_.\|A	AfrCent
 | 26445_T|C	AsiaSE
-
+|
 Several lists/collections of pre-computed "genomic variants file" are already available from the main github repository of HaploCoV. These files enable users to execute their analyses using different sets of "interesting" genomic variants which are suitable for different use cases
 
 Pre computed genomic variants files
@@ -56,7 +57,7 @@ Genomic variants are indicated according to the convention described above.
 To provide and example:
 
 | A 8782\_C|T 28144\_T|C
-
+| 
 indicates that lineage A is defined by 2 genomic variants: ``8782\_C|T`` and ``28144\_T|C`` respectively.
 Novel/custom definition of lineages and/or groups can be specified simply by adding a definition line in the "linDefMut" file, or equivalent.
 
@@ -77,6 +78,6 @@ For example if HaploCoV identifies 2 novel candidate lineages within the pango l
 
 | B.1.N1
 | B.1.N2
-
+| 
 The default string/letter to be used as a suffix is set by the --suffix option in augmentClusters.pl. Please see below for how to modify this default behaviour.
 
