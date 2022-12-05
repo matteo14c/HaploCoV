@@ -30,11 +30,47 @@ To assign genomes to a lineages/group/classes you need to run
  
 The output consists of a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *No* indicates no alternative assignments were idenfied, and hence that the genome was unambiguously assigned to a single group/lineage.
 
-.. figure:: _static/table3.png
-   :scale: 60%
-   :align: center
+.. list-table:: Locales File
+   :widths: 30 30 30 30 30 30 30 30 30 30 30 30
+   :header-rows: 1
 
-
+   * - Heading genome ID
+     - Heading collection date
+     - Heading delta days (collection)
+     - Heading deposition date
+     - Heading delta days (deposition)
+     - Heading continent
+     - Heading macro-area
+     - Heading country
+     - Heading region
+     - Heading lineage
+     - Heading genomic variants
+     - Heading alternative lineage
+   * - genome1
+     - 2022-06-01
+     - 788
+     - 2022-06-11
+     - 798
+     - Europe
+     - EuSo
+     - Italy
+     - Lombardy
+     - BA.2.9
+     - v1,v2,vn 
+     - BA.2.9.1
+   * - genome2
+     - 2022-05-01
+     - 758
+     - 2022-05-11
+     - 768
+     - Europe
+     - EuSo
+     - Italy
+     - Lombardy
+     - BA.2
+     - v1,v2,vn 
+     - no
+   
 **Execution times, and multithreading** 
 
 Using a single core/thread *assign.pl* can assign the complete collection of more than 15M of genomes included in GISAID to pango lineages in about 4 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than ten minutes are required to assign 11M genomes.
