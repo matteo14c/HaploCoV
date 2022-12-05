@@ -9,8 +9,8 @@ HaploCoV format for metadata
 
 An example of the data format used by HaploCoV (HaploCoV format) is illustrated in the table below:
 
-.. list-table:: Locales File
-   :widths: 30 30 30 30 30 30 30 30 30 30 30 30
+.. list-table:: HaploCoV Format
+   :widths: 30 30 30 30 30 30 30 30 30 30 30
    :header-rows: 1
 
    * - Heading genome ID
