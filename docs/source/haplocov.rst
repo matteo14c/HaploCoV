@@ -165,7 +165,7 @@ Indermediate files produced by HaploCoV.pl (prefix of the name might change acco
 | 3. *\_assigned.txt* : this file is produced by assign.pl. Following the identification of novel candidates lineages/variants, HaploCoV re-assigns all the genomes included in your analyses using the additional designation. Results are saved in this file. The file is in *HaploCoV* format, the lineage/designation assigned to each genome is updated.
 | 4. *\_features.csv* : this file reports *high level* genomic features associated with each lineage/candidate lineage included in the \_results.txt file. Features are computed
 | 5. *\_PASS.csv* : reports the VOC-ness score computed by report.pl for every lineage/new candidate lineage included in \_results.txt
-| 6. *\_txt.prev*: provided the prevalence report computed by *increase.pl* Prevalence data are computed only for the lineage/candidate lineages included in *\_results.txt* and only at the locales and time-intervals included in the analysis
+| 6. *\_txt.prev*: provides the prevalence report computed by *increase.pl*. Prevalence data are computed only for the lineage/candidate lineages included in *\_results.txt* and only at the locales and time-intervals included in the analysis
 
 
 How to interpret HaploCoV's results
