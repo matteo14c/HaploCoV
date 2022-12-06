@@ -2,9 +2,10 @@ Perl and mummer
 ===============
 
 HaploCoV is written in the Perl programming language. Hence you will need Perl to run it. Perl should be already installed by default on any unix and Mac OSX system. 
-Please follow this `link <https://www.perl.org/get.html>`_ for instructions on how to install Perl 
+Please follow this `link <https://www.perl.org/get.html>`_ for instructions on how to install Perl. 
 
-Please follow this `link <https://sourceforge.net/projects/mummer/files/>`_ for detailed instruction on how to install and run Mummer instead. Or see the detailed installation instructions below.
+HaploCoV uses mummer to align genome sequences and derive genomic variants. Please follow this `link <https://sourceforge.net/projects/mummer/files/>`_ for detailed instruction on how to install and run Mummer. 
+Or see the installation instructions below.
 
 Mummer installation
 ===================
@@ -12,7 +13,7 @@ Mummer installation
 Unix, ubuntu
 ============
 
-Under the most recent versions of ubuntu, mummer can be installed directly from your system package manager (apt-get). If youhave super-user privileges, you can open a terminal and then use the following command:
+Under the most recent versions of ubuntu, Mummer can be installed directly from your system package manager (apt-get). If you have super-user privileges, you can open a terminal and then issue the following command:
 
 ::
 
@@ -30,7 +31,7 @@ If you OS does not feature pre-compiled software packages for the installation o
 
   make install
 
-you will still need to place add these files to your executable PATH, either by adding/copying all the files to one of the directories already included in the PATH or by adding the whole mummer directory (where all the software was compiled) to the your PATH of executables. If for example all your executables are in a folder called "Mummer" in your home directory on a unix system you can symply run:
+you will still need to place add these files to your executable PATH, either by adding/copying all the files to one of the directories already included in the PATH or by adding the whole Mummer directory (where all the software was compiled) to the your PATH of executables. If for example all your executables are in a folder called "Mummer" in your home directory on a unix system you can symply run:
 
 ::
 
@@ -63,7 +64,7 @@ You should get something similar to `this <https://gist.githubusercontent.com/mt
 
 ::
 
-Now that mummer you have successfully built the binaries are, you need to add them to $PATH. Run the following command with your favourite text editor:
+Now that you have successfully built the binaries are, you need to add them to $PATH. Run the following command with your favourite text editor:
 ::
 
   sudo vim /etc/paths
@@ -95,12 +96,12 @@ You should see something like:
   echo $PATH
   /usr/local/opt/ruby/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/yourname/test/MUMmer3.23
 
-The Mummer package, and all its utilities are now available to be executed in your shell, and for CorGAT as well. For example, type “nucmer” to execute nucmer:
+The Mummer package, and all its utilities are now available to be executed in your shell, and for HaploCoV as well. For example, type “nucmer” to execute nucmer:
 ::
 
   nucmer
   USAGE: nucmer  [options]  <Reference>  <Query>
   
-  Try '/Users/marco/IBIOM-CNR/CorGAT/MUMmer3.23/nucmer -h' for more information.
+  Try 'nucmer -h' for more information.
 
 
