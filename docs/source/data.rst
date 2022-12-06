@@ -5,7 +5,7 @@ HaploCoV requires 3 main files:
 
 * **the reference assembly** of the SARS-CoV-2 genome in fasta format;
 * a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference;
-* a **.tsv** file with metadata for the genome sequences in the multifasta;
+* a **.tsv** file with metadata for the genome sequences in the multifasta.
 
 Reference genome
 ================
@@ -18,13 +18,13 @@ However, in the (hopefully) unlikely event that this should not work you can obt
 | https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
 |
 
-on a unix system you can download this file, by
+on a unix system you can download this file, by:
 
 ::
 
  wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
 
-followed by
+followed by:
 
 ::
 
@@ -32,7 +32,7 @@ followed by
 
 ::
 
-Remember that you need to have this file (GCF_009858895.2_ASM985889v3_genomic.fna) in the same folder from which  HaploCoV is executed (i.e. HaploCoV if you stick with the default)
+Remember that you need to have this file (GCF_009858895.2_ASM985889v3_genomic.fna) in the same folder from where HaploCoV is executed (i.e. HaploCoV if you stick with the default), or HaploCoV will complain and halt its execution.
 
 
 Genomes and metadata
@@ -53,7 +53,8 @@ Authorized users can download the complete collection of SARS-CoV-2 genome assem
 After de-compresson, 2 files should be obtained: 
 1. *metadata.tsv* a metadata table in .tsv format and; 
 2. *sequences.fasta* a multi-fasta file with SARS-CoV-2 genome sequences.
-These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/formats all the data used for subsequent analyses.
+
+These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/formats all the data for subsequent analyses.
 
 Alternatively users can also download a set of genomes of interest directly by selecting the corresponding entries from the web interface of GISAID. In this case, we strongly suggest to download the "Patient status metadata" file to provide all the required information.
 See Figure below
