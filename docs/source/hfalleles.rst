@@ -3,7 +3,7 @@
 
 Once your data have been formatted in HaploCoV format ( see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#formatting-the-input>`_ ), you can derive high frequency genomic variants by *computeAF.pl*.
 
-The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main ouput consist of lists of "high frequency" genomic variants at different level of geographic granularity: global (all genomes), macro(macro geographic areas) and countries(country). Macro areas are according to the "areafile" in the github repository, see  `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_ 
+The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main ouput consist of lists of "high frequency" genomic variants at different level of geographic granularity: global (all genomes), macro(macro geographic areas) and countries(country). Macro areas are according to the "areafile" in the github repository, see  `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_. 
 
 All the final outputs as well as all intermediate files produced by the tool are saved in a folder, that can be specified with the option --outdir (see below). User also have the option to select the minimum frequency (as in allele frequency) and "persistency" (number of weeks above the frequency threshold) thresholds for the identification of high frequency genomic variants.
 
