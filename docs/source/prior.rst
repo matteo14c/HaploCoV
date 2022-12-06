@@ -12,10 +12,10 @@ The final output consist in a simple text file, in tsv format where high scoring
 
 *report.pl* accepts the following input parameters:
 
-* *--infile* name of the input file. This is the output file of LinToFeats.pl
-* *--suffix* suffix used to identify novel lineages/subvariants by augmentClusters.pl (see --prefix)
-* *--scaling* defaults to "scalingFactors.csv", this configuration file in included in the github repo
-* *--outfile* a valid name for the output file
+* *--infile* name of the input file. This is the output file of LinToFeats.pl;
+* *--suffix* suffix used to identify novel lineages/subvariants by augmentClusters.pl (see --prefix);
+* *--scaling* defaults to "scalingFactors.csv", this configuration file in included in the github repo;
+* *--outfile* a valid name for the output file.
 
 **Execution**
  
@@ -26,7 +26,7 @@ A typical run of report.pl should look something like:
  perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt
 
 The main output file *lvar_prioritization.txt will* a list all the newly identified (by HaploCoV) designations in your reference nomenclature, and their score. 
-The output file is a table with 6 columns
+The output file is a table with 6 columns:
 
 .. list-table:: Locales File
    :widths: 35 35 50 50 70
@@ -45,9 +45,9 @@ The output file is a table with 6 columns
      - 13.5
 The table reports:
 
-1. the name of the novel designation according to HaploCoV
-2. the name of the parent lineage in the nomeclature
-3. the VOC-ness score of the novel lineage
-4. the VOC-ness score of the parent
-5. the difference in score
-6. whether the difference is above the threshold (PASS) or not (NO)
+1. the name of the novel designation according to HaploCoV;
+2. the name of the parent lineage in the nomeclature;
+3. the VOC-ness score of the novel lineage;
+4. the VOC-ness score of the parent;
+5. the difference in score;
+6. whether the difference is above the threshold (PASS) or not (NO).
