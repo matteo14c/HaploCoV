@@ -66,5 +66,5 @@ Moreover, some tasks/processes can potentially take up to a few days (see for ex
      - 20 K. HaploCoV report
 
 If you already have all your metadata in HaploCoV format, executing the full workflow should require less than 3hrs.
-If you use a "locales" file to restrict the analyses to a specific time-interval or geographic region, execution times should be considerably reduced (see HaploCoV: workflow).
+If you use a "locales" file to restrict the analyses to a specific time-interval or geographic region, execution times should be considerably reduced (see `HaploCoV: workflow <https://haplocov.readthedocs.io/en/latest/haplocov.html#configuration-locales-file>`_).
 In any case execution times might change also depending on your computational environment. 
