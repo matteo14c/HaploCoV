@@ -5,7 +5,7 @@ If you identified a novel variant of SARS-CoV-2 with "interesting" genomic featu
 
 |
 
-Normally `virologica<lhttps://virological.org>`_ or `Pango<https://github.com/cov-lineages/pango-designation/issues/>`_ would be the right place to start to report your novel findings to the commnunity.
+Normally `virological<https://virological.org>`_ or `Pango<https://github.com/cov-lineages/pango-designation/issues/>`_ would be the right place to start to report your novel findings to the commnunity.
 
 |
 
