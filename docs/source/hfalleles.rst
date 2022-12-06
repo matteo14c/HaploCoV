@@ -20,6 +20,7 @@ The script accepts the following parameters:
 * *--outdir*  output directory. This directory will hold the output files, including lists of high frequency alleles. Defaults to "./metadataAF".
 
 **Execution**
+
 Please see below for a valid example:
 
 ::
