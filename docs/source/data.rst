@@ -9,8 +9,15 @@ HaploCoV requires 3 main files:
 
 Reference genome
 ================
-HaploCoV can download the reference assembly of the SARS-CoV-2 genome for you when/if required (see the addToTable.pl utility for more details). However, in the (hopefully) unlikely event that this should not work you can obtain a copy of the reference genome from:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
+HaploCoV can download the reference assembly of the SARS-CoV-2 genome for you when/if required (see the addToTable.pl utility for more details). 
+
+|
+
+However, in the (hopefully) unlikely event that this should not work you can obtain a copy of the reference genome from:
+
+| https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
+|
+
 on a unix system you can download this file, by
 
 ::
