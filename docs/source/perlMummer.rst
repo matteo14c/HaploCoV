@@ -80,17 +80,20 @@ Go to the bottom of the file, and enter the path you wish to add. For example, i
   /sbin
   /Users/yourname/test/MUMmer3.23
 
-Save the file in vim
+Save the file in vim:
+
 ::
 
   :wq
   
 And finally you can test if everything is in place. Open a *NEW* terminal. To test if mummer is now in your PATH, run:
+
 ::
 
   echo $PATH
   
 You should see something like:
+
 ::
 
   echo $PATH
@@ -101,7 +104,7 @@ The Mummer package, and all its utilities are now available to be executed in yo
 
   nucmer
   USAGE: nucmer  [options]  <Reference>  <Query>
-  
-  Try 'nucmer -h' for more information.
+
+Try 'nucmer -h' for more information.
 
 
