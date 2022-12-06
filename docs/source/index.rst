@@ -98,6 +98,7 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
 
    subsetting.rst
    customalleles.rst
+   whatnext.rst
 
 
 Indices and tables
