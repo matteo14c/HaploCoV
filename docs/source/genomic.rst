@@ -11,7 +11,6 @@ These files have a very streamlined format which is briefly illustrated below. E
 
 | \<position\>\_\<ref\>|\<alt\>
 | *5000\_A|G*
-|
 
 where **positiion**\= genomic coordinate on the reference genome, **ref**\= reference sequence on the genome and **alt**\= alternative sequence on the genome.
 
@@ -20,16 +19,17 @@ An example of a genomic variants file looks like:
 
 | 22204\_.\|A	AfrCent
 | 26445_T|C	AsiaSE
-|
-Several lists/collections of pre-computed "genomic variants file" are already available from the main github repository of HaploCoV. These files enable users to execute their analyses using different sets of "interesting" genomic variants which are suitable for different use cases
+
+Several lists/collections of pre-computed "genomic variants file" are already available from the main github repository of HaploCoV. These files enable users to execute their analyses with different sets of "interesting" genomic variants which are suitable for different use cases.
 
 Pre computed genomic variants files
 ===================================
 
-The files *global_list.txt*, *area_list.txt* or *country_list.txt* form the main repository can be used to provide lists of genomic variants that showed a high frequency
-1. at global level: *global_list.txt*
-2. in at least a macro geographic area (see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_
-3. in at least a country
+The files *global_list.txt*, *area_list.txt* or *country_list.txt* form the main repository can be used to provide lists of genomic variants that showed a high frequency:
+
+1. at global level: *global_list.txt*;
+2. in at least a macro geographic area (see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_);
+3. in at least a country.
 
 A copy of each of these files can also be found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a weekly basis (every Wednesday). If you do not want to compute high frequency alleles yourself, you can download the files directly from *github*. On a unix system this can be done by using the  ``wget command``.
 For example:
@@ -59,14 +59,14 @@ Genomic variants are indicated according to the convention described above.
 To provide and example:
 
 | A 8782\_C|T 28144\_T|C
-| 
+
 indicates that lineage A is defined by 2 genomic variants: ``8782\_C|T`` and ``28144\_T|C`` respectively.
-Novel/custom definition of lineages and/or groups can be specified simply by adding a definition line in the "linDefMut" file, or equivalent.
+Novel/custom definitions of lineages and/or groups can be specified simply by adding a definition line in the "linDefMut" file, or equivalent.
 
-For example, if HaploCoV identifies a novel variant/lineage for you and you want to track/assign/analyse that variant/lineage, all you have to do is add its "definition" line to "linDefMut".
+For example, if HaploCoV identifies a novel variant/lineage for you, and you want to track/assign/analyse that variant/lineage, all you have to do is add its "definition" line to "linDefMut".
 
-HaploCoV.pl (see --varfile option) can report/write files of lineage defining mutations, which can be easily concatenated with linDefMut or equivalent.
-For example if you have your additional interesting designations in a file called "novel.txt" you can add them by using the **cat** command in a unix environment. For example:
+HaploCoV.pl (see --varfile option) can report/write files of lineage defining mutations, which can be easily concatenated with linDefMut.
+For example if you have your additional interesting designations in a file called "novel.txt" you can add them by using the **cat** command in a unix environment:
 
 ::
 
@@ -75,11 +75,11 @@ For example if you have your additional interesting designations in a file calle
 Novel designations
 ==================
 
-Please be aware that novel designations of lineages/variants will be specified by a suffix in HaploCoV. This suffix by default is the letter N, followed by a progressive number.
+Please be aware that novel designations of lineages/variants will be specified by a suffix in HaploCoV. This suffix by default is the letter N followed by a progressive number.
 For example if HaploCoV identifies 2 novel candidate lineages within the pango lineage B.1, the names will be:
 
 | B.1.N1
 | B.1.N2
-| 
+ 
 The default string/letter to be used as a suffix is set by the --suffix option in augmentClusters.pl. Please see below for how to modify this default behaviour.
 
