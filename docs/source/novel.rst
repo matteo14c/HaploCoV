@@ -41,7 +41,7 @@ The main output file, lvar.txt will contain all current groups/lineages and newl
 Novel variants identified by HaploCoV will be reported in the output file produced by *augmentClusters.pl*. The format of this file is as follows: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic genomic variants (defined here as those present in >50% of the isolates assigned to the group). Values are separated by spaces (see above).
 This file includes the complete collection of lineages/groups as defined in the reference input nomenclature, plus all the novel lineages/groups/sub-lineages formed by HaploCoV. Newly formed lineages/groups/sub-lineages are identified by a suffix that can be specified by the user and by a progressive number. The default value for this suffix is the letter **"N"**. If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.1.17 lineage, these will be reported as:
 
-|1. BA.1.17.N1 and;
-|2. BA.1.17.N2;
+| 1. BA.1.17.N1 and;
+| 2. BA.1.17.N2;
 
 in the output file (see above).
