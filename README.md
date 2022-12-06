@@ -16,7 +16,7 @@ HaploCoV is a collection Perl scripts that can be used to:
 
 This software package is composed of **9(*+3*)** utilities. Instructions concerning required input files, their format and how to configure HaploCoV are reported below (and in the extended [manual](https://haplocov.readthedocs.io/en/latest/) ). 
 In brief, input files need to be formatted according to the format used by HaploCoV by applying either **addToTable.pl** or **NexstainToHaploCoV.pl** (depending on the input, see below). 
-Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (reccommended) or, if you prefer, by running each individual tool in the HaploCoV workflow in the right order yourself (please see the extended manual for a complete reference).
+Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (reccommended) or, if you prefer, by running each  tool in the HaploCoV workflow in the right order yourself (please see [HaploCoV:Tools](https://haplocov.readthedocs.io/en/latest/impatient2.html)).
 Figure 1 provides a conceptual representation of the HaploCoV workflow and the tools used to execute each task.
 
 ### Aim and rationale
@@ -26,7 +26,7 @@ The main aim of the tool is to facilitate the identification of novel variants/l
 2. Features associated with VOCs/VOIs (variants of concern or variants of interest)
 3. Both
 
-HaploCoV incorporates a standalone "scoring system" for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The minimum threshold for significance was derived empirically (see the HaploCoV paper for more details). 
+HaploCoV incorporates a standalone "scoring system" for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The minimum threshold for significance was derived empirically (see the paper for more details). 
 
 Increase/decrease in prevalence is inferred by analyses of the (available) metadata. By default novel candidate variants with a prevalence above 1% in a region/country, and showing an increase by at least 2 fold over 4 weeks are reported. 
 These parameters can be configured/set by the user at runtime.
@@ -111,7 +111,7 @@ An example command looks like:
 The final output will consist in a metadata table in HaploCoV format.  This table is required for all the subsequent analyses.
 
 ### Important: Incremental addition of data
-addToTable.pl can add novel data/metadata incrementally to a pre-existing table in "HaploCoV" format. This feature is extremely useful, since it allows users to add data incrementally to their HaploCoV installation, without the need to re-execute analyses from scratch. When users the output file provided by the user is not empty, addToTable.pl will process only those genomes which are not already included in your medatata table. Matching is by sequence identifier (column Virus name).
+addToTable.pl can add novel data/metadata incrementally to a pre-existing table in "HaploCoV" format. This feature is extremely useful, since it allows users to add data incrementally, without the need to re-execute analyses from scratch. When the output file provided by the user is not empty, addToTable.pl will process only those genomes which are not already included in your medatata table. Matching is by sequence identifier (column Virus name).
 
 ### Execution times 
 On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour. Computation scales linearly: 160k genomes on 8 cores, or 320k on 16 cores. This means that processing the complete collection of the more than 13M genomes included in the GISAID database on November 11th 2022 from scratch will take about 20 days if only one processor is used;  3 days would be needed if 8 processes are used; and 1.5 days if 16 are used. Importantly this operation needs to be performed only once, since the tool supports the incremental addition of data (see above). 
@@ -217,7 +217,7 @@ Precomputed sets of genomic variants/files can broadly be categorized into 4 mai
 
 Please se the section [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) for additional information. 
 
-Alternatively, if the pre-computed files do not suit their use case,  users do also have the option of derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword "custom" needs to be indicated in the 5th column (see below), and high frequency genomic variants will be computed on the current selection.   
+Alternatively, if the pre-computed files do not suit their use case, users do also have the option of derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword "custom" needs to be indicated in the 5th column (see below), and high frequency genomic variants will be computed on the current selection.   
 
 ### Important: special/reserved keywords
 
@@ -251,9 +251,9 @@ Headers and sections of the file are specified/set by \"#\" symbols. The first 4
 3. passed only the prevalence thresholds
 
 After the header, 3 distinct sections follow in the same order indicated by the above numbered least.  Each section is introduced by a # symbol, and concluded by the sentence: "A detailed report follows".
-In the report each candidate lineage/variant is introduced by a # followed by a progressive number and its name. Names are according to the convention explained in the section "novel variants and names" of the manual: name of the parental, dot, one letter suffix(N by default), progressive number. I.e B.1.N1 descends from B.1 and so on.
+In the report each candidate lineage/variant is introduced by a # followed by a progressive number and its name. Names are according to the convention explained in the section "novel variants and names" of the manual: `name of the parental`, `dot`, `one letter suffix(N by default)`, `progressive number`. I.e B.1.N1 descends from B.1 and so on.
 
-Two distinct and complementary reports are provided for every variant
+Two distinct and complementary reports are provided for every variant, a "score-based" report and a "prevalence-based" report.
 
 ### Scores and novel genomic variants
 
@@ -340,9 +340,9 @@ Normally https://virological.org/ or https://github.com/cov-lineages/pango-desig
 If the novel candidate variant was identified by HaploCoV, HaploCoV.pl (see --varfile option) or augmentClusters.pl (see HaploCoV: tools) should/could have provided a file with the complete list of genomic variants that define your novel lineage/lineages of interest.
 It might be worthwile to add this/these definitions to your favourite "Genomics variant file" (see [here](https://haplocov.readthedocs.io/en/latest/genomic.html) and use assign.pl or p_assign.pl to re-assign genomic sequences using the augmented nomenclature.<br> 
 
-If you need to extract the data (and metadata) of the novel candidate lineage/variant from a HaplocoV formatted metadata table (like for example the output of assign.pl), you can take advantage of the *subset.pl* utility in this repo.  The section *HaploCoV: advanced* of the manual illustrates some possible applications of this tool, and explains how to use it to extract data od interest. 
+Whence the novel nomenclature is assigned, you can extract the data (and metadata) of the novel candidate lineage/variant from a HaplocoV formatted metadata table (like for example the output of assign.pl) by using the *subset.pl* utility included in this repo.  The section *HaploCoV: advanced* of the manual illustrates some possible applications of this tool, and explains how to use it to extract data of interest. 
 See [here](https://haplocov.readthedocs.io/en/latest/subsetting.html)<br>
-Finally the increase.pl utility can be used to calculate the "prevalence" of your novel/candidate variant/variants, in space and time and derive global patters (if any and if your novel designations was not already derived from the analysis of all the available genome sequences). 
+Finally the increase.pl utility can be used to calculate the "prevalence" of your novel/candidate variant/variants in space and time and derive global patters (if any and if your novel designations was not already derived from the analysis of all the available genome sequences). 
 All these topics are covered in the manual of HaploCoV. Please take a look to the manual in order to see how to make the best of the tools and utilities.
 
 <hr>
