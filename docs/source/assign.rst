@@ -17,12 +17,12 @@ The file*linDefMut* in the current github repository provides a complete list of
 **Options**
 *assign.pl* takes the following options:
 
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
-* *--metafile*: a metdata file in HaploCov format
-* *--out*: the name of the ouput file (defaults to **ASSIGNED_out.tsv**)
+* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations;
+* *--metafile*: a metdata file in HaploCov format;
+* *--out*: the name of the ouput file (defaults to **ASSIGNED_out.tsv**).
 
 **Execution**
-To assign genomes to a lineages/group/classes you need to run
+To assign genomes to a lineages/group/classes you need to run:
 
 ::
 
@@ -80,10 +80,10 @@ Using a single core/thread *assign.pl* can assign the complete collection of mor
 Multi-threading, the p_assign.pl utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
 The following input parameters are accepted:
 
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
-* *--metafile*: a metdata file in HaploCov format
-* *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**)
-* *--nproc*: number of processors/cores
+* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations;
+* *--metafile*: a metdata file in HaploCov format;
+* *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**);
+* *--nproc*: number of processors/cores.
 
 To execute it you can use:
 
