@@ -3,27 +3,25 @@ For impatient people
 
 To apply the full workflow implemented by HaploCoV.pl you will need to execute 7 different tools. Detailed instructions for how to execute/use each of them are provided in the following sections. Here you will find a brief outline.
 
-**Importing data**
-
-**GISAID data**
+**Importing GISAID data:**
 
 ::
 
  1. `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `
 
-**Nexstrain data**
+**Importing Nexstrain data:**
 
 ::
 
  1. ` perl NextStrainToHaploCoV.pl --metadata metadata.tsv --outfile linearDataSorted.txt `
 
-**then compute AF from the data**
+**then compute AF from the data:**
 
 ::
 
  2. `perl computeAF.pl --file linearDataSorted.txt `
 
-**OR download a genomics variant file**
+**OR download a genomics variant file:**
 
 
 ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/area_list.txt`
@@ -48,14 +46,14 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
 
  6. `perl assign.pl --dfile lvar.txt --metafile linearDataSorted.txt --outfile --out HaploCoVAssignedVariants.txt `
 
-**OR alternatively** 
+**OR alternatively:** 
 
 ::
 
  6. `perl p_assign.pl --dfile  lvar.txt --metafile linearDataSorted.txt --nproc 12 --out HaploCoVAssignedVariants.txt `
 
 
-**Prevalence report**
+**Prevalence report:**
 
 ::
 
