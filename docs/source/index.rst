@@ -77,8 +77,10 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    :maxdepth: 2
    :caption: HaploCoV: advanced
 
+   whatnext.rst
    subsetting.rst
    customreports.rst
+   
 
 
 Indices and tables
