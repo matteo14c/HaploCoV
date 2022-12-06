@@ -15,11 +15,11 @@ Subset.pl allows the application/definition of the following filters:
 * *--country:*  name of a country;
 * *--region:* name of a region;
 * *--lineage:* name of a lineage. Must match exactly a valid name in the nomenclature;
-* *--startD:* start-date in <YYYY-MM-DD> format. Only genomes collected after this date will be extracted
-* *--endD:* end-date in <YYYY-MM-DD> format. Only genomes collected before this date will be extracted
+* *--startD:* start-date in <YYYY-MM-DD> format. Only genomes collected after this date will be extracted;
+* *--endD:* end-date in <YYYY-MM-DD> format. Only genomes collected before this date will be extracted.
 
 Mandatory parameters are *--infile* and *--outfile*. At least one of  *--area,--country,--filter
---lineage,--startD or --endD* should be set. If no filters are specified, execution will halt
+--lineage,--startD or --endD* should be set. If no filters are specified, execution will halt.
 
 **Execution** 
 
@@ -30,7 +30,7 @@ A typical run of subset.pl should look something like:
  perl subset.pl --infile HaploCoV_formattedMetadata --country Thailand --startD 2022-05-01 --outfile Thai_HaploCoV_formattedMetadata
  
 
-The output file *Thai_HaploCoV_formattedMetadata* will include only genomes collected in Thailand starting from 2022-05-01 
+The output file *Thai_HaploCoV_formattedMetadata* will include only genomes collected in Thailand starting from 2022-05-01. 
 
 
  
@@ -51,9 +51,9 @@ These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file
 
 
 To obtain basic stats about any of such columns (in unix) you can:
-1. extract the desired column with ` cut`
-2. sort all the values in the column you selected by using the `sort` utility
-3. summarize the results with `uniq -c`
+1. extract the desired column with `` cut``;
+2. sort all the values in the column you selected by using the ``sort`` utility;
+3. summarize the results with ``uniq -c``.
 
 For example you get a complete list of the countries in the metadata table as well as the total number of genome from every country, "simply" by piping these 3 commands
 
@@ -70,7 +70,7 @@ The output should look something like this:
 
 and should provide a complete list of the "countries" that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by:
 
-1. finding the name/s of the country/countries in the list
+1. finding the name/s of the country/countries in the list;
 2. using grep.
 
 For example this command will extract data from Venezuela:
@@ -79,7 +79,7 @@ For example this command will extract data from Venezuela:
 
  grep -P "\tVenezuela\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest
  
-The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the `sort`, `uniq`, `cut` and `grep` utilities to find out all the options and set out the "pipeline" that is best suited for your needs. 
+The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the ``sort``, ``uniq``, ``cut`` and ``grep`` to find out all the options and set out the "pipeline" that is best suited for your needs. 
 
 
 **Alternatively** you can use subset.pl to perform the same selection:
@@ -112,7 +112,18 @@ The output should be:
 .. figure:: _static/b117.png
    :scale: 80%
    :align: center
+   
+If you prefer to use **subset.pl** the same results can be obtained by the following command:
 
+::
+ 
+ **Alternatively** you can use subset.pl to perform the same selection:
+
+::
+ 
+ perl subset.pl --infile HaploCoV_formattedMetadata --lineage B.1.1.7 --outfile B117data
+ 
+Please notice that only a single lineage can be specified selected. 
 
 Time constrained analyses: 
 ===========================
@@ -196,4 +207,4 @@ Or again if you prefer a more compact alternative, you can use subset.pl :
 
 ::
  
- perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --lineage BA.1.1 --country USA --outfile myIntervalOfTime_BA11data_USA
+ perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --lineage BA.1.1 --country USA --outfile myIntervalOfTime_BA11data_USA.
