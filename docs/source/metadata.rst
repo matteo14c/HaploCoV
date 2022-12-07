@@ -111,7 +111,7 @@ The following areas are defined
 16. NAcent: central America;
 17. NAnorth northern America;
 18. Oc: Oceania;
-19. SAM -> South America.
+19. SAM: South America.
 
 However custom/user defined "areas" can be specified simply by editing **areaFile** or by providing a new file with the same format.
 
@@ -156,8 +156,8 @@ Please be aware that typically a single thread/process can align genomes and der
 NextStrain data: NextStrainToHaploCoV.pl
 ========================================
 
-If you obtained your metadata files from Nexstrain you will use addToTable.pl and align.pl. Metadata tables from Nexstrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. The pre-processe file can be downloaded from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. 
-Please be aware that however Nexstrain can re-distribute only publicly available data, which at the moment account for about 2/3 of all the data in GISAID.
+If you obtained your metadata files from Nexstrain you will use addToTable.pl and align.pl. Metadata tables from Nexstrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. The pre-processed file can be downloaded from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. 
+Please be aware that Nexstrain can re-distribute only publicly available data, which at the moment account for about 40% of the data in GISAID.
 Data from Nexstrain still need to be converted in *HaploCoV* format. For this purpose you can use *NextStrainToHaploCoV.pl*.
 Contrary to addToTable.pl, NextStrainToHaploCoV.pl does not feature incremental addition of data: the full Nexstrain table can be converted in *HaploCoV* format in 3 to 5 minutes. 
 
