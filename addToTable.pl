@@ -70,7 +70,8 @@ sub metadataToPos
 			"Collection date"=>"na",
 			"Submission date"=>"na",
 			"Location"=>"na",
-			"Pango lineage"=>"na"
+			"Pango lineage"=>"na",
+
 		);
 	}
 	return (\%lock);	
@@ -135,9 +136,14 @@ sub metadataToLists
 		my $v=$vl[$i];
 		if ($lock{$v})
 		{
-			$lock{$v}=$i 
+			$lock{$v}=$i;
+		#to deal with inconsistent naming in gisaid metadata table
+		}elsif ($v eq "Pango lineage" || $v eq "Lineage"){
+			$lock{"Pango lineage"}=$i;
 		}
 	}
+	#  again to deal with inconsistent naming in gisaid metadata
+	$lock{"Submission date"}=$lock{"Collection date"} if $lock{"Submission date"} eq "na";
 
 	foreach my $MV (keys %lock)
 	{
@@ -298,12 +304,16 @@ sub parallel_align
                         push(@childs,$pid);
                 }
         }
-	print "Now aligning with $numP processes: c:@childs\n";
+	print "Now aligning with $numP processes\n";
         foreach(@childs){
                 my $tmp=waitpid($_,0);
         }
 	#print "o:@outfiles\n";
 	merge(\@outfiles,$ofile);
+	if ($infile eq "tmpMissingSeq.fa")
+	{
+		system("rm $infile")==0||die("could not remove temporary file with missing sequences\n");
+	}
 	foreach my $ifile (@infiles)
 	{
 		system("rm $ifile")==0||die("could not remove temporary file $ifile\n");
@@ -428,7 +438,7 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--seq"};
-                die("Reason:\nNo valid input  list file provided. $f does not exist!");
+                die("Reason:\nNo valid sequence file provided. $f does not exist!");
         }
 	if ($arguments{"--nproc"}<0)
 	{

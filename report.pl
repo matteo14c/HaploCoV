@@ -174,7 +174,7 @@ sub print_pass
         	next unless $vocness{$Pvariant};
         	my $diff=$score-$legacyScore;
 		$PASS="PASS" if $diff>=3 && $score>=12;
-                	print OUT "$variant $Pvariant $score $legacyScore $diff $PASS\n";
+                print OUT "$variant $Pvariant $score $legacyScore $diff $PASS\n";
 	}
 }
 

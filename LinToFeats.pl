@@ -10,11 +10,6 @@ my %arguments=
 "--annotfile"=>"globalAnnot",
 "--outfile"=>"na"          # max time
 );
-###########################################################
-# download required files
-
-download_annot();
-
 
 
 ############################################################
@@ -30,6 +25,14 @@ my $linfile=$arguments{"--infile"};
 my $outfile=$arguments{"--outfile"};
 my $corgat=$arguments{"--corgat"};
 my $annotfile=$arguments{"--annotfile"};
+
+###########################################################
+# download required files
+if ($annotfile eq "globalAnnot")
+{
+	download_annot();
+}
+
 
 my %annot_index=();
 
@@ -392,20 +395,26 @@ sub print_scores
 
 sub download_annot
 {
-	if (-e "globalAnnot")
-	{
-		#system("rm globalAnnot")==0||die("could not remove old annotation files\n");
-	}
-	if (-e "globalAnnot.gz")
-	{
-		#system("rm globalAnnot.gz")==0||die("could not remove old annotation files\n");
-	}
-        print "Will now dowload CorGAT annotation of SARS-CoV-2 variants, from Github\n";
+	print "Will now dowload CorGAT annotation of SARS-CoV-2 variants, from Github\n";
         print "Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
         check_exists_command('gunzip') or die "$0 requires gunzip to unzip the genome\n";
-	#system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/globalAnnot.gz")==0||die("Could not retrieve the reference annotation used by HaploCov\n");
-	#system("gunzip globalAnnot.gz")==0 ||die("Could not unzip globalAnnot");
+
+	if (-e "globalAnnot")
+	{
+		print "An older copy of globalAnnot was detected in your system\n";
+		print "I will rename the old copy to globalAnnot.old\n";
+		system("mv globalAnnot globalAnnot.old")==0||die("could not remove old annotation files\n");
+	}
+	if (-e "globalAnnot.gz")
+	{
+		print "An older copy of globalAnnot was detected in your system\n";
+                print "I will rename the old copy to globalAnnot.gz.old\n";
+
+		system("mv globalAnnot.gz globalAnnot.old.gz")==0||die("could not remove old annotation files\n");
+	}
+	system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/globalAnnot.gz")==0||die("Could not retrieve the reference annotation used by HaploCov\n");
+	system("gunzip globalAnnot.gz")==0 ||die("Could not unzip globalAnnot");
 
 }
 

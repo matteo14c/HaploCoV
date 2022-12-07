@@ -123,15 +123,20 @@ sub assign
 				$multi.="-$decode[$bests[$b]]";
 			}
 		}
-		if ($vls[9] ne "Unassigned" && $vls[9] ne "NA" && $vls[9] ne "None")
+		#if ($vls[9] ne "Unassigned" && $vls[9] ne "NA" && $vls[9] ne "None")
+		#{
+		$vls[9]=$cl;
+			#}
+			#if ($vls[9] eq "Unassigned" || $vls[9] eq "NA" || $vls[9] eq "None")
+			#{
+			#$multi=$cl;
+			#}
+		if ($#vls==10)
 		{
-			$vls[9]=$cl;
+			push(@vls,$multi);
+		}elsif($#vls==11){
+			$vls[11]=$multi;
 		}
-		if ($vls[9] eq "Unassigned" || $vls[9] eq "NA" || $vls[9] eq "None")
-		{
-			$multi=$cl;
-		}
-		push(@vls,$multi);
 		my $outS=join("\t",@vls);
 		print OUT "$outS\n";
 

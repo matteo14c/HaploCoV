@@ -72,7 +72,7 @@ sub subset
 	while(<IN>)
 	{
 		my ($id,$date,$offset,$depo,$odepo,$continent,$farea,$fcountry,$fregion,$flineage,$mut)=(split(/\t/,$_));
-		next if $odepo-$offset>=60;
+		#next if $odepo-$offset>=60;
 		#print if $lineage eq $flineage;
 		next if $area ne "na" && $area ne $farea;
 		next if $country ne "na" && $country ne $fcountry;

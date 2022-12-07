@@ -280,8 +280,8 @@ sub print_help
         print "--minP <<integer>>\t defaults to 0.05, minimum level of prevalence\n";
 	print "--minG <<integer>>\t defaults to 5, minimum number of genomes\n (only lineages associated with --minG or more are reported)\n";
         print "--pass <<logical>>\t defaults to T (true),include only variants that fulfilled all the criteria specified by\n";
-       	print "\t--minFc, --minP and --minG in the report, if set to F (false) all variants will be reported instead\n";
-	print "--outfile <<filname>>\t defaults to <<infile>>.prev, output file\n";
+       	print "                  \t--minFc, --minP and --minG in the report, if set to F (false) all variants will be reported instead\n";
+	print "--outfile <<filname>>\t output file. Defaults to <<infile>>.prev\n";
         print "\nTo run the program you MUST provide at least --file\n";
         print "the file needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";

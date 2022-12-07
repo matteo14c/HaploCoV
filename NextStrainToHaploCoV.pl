@@ -52,22 +52,22 @@ sub metadataToLists
 		chomp();
 		my @data=(split(/\t/));
 		my $nfil=@data;
-		if ($nfil!=50)
+		if ($nfil!=52)
 		{
-			die ("Input file is in an unknown format: expected 50 tab delimited columns!\n,Got $nfil\n");
+			die ("Input file is in an unknown format: expected 52 tab delimited columns!\nGot $nfil\n");
 		}
 		my $id=$data[0];
 		$id="NA" if $id eq "?";
-		my $d=$data[5];
-		my $s=$data[27];
-		my $p=$data[19];
+		my $d=$data[6];
+		my $s=$data[28];
+		my $p=$data[20];
 		$p="NA" if $p eq "?";
-		my $continent=$data[6];
-		my $country=$data[7];
-		my $region=$data[8];
-		my $alleles=$data[47];
-		my $ins=$data[46];
-		my $del=$data[45];
+		my $continent=$data[7];
+		my $country=$data[8];
+		my $region=$data[9];
+		my $alleles=$data[49];
+		my $ins=$data[48];
+		my $del=$data[47];
 		my $lvar=build_listVar($alleles,$ins,$del,$ref);
 
 		$id=fix_strain($id);
@@ -151,6 +151,8 @@ sub build_listVar
 		my $ref=substr($v,0,1);
 		my $pos=substr($v,1,length($v)-2);
 		my $alt=chop($v);
+		next if $ref=~/[RYSWKMBDHVN]/;
+		next if $alt=~/[RYSWKMBDHVN]/;
 		#print "$v $ref $pos $alt\n";
 		#die();
 		$ovar.="$pos\_$ref|$alt,";
@@ -164,8 +166,9 @@ sub build_listVar
 			next unless $i=~/\:/;
 			my ($pos,$alt)=(split(/\:/,$i));
 			my $ref=$alt;
+			next if $ref=~/[RYSWKMBDHVN]/;
 			$ref=~s/[ACTGN]/\./g;
-			$ovar.="$pos\_$ref|$alt";
+			$ovar.="$pos\_$ref|$alt,";
 		}
 	}
 	if ($del ne "")
@@ -178,8 +181,9 @@ sub build_listVar
 			my $length=$e-$s+1;
 			my $ref=substr($seq,$s-1,$length);
                         my $alt=$ref;
+			next if $ref=~/[RYSWKMBDHVN]/;
                         $alt=~s/[ACTGN]/\./g;
-			$ovar.="$s\_$ref|$alt";
+			$ovar.="$s\_$ref|$alt,";
                 }
 
 	}

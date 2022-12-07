@@ -11,7 +11,7 @@ my %arguments=
 "--suffix"=>"N",
 "--size"=>100,
 "--tmpdir"=>"novelGs",
-"--deffile"=>"linDefMu",
+"--deffile"=>"na",
 "--outfile"=>"na"
 );
 #
@@ -21,6 +21,7 @@ check_arguments();
 check_input_arg_valid();
 #
 #
+
 
 #############################################################
 # Get arguments
@@ -41,6 +42,10 @@ unless (-e $outdir)
         system ("mkdir $outdir")==0||die();
 }
 
+if ($deffile eq "linDefMut")
+{
+	download_refMut();
+}
 
 my ($Hpos,$LPos)=build_L_pos($posFile);
 my ($data,$have)=compress_groups($metafile,$Hpos,$outdir,$deffile);
@@ -399,6 +404,19 @@ sub check_exists_command {
     return $check;
 }
 
+sub download_refMut
+{
+        print "I will now donload the most recent version of linDefMut to assign Pango lineages\n";
+        print "will rename the old copy to linDefMut.old\n";
+        if (-e "linDefMut")
+        {
+                system("mv linDefMut.old")==0||die("could not remove the old version of linDefMut")
+        }
+        print "Downloading linDefMut from the github repo. Please download this file manually, if this fails\n";
+        check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
+        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
+
+}
 
 sub print_help
 {
@@ -427,7 +445,7 @@ sub print_help
         print "--suffix <<character>>\t suffix for new lineages,defaults to N\n";
         print "--size <<integer>>\t minimum size for a new subgroup within a lineage, defaults to 100\n";
         print "--tmpdir <<dirname>>\t defaults to \"./novelGs\", output directory\n";
-	print "--deffile <<filename>>\t defaults to \"./linDefMut\", file with lineage defining mutations\n";
+	print "--deffile <<filename>>\t If \"./linDefMut\", is specified the most recent copy will be downloaded from github\n";
         print "--outfile <<filename>>\t name of the output file\n";
 	print "\n To run the program you MUST provide  --metafile, --outfile and --posFile\n";
         print " all the file needs to be in the folder from which the script is executed.\n\n";
