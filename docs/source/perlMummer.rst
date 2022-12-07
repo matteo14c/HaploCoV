@@ -25,13 +25,13 @@ this will install mummer for all the users in your system.
 Unix, from binaries
 ====================
 
-If your OS does not feature pre-compiled software packages for the installation of Mummer, you can compile from binaries. Please follow this link https://sourceforge.net/projects/mummer/files/ for detailed instructions on how to install and run Mummer. Please notice that after you have succesfully compiled all the executables by running:
+If your OS does not feature pre-compiled software packages for the installation of Mummer, you can compile from binaries. Please follow this link https://sourceforge.net/projects/mummer/files/ for detailed instructions on how to install and run Mummer. Please notice that after you have successfully compiled all the executables by running:
 
 ::
 
   make install
 
-you will still need to place add these files to your executable PATH, either by adding/copying all the files to one of the directories already included in the PATH or by adding the whole Mummer directory (where all the software was compiled) to the your PATH of executables. If for example all your executables are in a folder called "Mummer" in your home directory on a unix system you can symply run:
+you will still need to add these files to your executable PATH, either by adding/copying all the files to one of the directories already included in the PATH or by adding the whole Mummer directory (where all the software was compiled) to the your PATH of executables. If for example all your executables are in a folder called "Mummer" in your home directory on a unix system you can simply run:
 
 ::
 
@@ -41,13 +41,13 @@ Mummer installation MacOS X
 ===========================
 
 Download Mummer at: https://sourceforge.net/projects/mummer/files/latest/download and extract the archive (tar.gz) file.
-Open up Terminal and:
+Open up Terminal and run:
 
 ::
 
   tar xvzf MUMmer3.23.tar.gz
 
-As explained in the INSTALL file, included in the Mummer package to build Mummer:
+As explained in the INSTALL file, included in the Mummer package to build Mummer use:
 
 ::
 
@@ -64,7 +64,7 @@ You should get something similar to `this <https://gist.githubusercontent.com/mt
 
 ::
 
-Now that you have successfully built the binaries are, you need to add them to $PATH. Run the following command with your favourite text editor:
+Now that you have successfully built the binaries, you need to add them to $PATH. Run the following command with your favourite text editor:
 ::
 
   sudo vim /etc/paths
