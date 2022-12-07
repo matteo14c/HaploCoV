@@ -12,8 +12,8 @@ All the final outputs as well as all intermediate files produced by the tool are
 The script accepts the following parameters:
 
 * *--file* name of the metadata file (please see above); 
-* *--maxT* upper bound in days for the time interval to consider in the analysis (days are counted starting from 12-30-2019). A value of 1 corresponds to 12-31-2019. A value of 365 to 12-30-2020. And so on; 
-* *--minT* lower bound for the time interval. days are counted using the same logic described form maxT;
+* *--maxT* upper bound in days for the time interval to consider in the analysis (days are counted starting from 12-30-2019). A value of 1 corresponds to 12-31-2019. A value of 365 to 12-30-2020 and so on; 
+* *--minT* lower bound for the time interval. Days are counted using the same logic described form maxT;
 * *--interval*  size in days of overlapping time windows, defaults to 10;
 * *--minCoF* minimum fequency for high frequency genomic variants, defaults to 0.01; 
 * *--minP* minimum persistence (number of overlapping time windows) for high freq genomic variants: only genomic variants that have a high frequency (>=minCoF) in at least this number of distinct time windows will be included in subsequent analyses,defaults to 3;
