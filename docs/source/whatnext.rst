@@ -3,7 +3,7 @@ What to do next
 
 If you identified a novel variant of SARS-CoV-2 with "interesting" genomic features, you should probably report the variant to Health authorithies in your country and to the scientific community.
 
-Normally `virological <https://virological.org>`_ or `Pango <https://github.com/cov-lineages/pango-designation/issues/>`_ would be the right place to start to report your novel findings to the commnunity.
+Normally `virological <https://virological.org>`_ or `Pango <https://github.com/cov-lineages/pango-designation/issues/>`_ would be the right place to start to report your novel findings to the community.
 
 If the novel candidate variant was identified by HaploCoV, HaploCoV.pl (see --varfile option) or augmentClusters.pl (see HaploCoV: tools) should/could have provided a file with the complete list of genomic variants that define your novel lineage/lineages of interest.
 It might be worthwile to add this/these definitions to your favourite "Genomics variant file" (see `here <https://haplocov.readthedocs.io/en/latest/genomic.html>`_) and use assign.pl or p_assign.pl to re-assign genomic sequences using the augmented nomenclature.
