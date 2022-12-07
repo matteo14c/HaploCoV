@@ -25,7 +25,7 @@ this will install mummer for all the users in your system.
 Unix, from binaries
 ====================
 
-If you OS does not feature pre-compiled software packages for the installation of Mummer, you can compile from binaries. Please follow this link https://sourceforge.net/projects/mummer/files/ for detailed instructions on how to install and run Mummer. Please notice that after you have succesfully compiled all the executables by running:
+If your OS does not feature pre-compiled software packages for the installation of Mummer, you can compile from binaries. Please follow this link https://sourceforge.net/projects/mummer/files/ for detailed instructions on how to install and run Mummer. Please notice that after you have succesfully compiled all the executables by running:
 
 ::
 
