@@ -1,7 +1,7 @@
 6 Assign genomes to new groups
 ===============================
 
-*assign.pl* an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by augmentClusters.pl. 
+*assign.pl* is an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by augmentClusters.pl. 
 The utility applies a simple algorithm based on phenetic distances (described in Chiara et al 2021). For every group, users need to provide a list of "characteristic" allele variants, here defined as those present in more than 50% of the genomes that form the group.
 For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
 
@@ -12,7 +12,7 @@ The output is in HaploCoV format.
 The file*linDefMut* in the current github repository provides a complete list of defining genomic variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a bi-weekly basis.
 
 **Assigning Haplogroups as defined in Chiara et al 2021**
-*HaploDefMut* in the current github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in Chiara el al 2021. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a bi-weekly basis.
+*HaploDefMut* in the current github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in Chiara et al 2021. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a bi-weekly basis.
 
 **Options**
 *assign.pl* takes the following options:
@@ -94,6 +94,6 @@ To execute it you can use:
 Input files are the same as those provided to *assign.pl*. Output format is in the same format described above.
 
 .. warning::
-Since *p_assign.pl* does directly make use of *assign.pl* when it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error is *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
+Since *p_assign.pl* does directly make use of *assign.pl* when it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error if *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
 
 All input files **MUST** be in the **same folder** from which the program is executed. 
