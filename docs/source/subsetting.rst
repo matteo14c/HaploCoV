@@ -40,7 +40,7 @@ Geographically restricted analyses: how to analyse a specific Area, Country or r
 .. warning::
 Please be aware that HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived *-as they are-* from their respective repositories. If you encounter any inconsistencies or errors in the naming of continents, countries or regions please contact data submitters and/or curators of the database from which data were obtained.
 
-**Basic statistics: how to I summarize geographic data**
+**Basic statistics: how to summarize geographic data**
 
 Simple stats on the number of genomes associated with distinct Continents, Countries, Regions and or Macro-geographic regions can be easily obtained by combining the `cut` , `sort` and `uniq' unix commands. 
 These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file.
@@ -114,10 +114,6 @@ The output should be:
    :align: center
    
 If you prefer to use **subset.pl** the same results can be obtained by the following command:
-
-::
- 
- **Alternatively** you can use subset.pl to perform the same selection:
 
 ::
  
