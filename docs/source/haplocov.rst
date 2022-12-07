@@ -1,7 +1,7 @@
 HaploCoV.pl
 ===========
 
-Once data have been converted in HaploCoV format, the complete workflow can be executed by applying **HaploCoV.pl**.
+Once data has been converted in HaploCoV format, the complete workflow can be executed by applying **HaploCoV.pl**.
 HaploCoV.pl is the workhorse of HaploCoV and is the recommended way to execute our software.
 
 Users can specify a list of geographic **regions/areas or countries** and **intervals of time** to be considered in their analyses by providing a configuration file in text format (--locales, see next). 
@@ -33,9 +33,9 @@ Configuration (Locales file)
 ============================
 
 Locale(s) configuration files are used by HaploCoV.pl to set the main parameters for the execution of your analyses.
-These files are used to configure the place/places and intervals of time that HaploCoV will include in the analyses. There is no limit to the maximum number of geographic locations, and time-intervals that can be analysed. As outlined in the example below, however each need to be indicated by in a separate line in your locales file.
+These files are used to configure the place/places and intervals of time that HaploCoV will include in the analyses. There is no limit to the maximum number of geographic locations, and time-intervals that can be analysed. As outlined in the example below, however, each needs to be indicated in a separate line in your locales file.
 
-Locales files need to have a tabular format and contain 5 colums separated by tabulations. The file locales.txt included in the Github repository provides a valid example of a locales configuration file. 
+Locales files need to have a tabular format and contain 5 columns separated by tabulations. The file locales.txt included in the Github repository provides a valid example of a locales configuration file. 
 
 | An example of a valid locales file is illustrated below:
  
@@ -67,13 +67,13 @@ Locales files need to have a tabular format and contain 5 colums separated by ta
 The file includes the following columns, in this set order:
 
 | 1. **location**: a country, a region or a macrogeographic area (see "geography in HaploCoV").
-|
+| 
 | 2. **qualifier**: qualifier of the geographic entity, accepted values are: region, country or area. 
-|
-|3. **start-date:** lower limit of the interval of time on which the analysis are executed (see "dates in HaploCoV").
-|
+| 
+| 3. **start-date:** lower limit of the interval of time on which the analysis are executed (see "dates in HaploCoV").
+| 
 | 4. **end-date:** upper limit of the interval of time.
-|
+| 
 | 5. **genomic-variants:** a list of files with high frequency genomic variants. Comma separated. Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature.  A distinct report file (.rep) is generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e if the name of your genomic variants file is *"myVar"* the name of the report will be *"\_myVar.rep"* (see below).
 
 
@@ -86,10 +86,10 @@ The name of the main output by HaploCoV.pl is set automatically by the program b
 2. Thailand_custom.rep;
 3. world_custom.rep.
 
-Each execution of HaploCoV usually generates several temporary/indermediate files. Normally you will not need to read/process/use these files, however for your convenience, all the intermediate files will be in be saved in a distinct folder. 
+Each execution of HaploCoV usually generates several temporary/intermediate files. Normally you will not need to read/process/use these files, however for your convenience, all the intermediate files will be saved in a distinct folder. 
 
-The same conventions applied for naming the main output files is used also to give names to the  intermediate folders. 
-In the example outlined above, indermediate files will be saved in 3 different folders, called:
+The same conventions applied for naming the main output files are used also to give names to the  intermediate folders. 
+In the example outlined above, intermediate files will be saved in 3 different folders, called:
 
 1. Italy_areas_list.txt_results;
 2. Thailand_custom_results;
@@ -112,27 +112,28 @@ Precomputed sets of genomic variants/files can broadly be categorized into 4 mai
 |
 | 3. **Increased prevalence genomic variants.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq**. 
 |
-| 4. **globally frequent genomic variants** These are provided in the main github repository of HaploCoV, and include: *global_list.txt*: frequent worldwide, *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one county.
+| 4. **globally frequent genomic variants.** These are provided in the main github repository of HaploCoV, and include: *global_list.txt*: frequent worldwide, *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one country.
 
-Please see the section "Genomic variants file" above for additional information. 
+Please see the section `Genomic variants <https://haplocov.readthedocs.io/en/latest/genomic.html>`_ file" above for additional information. 
 
-If the pre-computed files do not suit their use case, users do also have the option of derive **custom** sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword **custom** needs to be indicated in the 5th column of the *locales* file (see below). High frequency genomic variants will be computed based on the current selection.   
+If the pre-computed files do not suit their use case, users do also have the option to derive **custom** sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword **custom** needs to be indicated in the 5th column of the *locales* file (see below). High frequency genomic variants will be computed based on the current selection.   
 
 Locales: special/reserved keywords
 ==================================
 
 When the reserved word **world** is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geographic origin.
 
-In the 5th (genomic-variants) you can use the reserved world **custom** if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility. When **custom** is specified high frequency genomic variants are determined dynimically based on the user selection.
+In the 5th (genomic-variants) you can use the reserved world **custom** if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility. When **custom** is specified, high frequency genomic variants are determined dynamically based on the user selection.
 
 Advanced configuration
 =======================
 
 HaploCoV.pl executes all the tools and utilities in HaploCoV for you and in the right order. However, the workflow is relatively complex, and every tool uses a series of parameters that need to be set, or are set by default.
 The **parameters** file is a special configuration file that can be used to set and configure all the parameters used by each and every single tool in the workflow.
-A default file with a standard configuration (called **parameters**) is included in the main repository. This file should suit most use case/scenario. However users are free to edit it according to their needs.
+A default file with a standard configuration (called **parameters**) is included in the main repository. This file should suit most use cases/scenarios. However users are free to edit it according to their needs.
+To facilitate this process, users can take advantage of the file **parametersExtended** in the main repository, which provides an explicit list of all the parameters that can be modified/set and their default values.
 
-The format is quite straightforward, each tool is indicated by in a line, and the parameters to be set in the following lines. When no parameters are specified the defaults are used. In example:
+The format is quite straightforward, each tool is indicated in a line, and the parameters to be set in the following lines. When no parameters are specified the defaults are used. In example:
 
 | ``computeAF.pl`` 
 | ``augmentClusters.pl`` 
@@ -142,13 +143,13 @@ The format is quite straightforward, each tool is indicated by in a line, and th
 will set *computeAF.pl* to use its default parameters; 
 while for *augmentClusters.pl* --dist will be set to 4 and --size to 10.
 
-For a complete list of all the parameters accepted by every tool, please refer to the corresponding section in the manual.
+For a complete list of all the parameters accepted by every tool, please refer to the corresponding section in the manual or see the file **parametersExtended** file.
 
 
 Defining genomic variants file
 ==============================
 
-The --varfile option can be set instuct HaploCoV to report an additional file with the list of novel candidate SARS-CoV-2 variants identified by the tool, and the set of their defining genomic variant.
+The --varfile option can be set to instruct HaploCoV to report an additional file with the list of novel candidate SARS-CoV-2 variants identified by the tool, and the set of their defining genomic variants.
 
 --varfile can be set to one of 3 possible values:
 
@@ -156,22 +157,22 @@ The --varfile option can be set instuct HaploCoV to report an additional file wi
 * "b" the additional file is produced, only variants that passed both the thresholds (score and prevalence) are reported 
 * "a" the additional file is produces, variants that passed any of the thresholds (score or prevalence) are reported 
 
-For a more extendend explanation of the meaning, format and possible usage/application of this output file, users are kindly invited to read the section: `Genomic variants file <https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii>`_.
+For a more extended explanation of the meaning, format and possible usage/application of this output file, users are kindly invited to read the section: `Genomic variants file <https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii>`_.
 
 
 Intermediate files and what to make of them
 ===========================================
 
-For every run of HaploCoV and a folder with 6 indermediate files will be created (see above). Although, normally you are not supposed to use these files, a brief explanation concerning their meaning and content is reported in the following section.
+For every run of HaploCoV and a folder with 6 intermediate files will be created (see above). Although, normally you are not supposed to use these files, a brief explanation concerning their meaning and content is reported in the following section.
 All these files are produced by different tools in the HaploCoV workflow. More detailed explanations can also be found in the corresponding (to each tool) section in the manual. 
 
-Indermediate files produced by HaploCoV.pl (prefix of the name might change according to the input file, suffix are reported):
+Intermediate files produced by HaploCoV.pl (prefix of the name might change according to the input file, suffix are reported):
 
-| 1. *areas_list.txt* : this file is produced by computeAF.pl. It reports the complete list of genomic variants of high frequency (above 1% for more than 30 days by default) that were identified by analising the interval of time and geographic locales included in your "locales" file. This file is produced only if the type of analysis (5th column of your locales file) is set to custom.
+| 1. *areas_list.txt* : this file is produced by computeAF.pl. It reports the complete list of genomic variants of high frequency (above 1% for more than 30 days by default) that were identified by analysing the interval of time and geographic locales included in your "locales" file. This file is produced only if the type of analysis (5th column of your locales file) is set to custom.
 |
-| 2. *\_results.txt* : the file with this suffix, is the result of augmentClusers.pl, and includes all the designations (already included in the nomenclature of novel) that were identified by that tool. Names of candidate novel lineages/variants are according to the conventions defined in `Novel designations <https://haplocov.readthedocs.io/en/latest/genomic.html#novel-designations>`_.
+| 2. *\_results.txt* : the file with this suffix, is the result of augmentClusers.pl, and includes all the designations (already included in the nomenclature or novel) that were identified by that tool. Names of candidate novel lineages/variants are according to the conventions defined in `Novel designations <https://haplocov.readthedocs.io/en/latest/genomic.html#novel-designations>`_.
 |
-| 3. *\_assigned.txt* : this file is produced by assign.pl. Following the identification of novel candidates lineages/variants, HaploCoV re-assigns all the genomes included in your analyses using the additional designation. Results are saved in this file. The file is in *HaploCoV* format, the lineage/designation assigned to each genome is updated.
+| 3. *\_assigned.txt* : this file is produced by assign.pl. Following the identification of novel candidate lineages/variants, HaploCoV re-assigns all the genomes included in your analyses using the additional designation. Results are saved in this file. The file is in *HaploCoV* format, the lineage/designation assigned to each genome is updated.
 |
 | 4. *\_features.csv* : this file reports *high level* genomic features associated with each lineage/candidate lineage included in the \_results.txt file. Features are computed by LinToFeats.pl.
 |
@@ -190,7 +191,7 @@ The main output of HaploCoV consists in a file in .rep format. This is a simple 
 3. both.
 
 The report contains 3 main sections, which are discussed below. 
-The file "India_custom.rep" in main HaploCoV repository, provides an example of .rep file. The file containts an analysis of "novel" variants in India, between 2021-01-01 and 2021-04-30, that is when the Delta and Kappa variant of SARS-CoV-2 emerged and started to spread in the country.
+The file "India_custom.rep" in the main HaploCoV repository, provides an example of .rep file. The file contains an analysis of "novel" variants in India, between 2021-01-01 and 2021-04-30, that is when the Delta and Kappa variant of SARS-CoV-2 emerged and started to spread in the country.
 
 Header and sections
 ===================
@@ -209,9 +210,9 @@ Names are according to the convention explained in the section `Novel designatio
 
 ``name of the parental`` , ``dot`` , ``one letter suffix(N by default)`` , ``progressive number`` . 
 
-| I.e **B.1.N1** descends from **B.1** and so on.
+| I.e. **B.1.N1** descends from **B.1** and so on.
 
-Main features of the newly identified lineages/variants are reported in two conceptually distinct sections: **Scores** and **Prevalence** 
+Main features of the newly identified lineages/variants are reported in two conceptually distinct sections: **Scores** and **Prevalence**. 
 
 Scores and novel genomic variants
 =================================
@@ -223,30 +224,31 @@ As an example:
 
 ``Parent: B.1`` indicates that the parental lineage is B.1
 
-2. The VOCness score of the parental, and candidate new lineage/variant (**Score parent:** and **Score subV:** , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
+2. The VOCness score of the parental, and candidate new lineage/variant (**Score parent:** and **Score subV:** , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "enhanced" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
 
 An example of a output line is reported below:
 
 | ``Score parent: 3.28 - Score subV: 15.10`` 
 
 3. A detailed comparison of the genomic variants gained or lost by the novel candidate lineage/designation w.r.t its parent. Which includes the following data:
+
 | 3.1. **defined by**: reports the complete list of defining genomic variants of the novel lineage/designation; 
 | 3.2. **gained (wrt parent)**: genomic variants that are new compared with the parent lineage;
 | 3.3. **lost (wrt parent)**: genomic variants associated with the parent lineage/designation, but not with the novel candidate lineage/designation.
 
-Genomic variants are provided in as a list separated by " " and in the same format indicated above:
+Genomic variants are provided in as a list separated by spaces (" ") and in the same format indicated above:
 
 \<genomicposition\>_\<ref\>\|\<alt\> 
 
 | i.e. 1_A\|T indicates a A to T substitution in position 1 of the reference genome.
 
-An example of the outout is reported below: 
+An example of the output is reported below: 
 
 | ``Genomic variants:`` 
 | 
-|  ``defined by: 210_G\|T 241_C\|T 3037_C\|T 4181_G\|T 21618_C\|G 22995_C|A 19220_C\|T`` 
+|  ``defined by: 210_G|T 241_C|T 3037_C|T 4181_G|T 21618_C|G 22995_C|A 19220_C|T`` 
 | 
-|  ``gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T`` 
+|  ``gained (wrt parent): 21618_C|G 22995_C|A 19220_C|T`` 
 | 
 |  ``lost (wrt parent):`` 
         
@@ -257,7 +259,7 @@ Prevalence
 ==========
 
 This part of the report summarizes the observed prevalence of novel candidate variants/lineages over a time span defined by the user(4 weeks by default) at different locales. The aim is to identify/flag variants that had a high prevalence (default 1% or more) and which demonstrated a significant increase in their spread (2 fold or more).
-Please refer to ncrease.pl" for more detailed instructions on how the prevalence of a variant is computed and reported by HaploCoV, and more importantly for how to configure and set parameters.
+Please refer to `Prevalence report <https://haplocov.readthedocs.io/en/latest/increase.html>`_ for more detailed instructions on how the prevalence of a variant is computed and reported by HaploCoV, and more importantly for how to configure and set parameters.
 The prevalence report comprises 3 sections.
 
 **Prevalence above the threshold (1% by default)**
@@ -274,6 +276,7 @@ Indicates that the novel candidate lineage/variant had a prevalence above the mi
 **Increase (2 fold by default)**
 
 For every interval/span of time (default 4 weeks) where the novel candidate lineage/variant had a prevalence above the user defined threshold, and an increase of X folds (X=2 by default) or higher, this section reports:
+
 * the place were the increase was observed; 
 * the prevalence at the initial time point of the interval; 
 * and the prevalence at the last time point of the interval.
@@ -285,7 +288,7 @@ For example:
 
 Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence.
 
-The sentence ` The candidate variant/lineage did not show an increase in prevalece greater than the threshold at any interval or locale ` is used when no data are available and/or the novel variant did not show an increase in its prevalence.
+The sentence ` The candidate variant/lineage did not show an increase in prevalence greater than the threshold at any interval or locale ` is used when no data are available and/or the novel variant did not show an increase in its prevalence.
 
 **Prevalence in time**
 
