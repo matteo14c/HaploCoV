@@ -15,5 +15,5 @@ These parameters can be set by the user at runtime.
 
 The main output consists in a report file that summarizes the prevalence and features (as defined by the criteria outlined above) of novel candidate variants of SARS-CoV-2.  
 
-The reccommended way to execute HaploCoV is through HaploCoV.pl. This tool automates the execution of the complete workflow implemented by Haplocov.
+The recommended way to execute HaploCoV is through HaploCoV.pl. This tool automates the execution of the complete workflow implemented by Haplocov.
 However, users are also free to execute each single distinct task by themselves if they prefer. Each tool has its own entry in the manual.
