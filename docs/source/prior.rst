@@ -25,7 +25,7 @@ A typical run of report.pl should look something like:
 
  perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt
 
-The main output file *lvar_prioritization.txt will* a list all the newly identified (by HaploCoV) designations in your reference nomenclature, and their score. 
+The main output file *lvar_prioritization.txt* will list all the newly identified (by HaploCoV) designations in your reference nomenclature, and their score. 
 The output file is a table with 6 columns:
 
 .. list-table:: Locales File
