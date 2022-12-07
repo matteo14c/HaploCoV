@@ -114,7 +114,7 @@ Precomputed sets of genomic variants/files can broadly be categorized into 4 mai
 |
 | 4. **globally frequent genomic variants** These are provided in the main github repository of HaploCoV, and include: *global_list.txt*: frequent worldwide, *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one county.
 
-Please se the section "Genomic variants file" above for additional information. 
+Please see the section "Genomic variants file" above for additional information. 
 
 If the pre-computed files do not suit their use case, users do also have the option of derive **custom** sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword **custom** needs to be indicated in the 5th column of the *locales* file (see below). High frequency genomic variants will be computed based on the current selection.   
 
@@ -132,7 +132,7 @@ HaploCoV.pl executes all the tools and utilities in HaploCoV for you and in the 
 The **parameters** file is a special configuration file that can be used to set and configure all the parameters used by each and every single tool in the workflow.
 A default file with a standard configuration (called **parameters**) is included in the main repository. This file should suit most use case/scenario. However users are free to edit it according to their needs.
 
-The format is quite straightforward, each tool is indicated by in a line, and the parameters to be set in the following lines. When no parameters are specified, the defaults are used In example:
+The format is quite straightforward, each tool is indicated by in a line, and the parameters to be set in the following lines. When no parameters are specified the defaults are used. In example:
 
 | ``computeAF.pl`` 
 | ``augmentClusters.pl`` 
@@ -167,7 +167,7 @@ All these files are produced by different tools in the HaploCoV workflow. More d
 
 Indermediate files produced by HaploCoV.pl (prefix of the name might change according to the input file, suffix are reported):
 
-| 1. *areas_list.txt* : this file is produced by computeAF.pl. It reports the complete list of genomic variants of high frequency (above 1% for more than 30 days by default) that were identified by analising the interval of time and geographic locales included in your "locales" file. This file is produced only if the type of analysis (5th column of your locales file is set to custom.
+| 1. *areas_list.txt* : this file is produced by computeAF.pl. It reports the complete list of genomic variants of high frequency (above 1% for more than 30 days by default) that were identified by analising the interval of time and geographic locales included in your "locales" file. This file is produced only if the type of analysis (5th column of your locales file) is set to custom.
 |
 | 2. *\_results.txt* : the file with this suffix, is the result of augmentClusers.pl, and includes all the designations (already included in the nomenclature of novel) that were identified by that tool. Names of candidate novel lineages/variants are according to the conventions defined in `Novel designations <https://haplocov.readthedocs.io/en/latest/genomic.html#novel-designations>`_.
 |
@@ -240,7 +240,7 @@ Genomic variants are provided in as a list separated by " " and in the same form
 
 | i.e. 1_A\|T indicates a A to T substitution in position 1 of the reference genome.
 
-An example ot the outout is reported below: 
+An example of the outout is reported below: 
 
 | ``Genomic variants:`` 
 | 
@@ -257,7 +257,7 @@ Prevalence
 ==========
 
 This part of the report summarizes the observed prevalence of novel candidate variants/lineages over a time span defined by the user(4 weeks by default) at different locales. The aim is to identify/flag variants that had a high prevalence (default 1% or more) and which demonstrated a significant increase in their spread (2 fold or more).
-Please refere "increase.pl" for more detailed instructions on how the prevalence of a variant is computed and reported by HaploCoV, and more importantly for how to configure and set parameters.
+Please refer to ncrease.pl" for more detailed instructions on how the prevalence of a variant is computed and reported by HaploCoV, and more importantly for how to configure and set parameters.
 The prevalence report comprises 3 sections.
 
 **Prevalence above the threshold (1% by default)**
