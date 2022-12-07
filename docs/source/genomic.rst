@@ -5,16 +5,16 @@ Genomic variants file
 HaploCoV uses a collection of genomic variants with high frequency (at a specific time or place) to augment a "target" nomenclature and identify **candidate** novel variants or lineages.
 By genomic variant, here we mean a variant in the genome, or bettert w.r.t the reference genome assembly of SARS-CoV-2. Although the specification of the adjective "genomic" might sound verbose, we prefer to use it throughout the manual to avoid confusion between "viral variants" or variants of the virus.
 
-The utility *computeAF.pl* include in HaploCoV can be used to analyse a file in HaploCoV format and identify "high frequency" genomic variants. By default *computeAF.pl* will flag all the genomic variants that displayed a frequency of 1%, for more than 30 non consecutive days during the pandemic (i.e. or derived from the input data).
+The utility *computeAF.pl* included in HaploCoV can be used to analyse a file in HaploCoV format and identify "high frequency" genomic variants. By default *computeAF.pl* will flag all the genomic variants that displayed a frequency of 1%, for more than 30 non consecutive days during the pandemic (i.e. or derived from the input data).
 
 These files have a very streamlined format which is briefly illustrated below. Each genomic variant is reported  according to the following format:
 
 | \<position\>\_\<ref\>|\<alt\>
 | *5000\_A|G*
 
-where **positiion**\= genomic coordinate on the reference genome, **ref**\= reference sequence on the genome and **alt**\= alternative sequence on the genome.
+where **position**\= genomic coordinate on the reference genome, **ref**\= reference sequence on the genome and **alt**\= alternative sequence on the genome.
 
-A "*genomic variants* file consists of 2 columns separated by tabulations. The first column reports a genomic variant, the second the list of places (country, macro-areas, etc) where the genomic variant shows a prevalence above the threshold. Genomic variants are reported in no specific order.
+A *"genomic variants"* file consists of 2 columns separated by tabulations. The first column reports a genomic variant, the second the list of places (country, macro-areas, etc) where the genomic variant shows a prevalence above the threshold. Genomic variants are reported in no specific order.
 An example of a genomic variants file looks like:
 
 | 22204\_.\|A	AfrCent
@@ -45,9 +45,9 @@ These files are found under the folder "alleleVariantSet" and include:
 
 | 1. **Highly variable genomes.** These are genomic variants found in at least 25 *highly divergent* genomic sequences that have 6 or more additional genomic variants w.r.t the reference strain to which they are assigned. Highly divergent genomic variants are computed by considering non overlapping intervals of 60 days. For example 960\_1200\_list.txt from the list of genomic variants from genome sequences isolated from 960 to 1200 days after Mon 2019-12-30 (day 0 according to HaploCoV, see `here<https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov>`_). These files are stored under the folder: **HighVar**.
 |
-| 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. In these case each file represents a country, unlike country_list.txt, which reports genomic variants that were frequent at any country. Each file covers a interval of These files are stored under the folder: **country**. 
+| 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. In these case each file represents a country, unlike country_list.txt, which reports genomic variants that were frequent at any country. These files are stored under the folder: **country**. 
 |
-| 3. **Increased prevalence genomic variants.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. Each file These files are stored under the folder: **HighFreq.**  
+| 3. **Increased prevalence genomic variants.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.**  
 |
 Lineage/variants in HaploCoV
 =============================
