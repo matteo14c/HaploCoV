@@ -15,7 +15,8 @@ The program requires only 3 parameters:
 * *--annotfile* file with CorGAT annotations of SARS-CoV-2 variants. Defaults to globalAnnot.
 
 **Execution**
-An example of valid a command line for the execution of LinToFeats.pl is:
+
+An example of a valid command line for the execution of LinToFeats.pl is:
 
 ::
 
