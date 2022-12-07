@@ -46,7 +46,7 @@ The output file is a table with 6 columns:
 The table reports:
 
 1. the name of the novel designation according to HaploCoV;
-2. the name of the parent lineage in the nomeclature;
+2. the name of the parent lineage in the nomenclature;
 3. the VOC-ness score of the novel lineage;
 4. the VOC-ness score of the parent;
 5. the difference in score;
