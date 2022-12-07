@@ -10,7 +10,7 @@ LinToFeats.pl takes the output of augmentClusters.pl as its main input, the outp
 **Options**
 The program requires only 3 parameters:
 
-* *--infile* file with lineages/groups and their characteristic allele variants. 1 lineage per line. (main output of augmentClusters.pl);
+* *--infile* file with lineages/groups and their characteristic allele variants. 1 lineage per line (main output of augmentClusters.pl);
 * *--outfile* name of the output file;
 * *--annotfile* file with CorGAT annotations of SARS-CoV-2 variants. Defaults to globalAnnot.
 
