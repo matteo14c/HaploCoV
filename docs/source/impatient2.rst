@@ -23,8 +23,9 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
 
 **OR download a genomics variant file:**
 
+::
 
-` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/area_list.txt`
+ 2. wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/area_list.txt
 
 
 **and \"Finally\"**
