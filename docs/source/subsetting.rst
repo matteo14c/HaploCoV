@@ -51,7 +51,8 @@ These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file
 
 
 To obtain basic stats about any of such columns (in unix) you can:
-1. extract the desired column with `` cut``;
+
+1. extract the desired column with ``cut``;
 2. sort all the values in the column you selected by using the ``sort`` utility;
 3. summarize the results with ``uniq -c``.
 
@@ -71,7 +72,7 @@ The output should look something like this:
 and should provide a complete list of the "countries" that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by:
 
 1. finding the name/s of the country/countries in the list;
-2. using grep.
+2. using ``grep``.
 
 For example this command will extract data from Venezuela:
 
@@ -119,14 +120,14 @@ If you prefer to use **subset.pl** the same results can be obtained by the follo
  
  perl subset.pl --infile HaploCoV_formattedMetadata --lineage B.1.1.7 --outfile B117data
  
-Please notice that only a single lineage can be specified selected. 
+Please notice that only a single lineage can be specified. 
 
 Time constrained analyses: 
 ===========================
 
 If you want to analyse only genomes/isolates collected between any interval of time, you can subset an HaploCoV formatted file accordingly. 
-Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since HaploCoV formatted files are sorted by collection date, in descending order,all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
-Collection dates in HaploCoV formatted  metadata files are reported in the second column. We can find the first occurence of any date of interest by applying grep to that column.
+Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since HaploCoV formatted files are sorted by collection date, in descending order, all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
+Collection dates in HaploCoV formatted  metadata files are reported in the second column. We can find the first occurrence of any date of interest by applying grep to that column.
 For example like this:
 
 ::
@@ -134,13 +135,13 @@ For example like this:
  cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1
 
 
-Similarly we can find the last occurence of the end date with:
+Similarly we can find the last occurrence of the end date with:
 
 ::
 
  cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1
 
-Here `cut` is used to extract the column of interest (the second column in this case).  `grep` with the -n option reports every occurence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use `head -n 1` since we are only interested in the first occurence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurence.
+Here `cut` is used to extract the column of interest (the second column in this case).  `grep` with the -n option reports every occurrence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use `head -n 1` since we are only interested in the first occurrence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurrence.
 In the example results look something like:
 
 .. figure:: _static/subsetDates.png
@@ -166,7 +167,7 @@ The procedure described above requires some confidence with the unix shell, if y
 Can I combine all of the above?
 ===============================
 
-Yes of course. Suppose that you want to analyse:
+Yes, of course. Suppose that you want to analyse:
 
 Interval of time -> 2021-12-24 to 2022-02-24
 Lineage -> BA.1.1
@@ -176,11 +177,11 @@ First you will need to extract the data for your time interval of interest with:
 
 ::
 
- cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1 # Find the first occurence of the end date
+ cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1 # Find the first occurrence of the end date
 
 ::
 
- cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1 # Find the last occurence of the start date
+ cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1 # Find the last occurrence of the start date
 
 ::
 
