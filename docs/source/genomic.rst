@@ -3,7 +3,7 @@ Genomic variants file
 
 
 HaploCoV uses a collection of genomic variants with high frequency (at a specific time or place) to augment a "target" nomenclature and identify **candidate** novel variants or lineages.
-By genomic variant, here we mean a variant in the genome, or bettert w.r.t the reference genome assembly of SARS-CoV-2. Although the specification of the adjective "genomic" might sound verbose, we prefer to use it throughout the manual to avoid confusion between "viral variants" or variants of the virus.
+By genomic variant, here we mean a variant in the genome, or better w.r.t the reference genome assembly of SARS-CoV-2. Although the specification of the adjective "genomic" might sound verbose, we prefer to use it throughout the manual to avoid confusion between "viral variants" or variants of the virus.
 
 The utility *computeAF.pl* included in HaploCoV can be used to analyse a file in HaploCoV format and identify "high frequency" genomic variants. By default *computeAF.pl* will flag all the genomic variants that displayed a frequency of 1%, for more than 30 non consecutive days during the pandemic (i.e. or derived from the input data).
 
@@ -20,7 +20,7 @@ An example of a genomic variants file looks like:
 | 22204\_.\|A	AfrCent
 | 26445_T|C	AsiaSE
 
-Several lists/collections of pre-computed "genomic variants file" are already available from the main github repository of HaploCoV. These files enable users to execute their analyses with different sets of "interesting" genomic variants which are suitable for different use cases.
+Several lists/collections of pre-computed "genomic variants" file are already available from the main github repository of HaploCoV. These files enable users to execute their analyses with different sets of "interesting" genomic variants which are suitable for different use cases.
 
 Pre computed genomic variants files
 ===================================
@@ -28,8 +28,8 @@ Pre computed genomic variants files
 The files *global_list.txt*, *area_list.txt* or *country_list.txt* form the main repository can be used to provide lists of genomic variants that showed a high frequency:
 
 1. at global level: *global_list.txt*;
-2. in at least a macro geographic area (see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_);
-3. in at least a country.
+2. in at least a macro geographic area: area_list.txt (see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_);
+3. in at least a country: country_list.txt.
 
 A copy of each of these files can also be found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a weekly basis (every Wednesday). If you do not want to compute high frequency alleles yourself, you can download the files directly from *github*. On a unix system this can be done by using the  ``wget command``.
 For example:
@@ -45,9 +45,9 @@ These files are found under the folder "alleleVariantSet" and include:
 
 | 1. **Highly variable genomes.** These are genomic variants found in at least 25 *highly divergent* genomic sequences that have 6 or more additional genomic variants w.r.t the reference strain to which they are assigned. Highly divergent genomic variants are computed by considering non overlapping intervals of 60 days. For example 960\_1200\_list.txt from the list of genomic variants from genome sequences isolated from 960 to 1200 days after Mon 2019-12-30 (day 0 according to HaploCoV, see `here<https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov>`_). These files are stored under the folder: **HighVar**.
 |
-| 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. In these case each file represents a country, unlike country_list.txt, which reports genomic variants that were frequent at any country. These files are stored under the folder: **country**. 
+| 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 30 days in a specific country at any time point from Mon 2019-12-30. In this case each file represents a country, unlike country_list.txt which reports genomic variants that were frequent at any country. These files are stored under the folder: **country**. 
 |
-| 3. **Increased prevalence genomic variants.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.**  
+| 3. **Genomic variants with increased prevalence.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.**  
 |
 Lineage/variants in HaploCoV
 =============================
@@ -58,9 +58,9 @@ In this file each lineage is reported in a single line, followed by the complete
 Genomic variants are indicated according to the convention described above.
 To provide and example:
 
-| A 8782\_C|T 28144\_T|C
+| A 8782_C|T 28144_T|C
 
-indicates that lineage A is defined by 2 genomic variants: ``8782\_C|T`` and ``28144\_T|C`` respectively.
+indicates that lineage A is defined by 2 genomic variants: ``8782_C|T`` and ``28144_T|C`` respectively.
 Novel/custom definitions of lineages and/or groups can be specified simply by adding a definition line in the "linDefMut" file, or equivalent.
 
 For example, if HaploCoV identifies a novel variant/lineage for you, and you want to track/assign/analyse that variant/lineage, all you have to do is add its "definition" line to "linDefMut".
@@ -76,7 +76,7 @@ Novel designations
 ==================
 
 Please be aware that novel designations of lineages/variants will be specified by a suffix in HaploCoV. This suffix by default is the letter N followed by a progressive number.
-For example if HaploCoV identifies 2 novel candidate lineages within the pango lineage B.1, the names will be:
+For example if HaploCoV identifies 2 novel candidate lineages within the Pango lineage B.1, the names will be:
 
 | B.1.N1
 | B.1.N2
