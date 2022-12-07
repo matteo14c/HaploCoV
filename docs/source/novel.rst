@@ -6,14 +6,14 @@ The input is the metadata table in **HaploCoV** format. The output will consist 
 
 **High frequencies alleles for Nexstrain data**
 
-Collections of high frequency alleles available from the HaploCoV Github repository are derived from the periodic processing of the complete collection of SARs-CoV-2 genomes included in the GISAID database; and hence should provide a more comprehensive representation of high frequency alleles than that which could be obtained by processing publicly available data re-distributed by Nexstrain with computeAF.pl. In the light of these considerations, users that have access only to Nextstrain data are kindlly *encouraged* to take adavantage (and use) high frequency allele files that are available from this repository instead of using "computeAF.pl" on their data.
+Collections of high frequency alleles available from the HaploCoV Github repository are derived from the periodic processing of the complete collection of SARs-CoV-2 genomes included in the GISAID database; and hence should provide a more comprehensive representation of high frequency alleles than that which could be obtained by processing publicly available data re-distributed by Nexstrain with computeAF.pl. In the light of these considerations, users that have access only to Nextstrain data are kindly *encouraged* to take adavantage (and use) high frequency allele files that are available from this repository instead of using "computeAF.pl" on their data.
 Please see above for how to download the most recent version of any of those files.
 
 **Options**
 
 augmentClusters.pl accepts the following parameters:
 
-* *--metafile* name of the metadata file (please see above the section above concerning the format/mandatory information);
+* *--metafile* name of the metadata file (please see `HaploCoV format for metdata <https://haplocov.readthedocs.io/en/latest/metadata.html>`_ ;
 * *--posFile* list of high frequency alleles (this is one of the main outputs of computeAF.pl, typically areas_list.txt);
 * *--dist* minimum edit distance (number of characteristic high frequency alleles) required for forming a novel group. Defaults to 2;
 * *--suffix* suffix used to delineate novel lineages,defaults to N;
