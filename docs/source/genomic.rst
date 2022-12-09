@@ -50,12 +50,12 @@ These files are found under the folder "alleleVariantSet" and include:
 | 3. **Genomic variants with increased prevalence.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.**  These files are meant to facilitate the identification and flagging of novel variants of SARS-CoV-2 that are increasing in prevalence.
 |
 
-*Defining genomic variants* files in HaploCoV
+*Designations files* in HaploCoV
 =============================================
 
 In HaploCoV viral lineages/variants are defined by considering the complete collection of genomic variants that are observed in at least 50%+1 of the genomes assigned by a designation.
-The main repository in github includes a file: *linDefMut* that provides the complete list of genomic variants that define lineages of SARS-CoV-2 according to the Pango nomenclature.
-In this file each lineage is reported in a single line, followed by the complete list of defining genomic variants.
+The main repository in github includes *linDefMut* a file that provides the complete list of genomic variants that define lineages of SARS-CoV-2 according to the Pango nomenclature. In HaploCoV we refer to this type of file as: *designations files*.
+In a *designation file* each lineage is reported in a single line, followed by the complete list of defining genomic variants.
 Genomic variants are indicated according to the convention described above.
 To provide and example:
 
@@ -66,7 +66,7 @@ Novel/custom definitions of lineages and/or groups can be specified simply by ad
 
 For example, if HaploCoV identifies a novel variant/lineage for you, and you want to track/assign/analyse that variant/lineage, all you have to do is add its "definition" line to *linDefMut*. 
 
-HaploCoV.pl (see --varfile option) can report/write files of lineage defining mutations, which can be easily concatenated with linDefMut.
+*HaploCoV.pl* (see --varfile option) can report/write *designation files*, which can be easily concatenated with linDefMut.
 For example if you have your additional interesting designations in a file called "novel.txt" you can add them by using the **cat** command in a unix environment:
 
 ::
@@ -76,11 +76,10 @@ For example if you have your additional interesting designations in a file calle
 Novel designations
 ==================
 
-Novel designations of lineages/variants are be indicated by a suffix, that is happended to the name of the parental lineage, in HaploCoV. By default the suffix is composed by the letter N followed by a, dot and a progressive number.
+Novel designations of lineages/variants are be indicated by a suffix, that is happended to the name of the parental lineage, in HaploCoV. By default the suffix is composed by the letter ``N`` followed by a, ``dot`` and a ``progressive number``.
 For example if HaploCoV identifies 2 novel candidate lineages within the Pango lineage B.1, the names will be:
 
 | B.1.N1
 | B.1.N2
  
-The default string/letter to be used as a suffix is set by the --suffix option in augmentClusters.pl. Please see below for how to modify this default behaviour.
-
+The default string/letter to be used as a suffix is set by the --suffix option in *augmentClusters.pl*. Please see below for how to modify this default behaviour.
