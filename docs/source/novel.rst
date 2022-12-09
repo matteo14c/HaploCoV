@@ -2,7 +2,7 @@
 =====================
 
 Novel groups/sublineages of SARS-CoV-2 are identified by *augmentClusters.pl*. This utility is used to derive novel sub-groups/sublineages within an existing classification of SARS-CoV-2 lineages/variants. The aim is to extend a target classification system by the incorporation of local/regional high genomic variants, which are used to infer/derive local variants of the virus. Users can specify the minimum size (minimum number of isolates included in the group) required for a novel group to be formed (*--size*) and the minimum distance (in terms of number of characteristic high frequency alleles, *--dist*) between newly formed and extant groups.
-The input is the metadata table in *HaploCoV format* and a list of genomic variant of hig frequency (*genomic variant file*). The output will consist of a simple text file including a list of SARS-CoV-2 variants/lineages (one per line) and the list of their characteristic (present in >50% of the genomes) genomic variants (*defining genomic variant file*). The file will include all the extant lineages/variants specified in the metadata table,  and also novel variants/lineages formed by the tool. All novel variants/lineages will be indicated by a suffix (*--suffix*) that can be specified by the user.
+The input is the metadata table in *HaploCoV format* and a list of genomic variant of hig frequency (*genomic variant file*). The output will consist of a simple text file including a list of SARS-CoV-2 variants/lineages (one per line) and the list of their characteristic (present in >50% of the genomes) genomic variants (*designations file*). The file will include all the extant lineages/variants specified in the metadata table, and also novel variants/lineages formed by the tool. All novel variants/lineages will be indicated by a suffix (*--suffix*) that can be specified by the user.
 
 **High frequencies alleles for Nexstrain data**
 
@@ -30,15 +30,15 @@ A command line for *augmentClusters.pl* should look something like:
  perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt  --posFile areas_list.txt
 
 
-The main output file, lvar.txt will contain all current groups/lineages and newly formed groups/sub-lineages, and a complete list of their defining mutations (*defining genomic variants file*), one per line. An example is outlined in the screenshot below.
+The main output file, lvar.txt will contain all current groups/lineages and newly formed groups/sub-lineages, and a complete list of their defining mutations (*Designations file*), one per line. An example is outlined in the screenshot below.
 
 .. figure:: _static/output.png
    :scale: 80%
    :align: center
 
-**Defining genomic variants file**
+**Designations files**
 
-Novel variants identified by HaploCoV will be reported in a *defining genomic variants file*. The format of this file is as follows: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic genomic variants (defined here as those present in >50% of the isolates assigned to the group). Values are separated by spaces (see above).
+Novel variants identified by HaploCoV will be reported in a *designations file*. The format of this file is as follows: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic genomic variants (defined here as those present in >50% of the isolates assigned to the group). Values are separated by spaces (see above).
 This file includes the complete collection of lineages/groups as defined in the reference input nomenclature, plus all the novel lineages/groups/sub-lineages formed by HaploCoV. Newly formed lineages/groups/sub-lineages are identified by a suffix that can be specified by the user and by a progressive number. The default value for this suffix is the letter **"N"**. If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.1.17 lineage, these will be reported as:
 
 | 1. BA.1.17.N1 and;
