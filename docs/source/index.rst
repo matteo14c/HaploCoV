@@ -17,7 +17,7 @@ Welcome to HaploCoV's documentation!
 HaploCoV is composed of **9(+3)** utilities, which are combined in a workflow. The complete workflow can be executed with just a couple of commands (or several commands for more complex use cases).
 In brief, input files need to be formatted according to the format used by HaploCoV by applying either **addToTable.pl** or **NexstainToHaploCoV.pl** (depending on the input, see below). 
 Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (recommended) or, if you prefer, by running each individual tool in the HaploCoV workflow in the right order yourself.
-Please see the following sections for point to point instructions and tips for the execution of HaploCov.
+Please see the manual for point to point instructions and tips for the execution of HaploCov.
 
 Should you find any of this software useful for your work, please cite:
 *Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.*
