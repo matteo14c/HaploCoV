@@ -2,12 +2,12 @@
 ===============================
 
 *assign.pl* is an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by augmentClusters.pl. 
-The utility applies a simple algorithm based on phenetic distances (described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_). For every group, users need to a *defining genomi variants file*, see `here <https://haplocov.readthedocs.io/en/latest/genomic.html>`_.
+The utility applies a simple algorithm based on phenetic distances (described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_). Users need to  a *designations file*, see `here <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>`_.
 For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
 
 *assign.pl* takes 2 main input files: 
 
-1. a *defining genomic variants file* See linDefMut in the github repository for an example of a file with lineage defining variants (or alternatively `Genomic variants files <https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii>` in the manual). ; 
+1. a *designations file*. See linDefMut in the github repository for an example of a file with lineage defining variants (or alternatively `Designations files <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>` in the manual). ; 
 2. a metadata table, in *HaploCoV format*. 
 The output is in HaploCoV format.
 
@@ -20,8 +20,8 @@ The file *linDefMut* in the github repository provides a complete list of defini
 **Options**
 *assign.pl* takes the following options:
 
-* *---dfile*: *defining genomic variant file*;
-* *--metafile*: a metdata file in *HaploCov format*;
+* *---dfile*: *designations file*;
+* *--metafile*: a metadata file in *HaploCov format*;
 * *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**).
 
 **Execution**
@@ -83,8 +83,8 @@ Using a single core/thread *assign.pl* can assign the complete collection of mor
 Multi-threading, the *p_assign.pl* utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
 The following input parameters are accepted:
 
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations;
-* *--metafile*: a metadata file in HaploCov format;
+* *---dfile*: *designations file*;
+* *--metafile*: a metadata file in *HaploCov format*;
 * *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**);
 * *--nproc*: number of processors/cores.
 
