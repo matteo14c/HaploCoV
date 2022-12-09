@@ -14,7 +14,7 @@ Subset.pl allows the application/definition of the following filters:
 * *--Marea:* name of a macro geographic area as defined in “areaFile”;
 * *--country:*  name of a country;
 * *--region:* name of a region;
-* *--lineage:* name of a lineage. Must match exactly a valid name in the nomenclature;
+* *--lineage:* name of a lineage. Must match exactly a valid name in the nomenclature. Only one can be specified;
 * *--startD:* start-date in <YYYY-MM-DD> format. Only genomes collected after this date will be extracted;
 * *--endD:* end-date in <YYYY-MM-DD> format. Only genomes collected before this date will be extracted.
 
@@ -32,13 +32,15 @@ A typical run of subset.pl should look something like:
 
 The output file *Thai_HaploCoV_formattedMetadata* will include only genomes collected in Thailand starting from 2022-05-01. 
 
+.. warning::
+Please be aware that *subset.pl* can only perform exact matching of the values/strings to be used for filtering your data. Hence if some values, names or parameters are mispelled the program we likely return an empty output. Please check carefully your input parameters, if the output of the tool is not exactly what you were expecting. 
 
  
 Geographically restricted analyses: how to analyse a specific Area, Country or region of interest
 =================================================================================================
 
 .. warning::
-Please be aware that HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived *-as they are-* from their respective repositories. If you encounter any inconsistencies or errors in the naming of continents, countries or regions please contact data submitters and/or curators of the database from which data were obtained.
+HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived *-as they are-* from their respective repositories. If you encounter any inconsistencies or errors in the naming of continents, countries or regions please contact data submitters and/or curators of the database from which data were obtained.
 
 **Basic statistics: how to summarize geographic data**
 
@@ -94,8 +96,8 @@ subset.pl supports subsetting/selection by macroArea (--Marea), country (--count
 Lineage/HG specific analyses: can I analyse a lineage of interest?
 ==================================================================
 
-Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to grep.
-For example if you are interested in "B.1.1.7" only you can subset you data like this:
+Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with ``grep``. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to ``grep``.
+For example if you are interested in "B.1.1.7" only you can subset your data like this:
 
 ::
 
@@ -125,8 +127,8 @@ Please notice that only a single lineage can be specified.
 Time constrained analyses: 
 ===========================
 
-If you want to analyse only genomes/isolates collected between any interval of time, you can subset an HaploCoV formatted file accordingly. 
-Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since HaploCoV formatted files are sorted by collection date, in descending order, all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
+If you want to analyse only genomes/isolates collected between any interval of time, you can subset a table in *HaploCoV format* accordingly. 
+Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since files in *HaploCoV format* are sorted by collection date, in descending order, all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the ``head`` and ``tail`` utilities.
 Collection dates in HaploCoV formatted  metadata files are reported in the second column. We can find the first occurrence of any date of interest by applying grep to that column.
 For example like this:
 
@@ -141,7 +143,7 @@ Similarly we can find the last occurrence of the end date with:
 
  cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1
 
-Here `cut` is used to extract the column of interest (the second column in this case).  `grep` with the -n option reports every occurrence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use `head -n 1` since we are only interested in the first occurrence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurrence.
+Here ``cut`` is used to extract the column of interest (the second column in this case).  ``grep`` with the -n option reports every occurrence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use ``head -n 1`` since we are only interested in the first occurrence of that date. On the other hand for the end date we use ``tail -n 1`` since in this case we need the last occurrence.
 In the example results look something like:
 
 .. figure:: _static/subsetDates.png
@@ -155,7 +157,7 @@ To extract those lines we can simply combine the `head` and `tail` commands. We 
 
  head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime
 
-We use `head` to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use `tail` to grab only the 865536 lines that correspond with the offset between our start and end date.
+We use ``head`` to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use `tail` to grab only the 865536 lines that correspond with the offset between our start and end date.
  
 The procedure described above requires some confidence with the unix shell, if you prefer a more streamlined solution you can (again) use **subset.pl**. The equivalent command should be something like:
 
