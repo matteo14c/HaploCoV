@@ -1,9 +1,9 @@
 2 Compute high frequency genomic variants
 =========================================
 
-Once your data have been formatted in HaploCoV format (see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#formatting-the-input>`_), you can derive high frequency genomic variants by *computeAF.pl*.
+Once your data have been formatted in *HaploCoV format* (see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#formatting-the-input>`_), you can derive high frequency genomic variants by *computeAF.pl*.
 
-The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main output consists of lists of "high frequency" genomic variants at different levels of geographic granularity: global (all genomes), macro (macro geographic areas) and countries (country). Macro areas are according to the "areaFile" in the github repository, see  `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_. 
+The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main output consists of lists of **high frequency** genomic variants at different levels of geographic granularity: global (all genomes), macro (macro geographic areas) and countries (country). Macro areas are according to the "areaFile" in the github repository, see  `here <https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places>`_. 
 
 All the final outputs as well as all intermediate files produced by the tool are saved in a folder that can be specified with the option --outdir (see below). Users also have the option to select the minimum frequency (as in allele frequency) and "persistence" (number of weeks above the frequency threshold) thresholds for the identification of high frequency genomic variants.
 
@@ -31,13 +31,13 @@ Please see below for a valid example:
 The output will be stored in the directory specified by --outdir (defaults to ./metadataAF), and will include:
 
 * frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt);
-* three files containing the lists of high frequency genomic variants, showing a frequency above the user defined threshold for more that the timespan set by the user, at global (global_list.txt), macro-areas (area_list.txt) and country (country_list.txt) level.
+* three  genomic *variants files* containing the lists of high frequency genomic variants, showing a frequency above the user defined threshold for more that the timespan set by the user, at global (*global_list.txt*), macro-areas (*area_list.txt*) and country (*country_list.txt*) level.
 
 
 **High frequency alleles files from the github repo**
 
-Any of global_list.txt, area_list.txt or country_list.txt can be used to provide the list of genomic variants used to "expand" lineages/sub-lineages of SARS-CoV-2 by augmentClusters.pl.  Please see Chiara et al 2022 for a detailed discussion of the implications. 
-A copy of each of these files can also be found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a bi-weekly basis (every Wednesday). If you do not want to compute high frequency genomic variants yourself, you can download the files directly from *github*. On a unix system this can be done by using the ``wget command`` .
+Any of *global_list.txt*, *area_list.txt* or *country_list.txt* can be used to provide the list of genomic variants used to expand lineages/sub-lineages of SARS-CoV-2 by *augmentClusters.pl*.  Please see Chiara et al 2022 for a detailed discussion of the implications. 
+A copy of each of these files is found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a bi-weekly basis (every Wednesday). If you do not want to compute high frequency genomic variants yourself, you can download the files directly from *github*. On a unix system this can be done by using the ``wget command`` .
 For example:
 
 1. global_list.txt 
