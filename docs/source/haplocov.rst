@@ -1,6 +1,5 @@
 HaploCoV.pl
 ===========
-
 Once data has been converted in *HaploCoV format*, the complete workflow can be executed by applying *HaploCoV.pl*.
 *HaploCoV.pl* is the workhorse of HaploCoV and is the recommended way to execute our software.
 
@@ -17,7 +16,7 @@ HaploCoV.pl accepts the following options:
 * *--locales:* configuration file with the list of regions and countries to analyse;
 * *--param:* configuration file with the set of parameters to be applied by HaploCoV in your analysis;
 * *--path:* path to your HaploCoV installation;
-* *--varfile:* additional file with defining genomic variants.
+* *--varfile:* write *designations file*.
 
 **Execution**
 
@@ -146,16 +145,16 @@ while for *augmentClusters.pl* --dist will be set to 4 and --size to 10.
 For a complete list of all the parameters accepted by every tool, please refer to the corresponding section in the manual or see the file *parametersExtended* file.
 
 
-Defining genomic variants file
-==============================
+*Designations file*
+===================
 
-The --varfile option can be set to instruct HaploCoV to report an additional file with the list of novel candidate SARS-CoV-2 variants identified by the tool, and the set of their defining genomic variants.
+The --varfile option can be set to instruct HaploCoV to report an *designations file* with the list of novel candidate SARS-CoV-2 variants identified by the tool, and the set of their defining genomic variants.
 
 --varfile can be set to one of 3 possible values:
 
-* "n" the additional/ancillary file is not produced (default);
-* "b" the additional file is produced, only variants that passed both the thresholds (score and prevalence) are reported 
-* "a" the additional file is produces, variants that passed any of the thresholds (score or prevalence) are reported 
+* "n" the *designations file* is not produced (default);
+* "b" the *designations file* includes only variants that passed both the thresholds (score and prevalence);
+* "a" the *designations file* includes, variants that passed any of the thresholds (score or prevalence).
 
 For a more extended explanation of the meaning, format and possible usage/application of this output file, users are kindly invited to read the section: `Genomic variants file <https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii>`_.
 
