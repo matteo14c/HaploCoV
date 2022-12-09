@@ -4,7 +4,7 @@ Perl and mummer
 HaploCoV is written in the Perl programming language. Hence you will need Perl to run it. Perl should be already installed by default on any unix and Mac OSX system. 
 Please follow this `link <https://www.perl.org/get.html>`_ for instructions on how to install Perl. 
 
-HaploCoV uses mummer to align genome sequences and derive genomic variants. Please follow this `link <https://sourceforge.net/projects/mummer/files/>`_ for detailed instruction on how to install and run Mummer. 
+HaploCoV uses Mummer to align genome sequences and derive genomic variants. Please follow this `link <https://sourceforge.net/projects/mummer/files/>`_ for detailed instruction on how to install and run Mummer. 
 Or see the installation instructions below.
 
 Mummer installation
@@ -25,7 +25,7 @@ this will install mummer for all the users in your system.
 Unix, from binaries
 ====================
 
-If your OS does not feature pre-compiled software packages for the installation of Mummer, you can compile from binaries. Please follow this link https://sourceforge.net/projects/mummer/files/ for detailed instructions on how to install and run Mummer. Please notice that after you have successfully compiled all the executables by running:
+If your OS does not feature pre-compiled software packages for the installation of Mummer, you can compile from binaries. Please follow this `link <https://sourceforge.net/projects/mummer/files/>`_ for detailed instructions on how to install and run Mummer. Please notice that after you have successfully compiled all the executables by running:
 
 ::
 
