@@ -9,7 +9,7 @@ HaploCoV requires 3 main files:
 
 Reference genome
 ================
-HaploCoV can download the reference assembly of the SARS-CoV-2 genome for you when/if required (see the addToTable.pl utility for more details). 
+HaploCoV can download the reference assembly of the SARS-CoV-2 genome for you when/if required (see the *addToTable.pl* utility for more details, `here <https://haplocov.readthedocs.io/en/latest/metadata.html#gisaid-data-addtotable-pl>`_). 
 
 However, in the (hopefully) unlikely event that this should not work you can obtain a copy of the reference genome from:
 
@@ -29,7 +29,7 @@ followed by:
 
 ::
 
-Thie file (GCF_009858895.2_ASM985889v3_genomic.fna) is required by several tools in HapoCoV and needs to be in the same folder where our software package was installed (i.e. HaploCoV by default), if this file is missing tools will complain and halt their execution.
+Thie file (GCF_009858895.2_ASM985889v3_genomic.fna) is required by several tools in HaploCoV and needs to be in the same folder where our software package was installed (i.e. HaploCoV by default), if this file is missing tools will complain and halt their execution.
 
 
 Genomes and metadata
@@ -54,7 +54,7 @@ After de-compresson, 2 files should be obtained:
 
 These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/formats all the data for subsequent analyses.
 
-Alternatively users can also download a set of genomes of interest by selecting the corresponding entries from the web interface of GISAID. In this case the "Patient status metadata" should be used as a metadata file.
+Alternatively users can also download a set of genomes of interest by selecting the corresponding entries from the web interface of GISAID. In this case the "Patient status metadata" must be used as the metadata file.
 See figure below.
 
 .. figure:: _static/gisaid2.png
@@ -78,7 +78,7 @@ Locations in the following format: Continent/Country/Region.
 Missing information must be indicated by *NA* (not available).
 Sequence identifiers can not be replaced by *NA* values.
 
-An example of a valid metadata table is reported below
+An example of a valid metadata table is reported below.
 
  .. list-table:: Locales File
    :widths: 50 50 50 50 25
@@ -108,7 +108,7 @@ Nextstrain
 
 Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
 Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. Since these data have already been processed by Nexstrain using their *ncov workflow*, genomic variants are already included in the metadata file and hence **you will not need** to download genomic sequences and align them to the reference genome. 
-However, Nextstrain data still needs to be converted in "HaploCoV" format.  This can be done by using *NextStrainToHaploCoV.pl* (see below).
+However, Nextstrain data still needs to be converted in *HaploCoV format*.  This can be done by using *NextStrainToHaploCoV.pl* (see below).
 
 Important: providing "external" data  
 ====================================
