@@ -11,15 +11,15 @@ If you are not familiar with the unix shell, you can take advantage of the *subs
 **options**
 Subset.pl allows the application/definition of the following filters:
 
-* *--Marea:* name of a macro geographic area as defined in “areaFile”;
+* *--Marea:* name of a macro geographic area as defined in *areaFile*;
 * *--country:*  name of a country;
 * *--region:* name of a region;
 * *--lineage:* name of a lineage. Must match exactly. Only one can be specified;
 * *--startD:* start-date in <YYYY-MM-DD> format. Only genomes collected after this date will be extracted;
 * *--endD:* end-date in <YYYY-MM-DD> format. Only genomes collected before this date will be extracted.
 
-Mandatory parameters are *--infile* and *--outfile*. At least one of  *--area*,*--country*,*--filter*m
-*--lineage*,*--startD* or *--endD* should be set. If no filters are specified, execution will halt.
+Mandatory parameters are *--infile* and *--outfile*. At least one of  *--area*, *--country*, *--filter*,
+*--lineage*, *--startD* or *--endD* should be set. If no filters are specified, execution will halt.
 
 **Execution** 
 
