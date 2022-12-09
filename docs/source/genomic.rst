@@ -49,8 +49,9 @@ These files are found under the folder "alleleVariantSet" and include:
 |
 | 3. **Genomic variants with increased prevalence.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.**  These files are meant to facilitate the identification and flagging of novel variants of SARS-CoV-2 that are increasing in prevalence.
 |
-Lineage/variants in HaploCoV
-=============================
+
+*Defining genomic variants* files in HaploCoV
+=============================================
 
 In HaploCoV viral lineages/variants are defined by considering the complete collection of genomic variants that are observed in at least 50%+1 of the genomes assigned by a designation.
 The main repository in github includes a file: *linDefMut* that provides the complete list of genomic variants that define lineages of SARS-CoV-2 according to the Pango nomenclature.
