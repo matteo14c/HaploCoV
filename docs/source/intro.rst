@@ -18,7 +18,8 @@ The main output consists in a report file that summarizes the prevalence and fea
 The recommended way to execute HaploCoV is through *HaploCoV.pl*. This tool automates the execution of the complete workflow.
 However, users are also free to execute each single distinct task by themselves if they prefer. Each tool has its own entry in the manual.
 
-The figure below illustrates the complete workflow. Complete details are found in the manual.
-.. figure:: _static/table4.png
+The figure below illustrates the complete workflow. A complete description of each tool is found in the manual.
+
+.. figure:: _static/wf.png
    :scale: 70%
    :align: center
