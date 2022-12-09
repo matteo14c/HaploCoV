@@ -6,7 +6,7 @@ A few examples are reported below.
 
 **subset.pl**
 
-If you are not familiar with the unix shell, you can take advantage of the *subset.pl* script included in this repository, to subset the data. The script accepts an input file in HaploCoV format, and extracts from the file only data that match user defined filters/criteria. When multiple criteria are provided, a logical “AND” is applied and only data that satisfy all the criteria/conditions specified by the user are extracted.
+If you are not familiar with the unix shell, you can take advantage of the *subset.pl* script included in the main repository, to subset tdata. The script accepts an input file in *HaploCoV format*, and extracts data that match user defined filters/criteria. When multiple criteria are provided, a logical **AND** is applied and only data that satisfy all the criteria/conditions specified by the user are extracted.
 
 **options**
 Subset.pl allows the application/definition of the following filters:
@@ -14,12 +14,12 @@ Subset.pl allows the application/definition of the following filters:
 * *--Marea:* name of a macro geographic area as defined in “areaFile”;
 * *--country:*  name of a country;
 * *--region:* name of a region;
-* *--lineage:* name of a lineage. Must match exactly a valid name in the nomenclature. Only one can be specified;
+* *--lineage:* name of a lineage. Must match exactly. Only one can be specified;
 * *--startD:* start-date in <YYYY-MM-DD> format. Only genomes collected after this date will be extracted;
 * *--endD:* end-date in <YYYY-MM-DD> format. Only genomes collected before this date will be extracted.
 
-Mandatory parameters are *--infile* and *--outfile*. At least one of  *--area,--country,--filter
---lineage,--startD or --endD* should be set. If no filters are specified, execution will halt.
+Mandatory parameters are *--infile* and *--outfile*. At least one of  *--area*,*--country*,*--filter*m
+*--lineage*,*--startD* or *--endD* should be set. If no filters are specified, execution will halt.
 
 **Execution** 
 
@@ -33,7 +33,7 @@ A typical run of subset.pl should look something like:
 The output file *Thai_HaploCoV_formattedMetadata* will include only genomes collected in Thailand starting from 2022-05-01. 
 
 .. warning::
-Please be aware that *subset.pl* can only perform exact matching of the values/strings to be used for filtering your data. Hence if some values, names or parameters are mispelled the program we likely return an empty output. Please check carefully your input parameters, if the output of the tool is not exactly what you were expecting. 
+Please be aware that *subset.pl* can only perform exact matching of the values/strings to be used for filtering your data. Hence if some values, names or parameters are mispelled the program will likely return an empty output. Please check carefully your input parameters, if the output of the *subser.pl* is not exactly what you were expecting. 
 
  
 Geographically restricted analyses: how to analyse a specific Area, Country or region of interest
@@ -44,11 +44,11 @@ HaploCoV does not perform any check on the accuracy and consistency of geographi
 
 **Basic statistics: how to summarize geographic data**
 
-Simple stats on the number of genomes associated with distinct Continents, Countries, Regions and or Macro-geographic regions can be easily obtained by combining the `cut` , `sort` and `uniq' unix commands. 
+Simple stats on the number of genomes associated with distinct Continents, Countries, Regions and or Macro-geographic regions can be easily obtained by combining the ``cut`` , ``sort`` and ``uniq`` unix commands. 
 These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file.
 
 .. figure:: _static/table4.png
-   :scale: 90%
+   :scale: 70%
    :align: center
 
 
@@ -68,10 +68,10 @@ The output should look something like this:
 
 
 .. figure:: _static/Screenshot-countries.png
-   :scale: 80%
+   :scale: 70%
    :align: center
 
-and should provide a complete list of the "countries" that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by:
+and should provide a complete list of the countries that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by:
 
 1. finding the name/s of the country/countries in the list;
 2. using ``grep``.
@@ -96,8 +96,8 @@ subset.pl supports subsetting/selection by macroArea (--Marea), country (--count
 Lineage/HG specific analyses: can I analyse a lineage of interest?
 ==================================================================
 
-Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with ``grep``. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to ``grep``.
-For example if you are interested in "B.1.1.7" only you can subset your data like this:
+Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with ``grep``. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". I.e. we need to tell``grep`` that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to ``grep``.
+For example if you are interested in ``B.1.1.7`` only you can subset your data like this:
 
 ::
 
@@ -113,7 +113,7 @@ The method described in **#1 :  Basic statistics: how do I summarize geographic 
 The output should be:
 
 .. figure:: _static/b117.png
-   :scale: 80%
+   :scale: 70%
    :align: center
    
 If you prefer to use **subset.pl** the same results can be obtained by the following command:
@@ -122,7 +122,7 @@ If you prefer to use **subset.pl** the same results can be obtained by the follo
  
  perl subset.pl --infile HaploCoV_formattedMetadata --lineage B.1.1.7 --outfile B117data
  
-Please notice that only a single lineage can be specified. 
+Please notice that only a single lineage can be specified at a time. 
 
 Time constrained analyses: 
 ===========================
@@ -143,11 +143,11 @@ Similarly we can find the last occurrence of the end date with:
 
  cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1
 
-Here ``cut`` is used to extract the column of interest (the second column in this case).  ``grep`` with the -n option reports every occurrence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use ``head -n 1`` since we are only interested in the first occurrence of that date. On the other hand for the end date we use ``tail -n 1`` since in this case we need the last occurrence.
+Here ``cut`` is used to extract the column of interest (the second column in this case). ``grep`` with the -n option reports every occurrence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use ``head -n 1`` since we are only interested in the first occurrence of that date. On the other hand for the end date we use ``tail -n 1`` since in this case we need the last occurrence.
 In the example results look something like:
 
 .. figure:: _static/subsetDates.png
-   :scale: 80%
+   :scale: 70%
    :align: center
 
 Hence lines, in between line 3688449 and line 4553984 hold all the data from the interval of time we want to analyse.
