@@ -22,3 +22,4 @@ The figure below illustrates the complete workflow. A complete description of ea
 
 .. figure:: _static/wf.png
    :align: center
+   :scale: 30%
