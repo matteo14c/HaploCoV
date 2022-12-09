@@ -21,5 +21,4 @@ However, users are also free to execute each single distinct task by themselves 
 The figure below illustrates the complete workflow. A complete description of each tool is found in the manual.
 
 .. figure:: _static/wf.png
-   :scale: 70%
    :align: center
