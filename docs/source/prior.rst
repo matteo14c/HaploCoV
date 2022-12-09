@@ -5,7 +5,7 @@ The *report.pl* utility can compare newly defined variants/lineages with their p
 The main input is the output of *LinToFeats.pl*. 
 Users are also required to specify the suffix used to indicate "novel" lineages/sublineages. 
 This suffix must match the equivalent suffix provided to augmentClusters.pl. The default value is **N**.
-The configuration file indicated by --scaling: provides the list of the features to be used in the computation of the final score. The default is to use *scalingFactors.csv* which is included in the main repository of HaploCoV. A complete description of the features used by *LinToFeats.pl* to compute scores can be found in the *features.csv* file attached to HaploCoV's github repo. The default is the list of features described in *Chiara et al 2022*, the file should not be edited, unless for a very good reason. 
+The configuration file indicated by *--scaling* provides the list of the features to be used in the computation of the final score. The default is to use *scalingFactors.csv* which is included in the main repository of HaploCoV. A complete description of the features used by *LinToFeats.pl* to compute scores can be found in the *features.csv* file attached to HaploCoV's github repo. The default is the list of features described in *Chiara et al 2022*, the file should not be edited, unless for a very good reason. 
 The final output consist in a simple text file in tsv format where *VOC-ness scores* of novel candidate lineages/variants are reported along with the score the parental lineage.
 
 **Options**
