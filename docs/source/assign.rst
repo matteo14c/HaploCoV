@@ -2,13 +2,13 @@
 ===============================
 
 *assign.pl* is an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by augmentClusters.pl. 
-The utility applies a simple algorithm based on phenetic distances (described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_). For every group, users need to provide a list of "characteristic" genomic variants, here defined as those present in more than 50% of the genomes that form the group.
+The utility applies a simple algorithm based on phenetic distances (described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_). For every group, users need to a *defining genomi variants file*, see `here <https://haplocov.readthedocs.io/en/latest/genomic.html>`_.
 For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
 
 *assign.pl* takes 2 main input files: 
 
-1. a simple file with "group/lineage/variang" defining genomic variants; 
-2. a metadata table, in HaploCoV format. See linDefMut in the github repository for an example of a file with lineage defining variants (or alternatively `Genomic variants files <https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii>` in the manual). 
+1. a *defining genomic variants file* See linDefMut in the github repository for an example of a file with lineage defining variants (or alternatively `Genomic variants files <https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii>` in the manual). ; 
+2. a metadata table, in *HaploCoV format*. 
 The output is in HaploCoV format.
 
 **Assigning Pango Lineages** 
@@ -20,8 +20,8 @@ The file *linDefMut* in the github repository provides a complete list of defini
 **Options**
 *assign.pl* takes the following options:
 
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations;
-* *--metafile*: a metdata file in HaploCov format;
+* *---dfile*: *defining genomic variant file*;
+* *--metafile*: a metdata file in *HaploCov format*;
 * *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**).
 
 **Execution**
@@ -31,7 +31,7 @@ To assign genomes to a lineages/group/classes you need to run:
 
  assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned
  
-The output consists of a table in *HaploCoV* format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *no* indicates no alternative assignments were identified, and hence that the genome was unambiguously assigned to a single group/lineage. When multiple assignments are identified, a comma separated list is provided.
+The output consists of a table in *HaploCoV format*, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *no* indicates no alternative assignments were identified, and hence that the genome was unambiguously assigned to a single group/lineage. When multiple assignments are identified, a comma separated list is provided.
 
 .. list-table:: Locales File
    :widths: 30 30 30 30 30 30 30 30 30 30 30 30
@@ -80,7 +80,7 @@ Using a single core/thread *assign.pl* can assign the complete collection of mor
 
 **p_assign.pl**
 
-Multi-threading, the p_assign.pl utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
+Multi-threading, the *p_assign.pl* utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
 The following input parameters are accepted:
 
 * *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations;
