@@ -97,7 +97,7 @@ A valid example of an HaploCoV-formatted file, including all the sequences avail
 
 ## #1.1 GISAID data: addToTable.pl
 
-*addToTable.pl* reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. 
+*addToTable.pl* reads multifasta (*sequences.fasta*) and metadata files (*metadata.tsv*) and extracts all the information required for subsequent analyses. 
 
 ### Options
 *addToTable.pl* accepts the following options:
