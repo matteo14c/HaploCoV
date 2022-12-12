@@ -227,11 +227,11 @@ Alternatively, if the pre-computed files do not suit their use case, users do al
 
 When the reserved word *world*  is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geographic origin.
 
-In the 5th (genomic-variants) you can use the reserved word *custom* if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility. When *custom* is specified high frequency genomic variants are determined dynimically based on the user selection. Please see the [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) in the manual for additional explanations.
+In the 5th column (genomic-variants) you can use the reserved word *custom* if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility. When *custom* is specified, high frequency genomic variants are determined dynamically based on the user selection. Please see the [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) in the manual for additional explanations.
 
 ### Advanced configuration
 
-This readme covers only the standard/basic requirements for the execution of HaploCoV. We kindly invite users to read the  [manual](https://haplocov.readthedocs.io/en/latest) for a more thorough explanation of additional options (and configuration) of the workflow, and tips/instructions for how to make the best of each single tool in the package
+This readme covers only the standard/basic requirements for the execution of HaploCoV. We kindly invite users to read the [manual](https://haplocov.readthedocs.io/en/latest) for a more thorough explanation of additional options (and configuration) of the workflow, and tips/instructions for how to make the best of each single tool in the package.
 
 <hr>
 
@@ -254,7 +254,7 @@ Headers and sections of the file are specified/set by \"#\" symbols. The first 4
 2. passed only the score threshold;
 3. passed only the prevalence thresholds.
 
-After the header, 3 distinct sections follow in the same order indicated by the above numbered least.  Each section is introduced by a # symbol, and concluded by the sentence: "A detailed report follows".
+After the header, 3 distinct sections follow in the same order indicated by the above numbered list.  Each section is introduced by a "#" symbol, and concluded by the sentence: "A detailed report follows".
 In the report each candidate lineage/variant is introduced by a # followed by a progressive number and its name. Names are according to the convention explained in the section [Novel designations](https://haplocov.readthedocs.io/en/latest/genomic.html#novel-designations) of the manual, and are formed by juxtaposing:
 
 * the `name of the parental lineage`;
@@ -270,12 +270,12 @@ Two distinct and complementary reports are provided for every variant, a "score-
 
 This section reports the following information:
 
-1. The parental lineage of a candidate variant (*Parent:*). The parental is the lineage/variant from which the lineage/variant defined by HaploCoV descends
+1. The parental lineage of a candidate variant (*Parent:*). The parental is the lineage/variant from which the lineage/variant defined by HaploCoV descends.
 As an example:
 
 `Parent: B.1 ` indicates that the parental lineage is B.1
 
-2. The VOC-ness score of the parental, and candidate new lineage/variant (*Score parent:* and *Score subV:* , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
+2. The *VOC-ness score* of the parental, and candidate new lineage/variant (*Score parent:* and *Score subV:* , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
 
 An example of a output line is reported below:
 `Score parent: 3.28 - Score subV: 15.10 `
@@ -350,10 +350,10 @@ If you identified a novel variant of SARS-CoV-2 with "interesting" genomic featu
 
 Normally [virological.org](https://virological.org/) or [Pango](https://github.com/cov-lineages/pango-designation/issues/) would be the right place to start.
 If the novel candidate variant was identified by HaploCoV, *HaploCoV.pl* (see [--varfile](https://haplocov.readthedocs.io/en/latest/haplocov.html#designations-file)) or *augmentClusters.pl* (see [here](https://haplocov.readthedocs.io/en/latest/novel.html)) should/could have provided a file with the complete list of genomic variants that define your novel lineage/lineages of interest.
-It might be worthwhile to add this/these definitions to your favourite *Genomics variant file* (see [here](https://haplocov.readthedocs.io/en/latest/genomic.html) and use *assign.pl* or *p_assign.pl* to re-assign genomic sequences using the augmented nomenclature.<br> 
+It might be worthwhile to add this/these definitions to your favourite *Genomics variant file* (see [here](https://haplocov.readthedocs.io/en/latest/genomic.html)) and use *assign.pl* or *p_assign.pl* to re-assign genomic sequences using the augmented nomenclature.<br> 
 
 Whence the novel nomenclature is assigned, you can extract the data (and metadata) of the novel candidate lineage/variant from a HaploCoV formatted metadata table (like for example the output of *assign.pl*) by using the *subset.pl* utility included in this repo.  The section [Subsetting data](https://haplocov.readthedocs.io/en/latest/subsetting.html) of the manual illustrates some possible applications of this tool, and explains how to use it to extract data of interest. <br>
-Finally the *increase.pl* utility can be used to calculate the prevalence of your novel/candidate variant/lineages in space and time and derive global patters (if any and if your novel designations was not already derived from the analysis of all the available genome sequences).<br>
+Finally the *increase.pl* utility can be used to calculate the prevalence of your novel/candidate variant/lineages in space and time and derive global patterns (if any and if your novel designations was not already derived from the analysis of all the available genome sequences).<br>
 All these topics are covered in the [manual](https://haplocov.readthedocs.io/en/latest/index.html) of HaploCoV. Please take a look at the manual in order to see how to make the best of the tools and utilities.
 
 <hr>
