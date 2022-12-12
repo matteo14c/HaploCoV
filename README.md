@@ -111,7 +111,7 @@ A valid example of an HaploCoV-formatted file, including all the sequences avail
 ### Execution:
 An example command looks like:
 <br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `<br><br> 
-The final output will consist of a metadata table in HaploCoV format.  This table is required for all the subsequent analyses.
+The final output will consist of a metadata table in *HaploCoV format*.  This table is required for all the subsequent analyses.
 
 ### Important: Incremental addition of data
 *addToTable.pl* can add novel data/metadata incrementally to a pre-existing table in *HaploCoV format*. This feature is extremely useful, since it allows users to add data incrementally, without the need to re-execute analyses from scratch. When the output file provided by the user is not empty, addToTable.pl will process only those genomes which are not already included in your metadata table. Matching is by sequence identifier (column Virus name).
@@ -122,7 +122,7 @@ On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour
 ## NextStrain data: NextStrainToHaploCoV.pl
 
 If you downloaded your metadata files from Nexstrain ([link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz)), you need to use the utility *NextStrainToHaploCoV.pl* to convert them in HaploCoV format.
-Unlike *addToTable.pl*, *NextStrainToHaploCoV.pl* does not support incremental addition of data to a pre-existing file:  the full NextStrain dataset can be converted in *HaploCoV format* in 3 to 5 minutes. 
+Unlike *addToTable.pl*, *NextStrainToHaploCoV.pl* does not support incremental addition of data to a pre-existing file: the full NextStrain dataset can be converted in *HaploCoV format* in 3 to 5 minutes. 
 
 ### Options
 *NextStrainToHaploCoV.pl* accepts the following options:
