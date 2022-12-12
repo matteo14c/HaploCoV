@@ -15,8 +15,8 @@ HaploCoV is a collection of Perl scripts that can be used to:
 ## HaploCoV
 
 This software package is composed of **9 (*+3*)** utilities. Instructions concerning required input files, their format and how to configure HaploCoV are reported below (and in the extended [manual](https://haplocov.readthedocs.io/en/latest/)). 
-In brief, input files need to be formatted according to the format used by HaploCoV by applying either **addToTable.pl** or **NexStrainToHaploCoV.pl** (depending on the input, see below). 
-Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (recommended) or, if you prefer, by running each  tool in the HaploCoV workflow in the right order yourself (please see [HaploCoV:Tools](https://haplocov.readthedocs.io/en/latest/impatient2.html)).
+In brief, input files need to be formatted according to the format used by HaploCoV by applying either *addToTable.pl* or *NexStrainToHaploCoV.pl* (depending on the input, see below). 
+Then the complete HaploCoV workflow can be executed by running *HaploCoV.pl* (recommended) or, if you prefer, by running each  tool in the HaploCoV workflow in the right order yourself (please see [HaploCoV:Tools](https://haplocov.readthedocs.io/en/latest/impatient2.html)).
 The figure below provides a conceptual representation of the HaploCoV workflow and the tools used to execute each task.
 ![image](https://github.com/matteo14c/HaploCoV/blob/a1d84694e38ce87341ce523d4ec28a56c4be7ef7/images/wf.png).
 
@@ -29,7 +29,7 @@ The main aim of the tool is to facilitate the identification of novel variants/l
 2. Features associated with VOCs/VOIs (variants of concern or variants of interest);
 3. Both of the above.
 
-HaploCoV incorporates a standalone "scoring system" (VOC-ness score from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The minimum threshold for significance was derived empirically (see the paper for more details). 
+HaploCoV incorporates a standalone "scoring system" (*VOC-ness score* from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The minimum threshold for significance was derived empirically (see the paper for more details). 
 
 Increase/decrease in prevalence is inferred by analyses of the (available) metadata. By default novel candidate variants with a prevalence above 1% in a region/country, and showing an increase by at least 2 fold over 4 weeks are reported. 
 These parameters can be configured/set by the user at runtime.
