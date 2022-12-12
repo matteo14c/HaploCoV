@@ -219,9 +219,9 @@ Precomputed sets of genomic variants/files can broadly be categorized into 4 mai
 4. *globally frequent genomic variants*. These are provided in the main github repository of HaploCoV, and include: 
 *global_list.txt*: frequent worldwide, *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one county.
 
-Please se the section [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) for additional information. 
+Please see the section [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) for additional information. 
 
-Alternatively, if the pre-computed files do not suit their use case, users do also have the option of derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword **custom** needs to be indicated in the 5th column (see below), and high frequency genomic variants will be computed on the current selection.   
+Alternatively, if the pre-computed files do not suit their use case, users do also have the option to derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword **custom** needs to be indicated in the 5th column (see below), and high frequency genomic variants will be computed on the current selection.   
 
 ### Important: special/reserved keywords
 
