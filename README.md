@@ -350,5 +350,5 @@ All these topics are covered in the [manual](https://haplocov.readthedocs.io/en/
 
 <hr>
 
-### If you are reading this, you have made your way through the readne! 
+### If you are reading this, you have made your way through the readme! 
 ### Congratulations and regards! The HaploCoV "development team"
