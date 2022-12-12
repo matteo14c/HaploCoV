@@ -79,7 +79,7 @@ Should you find any issue, please contact me at matteo.chiara@unimi.it, or open 
 ## #1 Compile a metadata table in HaploCoV format
 
 All the tools and utilities in HaploCov operate on a large table in tsv format (*HaploCoV format* from here onward). 
-If you obtained your data from **GISAID** you can format your data in *Haplocov format* by using the *addToTable.pl* utility. If data were obtained from NexStrain, you can use *NextStrainToHaploCov.pl* instead (see below).
+If you obtained your data from **GISAID** you can format your data in *Haplocov format* by using the *addToTable.pl* utility. If data were obtained from NextStrain, you can use *NextStrainToHaploCov.pl* instead (see below).
 
 ## *HaploCoV format* for metadata
 An example of the data format used by HaploCoV (*HaploCoV format*) is reported in the table below:
