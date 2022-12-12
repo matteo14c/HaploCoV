@@ -14,7 +14,7 @@ HaploCoV is a collection of Perl scripts that can be used to:
 
 ## HaploCoV
 
-This software package is composed of **9(*+3*)** utilities. Instructions concerning required input files, their format and how to configure HaploCoV are reported below (and in the extended [manual](https://haplocov.readthedocs.io/en/latest/)). 
+This software package is composed of **9 (*+3*)** utilities. Instructions concerning required input files, their format and how to configure HaploCoV are reported below (and in the extended [manual](https://haplocov.readthedocs.io/en/latest/)). 
 In brief, input files need to be formatted according to the format used by HaploCoV by applying either **addToTable.pl** or **NexStrainToHaploCoV.pl** (depending on the input, see below). 
 Then the complete HaploCoV workflow can be executed by running **HaploCoV.pl** (recommended) or, if you prefer, by running each  tool in the HaploCoV workflow in the right order yourself (please see [HaploCoV:Tools](https://haplocov.readthedocs.io/en/latest/impatient2.html)).
 The figure below provides a conceptual representation of the HaploCoV workflow and the tools used to execute each task.
