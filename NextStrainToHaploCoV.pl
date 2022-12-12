@@ -52,9 +52,9 @@ sub metadataToLists
 		chomp();
 		my @data=(split(/\t/));
 		my $nfil=@data;
-		if ($nfil!=52)
+		if ($nfil!=55)
 		{
-			die ("Input file is in an unknown format: expected 52 tab delimited columns!\nGot $nfil\n");
+			die ("Input file is in an unknown format: expected 55 tab delimited columns!\nGot $nfil\n");
 		}
 		my $id=$data[0];
 		$id="NA" if $id eq "?";
@@ -65,9 +65,9 @@ sub metadataToLists
 		my $continent=$data[7];
 		my $country=$data[8];
 		my $region=$data[9];
-		my $alleles=$data[49];
-		my $ins=$data[48];
-		my $del=$data[47];
+		my $alleles=$data[52];
+		my $ins=$data[51];
+		my $del=$data[48];
 		my $lvar=build_listVar($alleles,$ins,$del,$ref);
 
 		$id=fix_strain($id);
