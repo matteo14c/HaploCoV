@@ -1,8 +1,8 @@
 6 Assign genomes to new groups
 ===============================
 
-*assign.pl* is an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by augmentClusters.pl. 
-The utility applies a simple algorithm based on phenetic distances (described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_). Users need to  a *designations file*, see `here <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>`_.
+*assign.pl* is an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by *augmentClusters.pl*. 
+The utility applies a simple algorithm based on phenetic distances (described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_). Users need to provide a *designations file*, see `here <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>`_.
 For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
 
 *assign.pl* takes 2 main input files: 
