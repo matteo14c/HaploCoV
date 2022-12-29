@@ -179,8 +179,8 @@ Italy   |country  |2022-01-01|2022-11-11|areas_list.txt  |
 Thailand|country  |2022-01-01|2022-11-11|custom          |
 world   |area     |2022-01-01|2022-11-11|custom          |
 
-* location: a country, a region or a macrogeographic area (see [Geography and places(https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) in the manual) for more details;
-* qualifier: qualifier of the geographic entity, accepted values are: region, country or area. Again, refer to [Geography and places(https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) for more details;
+* location: a country, a region or a macrogeographic area (see [Geography and places](https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) in the manual) for more details;
+* qualifier: qualifier of the geographic entity, accepted values are: region, country or area. Again, refer to [Geography and places](https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) for more details;
 * start-date: lower limit of the interval of time on which to execute the analysis (see [Dates and time in HaploCoV](https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov));
 * end-date: upper limit of the interval of time;
 * genomic-variants: a list of files with high frequency genomic variants (see  [Genomic variants file](https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii)). Comma separated. Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e if the name of your genomic variants file is \"myVar\" the name of the report will be \"_myVar.rep" (see below).
