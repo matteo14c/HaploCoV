@@ -21,7 +21,6 @@ The figure below provides a conceptual representation of the HaploCoV workflow a
 ![image](https://github.com/matteo14c/HaploCoV/blob/a1d84694e38ce87341ce523d4ec28a56c4be7ef7/images/wf.png).
 
 
-
 ### Aim and rationale
 
 The main aim of the tool is to facilitate the identification of novel variants/lineages of SARS-CoV-2 showing:
@@ -32,7 +31,7 @@ The main aim of the tool is to facilitate the identification of novel variants/l
 HaploCoV incorporates a standalone "scoring system" (*VOC-ness score* from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The minimum threshold for significance was derived empirically (see the paper for more details). 
 
 Increase/decrease in prevalence is inferred by analyses of the (available) metadata. By default novel candidate variants with a prevalence above 1% in a region/country, and showing an increase by at least 2 fold over 4 weeks are reported. 
-These parameters can be configured/set by the user at runtime.
+These parameters can be configured by the user at runtime.
 
 The main output consists of a report file that summarizes the prevalence and features (as defined by the criteria outlined above) of novel candidate variants of SARS-CoV-2.  
 
@@ -41,14 +40,14 @@ The main output consists of a report file that summarizes the prevalence and fea
 # How to run HaploCoV in brief
  
 ### GISAID data
-1. `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `
+1. `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `.
 
 ### Nexstrain data
-1. ` perl NextStrainToHaploCoV.pl --metadata metadata.tsv --outfile linearDataSorted.txt `
+1. ` perl NextStrainToHaploCoV.pl --metadata metadata.tsv --outfile linearDataSorted.txt `.
 
 ### then
 
-2. ` perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `
+2. ` perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `.
 
 ### Finally
 Read the report (.rep) file.
@@ -65,7 +64,7 @@ HaploCoV requires 3 (main) input files:
 * **the reference assembly** of the SARS-CoV-2 genome in fasta format;
 * a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference;
 * a **.tsv** file with matched (to the sequences in the fasta file) metadata;
-See the "Where do I get the data?" section in the [manual](https://haplocov.readthedocs.io/en/latest/data.html) for more details on how to obtain these files.
+See the [Where do I get the data?](https://haplocov.readthedocs.io/en/latest/data.html) in the extended manual for more details on how to obtain these files.
 
 If you find any of this software useful for your work, please cite:
 >**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.**
@@ -102,15 +101,15 @@ A valid example of an HaploCoV-formatted file, including all the sequences avail
 ### Options
 *addToTable.pl* accepts the following options:
 
-* **--metadata**: input metadata file (typically metadata.tsv from GISAID)
-* **--seq**: fasta file
-* **--nproc**: number of threads. Defaults to 8.
-* **--dayFrom**: include only genomes collected after this day
-* **--outfile**: name of the output file
+* **--metadata**: input metadata file (typically metadata.tsv from GISAID);
+* **--seq**: fasta file;
+* **--nproc**: number of threads. Defaults to 8;
+* **--dayFrom**: include only genomes collected after this day;
+* **--outfile**: name of the output file.
 
 ### Execution:
 An example command looks like:
-<br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `<br><br> 
+<br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `.<br>
 The final output will consist of a metadata table in *HaploCoV format*.  This table is required for all the subsequent analyses.
 
 ### Important: Incremental addition of data
@@ -122,7 +121,7 @@ On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour
 ## NextStrain data: NextStrainToHaploCoV.pl
 
 If you downloaded your metadata files from Nexstrain ([link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz)), you need to use the utility *NextStrainToHaploCoV.pl* to convert them in HaploCoV format.
-Unlike *addToTable.pl*, *NextStrainToHaploCoV.pl* does not support incremental addition of data to a pre-existing file: the full NextStrain dataset can be converted in *HaploCoV format* in 3 to 5 minutes. 
+Unlike *addToTable.pl*, *NextStrainToHaploCoV.pl* does not support incremental addition of data to a pre-existing file: this metadata file can be converted in *HaploCoV format* in 3 to 5 minutes. 
 
 ### Options
 *NextStrainToHaploCoV.pl* accepts the following options:
@@ -145,7 +144,7 @@ Once data has been converted in HaploCoV format, the complete workflow can be ex
 *HaploCoV.pl* is the workhorse of HaploCoV and is the recommended way to execute our software.<br> 
 Users can specify a list of geographic regions/areas or countries and intervals of time to be considered in their analyses by providing a configuration file in text format (--locales).<br> 
 *HaploCoV.pl* will process the configuration file and apply the complete workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file. 
-This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their *VOC-ness score* and/or prevalence, and which are probably worth to be monitored. More details on the interpretation of this report are provided in the section [How to interpret HaploCoV's results](https://haplocov.readthedocs.io/en/latest/haplocov.html#how-to-interpret-haplocov-s-results).<br>
+This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their *VOC-ness score* and/or prevalence, and which are probably worth to be monitored. More details on the interpretation of this report are provided in the section [How to interpret HaploCoV's results](https://haplocov.readthedocs.io/en/latest/haplocov.html#how-to-interpret-haplocov-s-results) of the manual.<br>
 
 <hr>
 
@@ -172,9 +171,8 @@ Since in this case the type of analysis was set to "custom" and the target geogr
 
 Locale(s) configuration files are used by *HaploCoV.pl* to set the main parameters for the execution of your analyses. These files need to have a tabular format and contain 5 colums separated by tabulations. An example of a valid locales file is illustrated below:
 
-column 1|column 2 |column 3  |column 4  |column 5        |
---------|---------|----------|----------|----------------|
 location|qualifier|start-date|end-date  |genomic-variants|
+--------|---------|----------|----------|----------------|
 Italy   |country  |2022-01-01|2022-11-11|areas_list.txt  |
 Thailand|country  |2022-01-01|2022-11-11|custom          |
 world   |area     |2022-01-01|2022-11-11|custom          |
@@ -183,13 +181,13 @@ world   |area     |2022-01-01|2022-11-11|custom          |
 * qualifier: qualifier of the geographic entity, accepted values are: region, country or area. Again, refer to [Geography and places](https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) for more details;
 * start-date: lower limit of the interval of time on which to execute the analysis (see [Dates and time in HaploCoV](https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov));
 * end-date: upper limit of the interval of time;
-* genomic-variants: a list of files with high frequency genomic variants (see  [Genomic variants file](https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii)). Comma separated. Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e if the name of your genomic variants file is \"myVar\" the name of the report will be \"_myVar.rep" (see below).
+* genomic-variants: a comma separated list of files with high frequency genomic variants (see  [Genomic variants file](https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii)). Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature. If you do not wish to use a precomputed file, you can use the special word *custom*. High frequency genomic variants will be computed by HaploCoV based on your selection.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e. if the name of your genomic variants file is \"myVar\" the name of the report will be "\_myVar.rep" if instead *custom* was used, the name will be "\_custom.rep" (see below).
 
 The file locales.txt included in this repository provides a valid example of a locales configuration file. 
 
 ### Output (and intermediate files folder)
 
-The name of the main output by HaploCoV.pl is set automatically by the program by combining the value provided in the "location" (1rst) column, with value/values reported in the "genomic-variants" (5th) column of your locales configuration file. In the example above 3 different output files will be obtained:
+The name of the main output by *HaploCoV.pl* is set automatically by the program by combining the value provided in the "location" (1rst) column, with value/values reported in the "genomic-variants" (5th) column of your locales configuration file. In the example above 3 different output files will be obtained:
 
 * Italy_areas_list.txt.rep
 * Thailand_custom.rep
@@ -209,11 +207,11 @@ The section [Intermediate files and what to make of them](https://haplocov.readt
 ### Genomic variants files (Configuration II)
 
 HaploCoV uses collections of genomic variants with high frequency in a specific country/region/locale to define and identify novel candidate variants/lineages of SARS-CoV-2.<br> 
-For your convenience, a collection of pre-computed files is available in this github repository. If you want to use one of these files, you simply have to enter the file/files name in the fifth column of your "locales" configuration file. HaploCoV will detect the file and run all the analyses. 
+For your convenience, a collection of pre-computed files is available in this github repository. If you want to use one of these files, you simply have to enter the file/files name in the fifth column of your *locales* configuration file. HaploCoV will detect the file and run all the analyses. 
 
 Precomputed sets of genomic variants/files can broadly be categorized into 4 main classes:
 
-1. *Highly variable genomes.* These are allelic variants found in at least 25 "highly divergent" genomic sequences (w.r.t the reference strain to which they are assigned). These files are stored under the folder: HighVar.
+1. *Highly variable genomes.* These are genomic variants found in at least 25 "highly divergent" genomic sequences (w.r.t the reference Pango lineage to which they are assigned). These files are stored under the folder: HighVar.
 2. *Country specific genomic variants.* Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a country at any time point from Mon 2019-12-30. These files are stored under the folder: country. 
 3. *Increased prevalence genomic variants.* Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: HighFreq. 
 4. *globally frequent genomic variants*. These are provided in the main github repository of HaploCoV, and include: 
@@ -221,17 +219,17 @@ Precomputed sets of genomic variants/files can broadly be categorized into 4 mai
 
 Please see the section [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) for additional information. 
 
-Alternatively, if the pre-computed files do not suit their use case, users do also have the option to derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword **custom** needs to be indicated in the 5th column (see below), and high frequency genomic variants will be computed on the current selection.   
+Alternatively, if the pre-computed files do not suit their use case, users do also have the option to derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword *custom* needs to be indicated in the 5th column, and high frequency genomic variants will be computed on the current selection.   
 
 ### Important: special/reserved keywords
 
 When the reserved word *world*  is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geographic origin.
 
-In the 5th column (genomic-variants) you can use the reserved word *custom* if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed allele-variant file provided by HaploCoV. This option allows more flexibility. When *custom* is specified, high frequency genomic variants are determined dynamically based on the user selection. Please see the [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) in the manual for additional explanations.
+In the 5th column (genomic-variants) you can use the reserved word *custom* if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed genomic-variant file provided by HaploCoV. This option allows more flexibility. When *custom* is specified, high frequency genomic variants are determined dynamically based on the user selection. Please see the [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) in the manual for additional explanations.
 
 ### Advanced configuration
 
-This readme covers only the standard/basic requirements for the execution of HaploCoV. We kindly invite users to read the [manual](https://haplocov.readthedocs.io/en/latest) for a more thorough explanation of additional options (and configuration) of the workflow, and tips/instructions for how to make the best of each single tool in the package.
+This readme covers only the standard/basic requirements for the execution of HaploCoV. We kindly invite users to read the [manual](https://haplocov.readthedocs.io/en/latest) for a more thorough explanation of additional options (and configuration) of the workflow, and tips/instructions for how to make the best of each single tool.
 
 <hr>
 
@@ -239,7 +237,7 @@ This readme covers only the standard/basic requirements for the execution of Hap
 
 The main output of HaploCoV consists of a file in .rep format. This is a simple text file that provides relevant information about novel (candidate) SARS-CoV-2 variants that demonstrated:
 
-1. an increase in their "VOC-ness" score; 
+1. an increase in their *VOC-ness* score; 
 2. an increase in their prevalence (regionally or globally);
 3. both of the above.
 
@@ -264,7 +262,7 @@ In the report each candidate lineage/variant is introduced by a # followed by a 
 
 I.e B.1.N1 descends from B.1 for example.
 
-Two distinct and complementary reports are provided for every variant, a "score-based" report and a "prevalence-based" report.
+The report includes two distinct and complementary sections. The first section reports information about the *VOC-ness* and on the defining genomic variants that prompted the identification of the novel candidate viral varianr/lineage, the second section summarizes its prevalence at the geographic locales specified by the user. Only places where a minimum prevalence threshold (1% by default) is reached are included.
 
 ### Scores and novel genomic variants
 
@@ -298,7 +296,7 @@ An example of the output is reported below:
         <br><br>`gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T `
         <br><br>`lost (wrt parent): `
         
-In this case the novel candidate lineage/variant is defined by 3 additional genomic variants compared to its parental
+In this case the novel candidate lineage/variant is defined by 3 additional genomic variants compared to its parental.
 
 
 ### Prevalence
@@ -315,12 +313,11 @@ For example:
 <br>`AsiaSO::India::Delhi:5 AsiaSO::India::WestBengal:1`
 
 Indicates that the novel candidate lineage/variant had a prevalence above the minimum cut-off value at 5 distinct intervals in Delhi and at only a single interval in 
-West Bengal
-
+West Bengal.
 
 ### Increase (2 fold by default)
 
-For every interval/span of time (default 4 weeks) where the novel candidate lineage/variant had a prevalence above the user defined threshold, and an increase of X folds (X=2 by default) or higher in prevalence, this section reports:
+For every interval/span of time (default 4 weeks) where the novel candidate lineage/variant had a prevalence above the user defined threshold and an increase of X folds (X=2 by default) or higher in prevalence, this section reports:
 
 The place were the increase was observed, the prevalence at the initial time point of the interval, and the prevalence at the last time point of the interval
 
@@ -328,7 +325,7 @@ For example:
 <br>`Interval: 2021-04-01 to 2021-04-28, increase at 1 locale(s) `<br>
  <br>`List of locale(s): AsiaSO::India::Delhi:0.03-(76),0.08-(117)`<br>
 
-Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence
+Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence.
 
 The sentence ` The candidate variant/lineage did not show an increase in prevalece greater than the threshold at any interval or locale
 ` is used when no data are available and/or the novel variant did not show an increase in its prevalence.
