@@ -7,8 +7,9 @@ For every isolate in the input file, distances to all the groups/lineages/varian
 
 *assign.pl* takes 2 main input files: 
 
-1. a *designations file*. See linDefMut in the github repository for an example of a file with lineage defining variants (or alternatively `Designations files <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>` in the manual). ; 
+1. a *designations file*. See linDefMut in the github repository for an example of a file with lineage defining variants (or alternatively `Designations files <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>`_ in the manual). ; 
 2. a metadata table, in *HaploCoV format*. 
+
 The output is in HaploCoV format.
 
 **Assigning Pango Lineages** 
@@ -29,7 +30,7 @@ To assign genomes to a lineages/group/classes you need to run:
 
 ::
 
- assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned
+ assign.pl  --dfile linDefMut  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned
  
 The output consists of a table in *HaploCoV format*, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *no* indicates no alternative assignments were identified, and hence that the genome was unambiguously assigned to a single group/lineage. When multiple assignments are identified, a comma separated list is provided.
 
@@ -76,7 +77,7 @@ The output consists of a table in *HaploCoV format*, similarly to the input. The
    
 **Execution times, and multithreading** 
 
-Using a single core/thread *assign.pl* can assign the complete collection of more than 15M of genomes included in GISAID to Pango lineages in about 4 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than fifteen minutes are required to assign 15M genomes.
+Using a single core/thread *assign.pl* can assign the complete collection of more than 15M of genomes included in GISAID to Pango lineages in about 4 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than twenty minutes are required to assign 15M genomes.
 
 **p_assign.pl**
 
@@ -86,7 +87,9 @@ The following input parameters are accepted:
 * *---dfile*: *designations file*;
 * *--metafile*: a metadata file in *HaploCov format*;
 * *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**);
-* *--nproc*: number of processors/cores.
+* *--nproc*: number of processors/cores;
+* *--update*: if/when --dfile is set to linDefMut, update to the most recent version? T=true. F=False. Default T.
+
 
 To execute it you can use:
 
@@ -99,4 +102,4 @@ Input files are the same as those provided to *assign.pl*. Output format is in t
 .. warning::
 Since *p_assign.pl* does directly make use of *assign.pl* when it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error if *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
 
-All input files **MUST** be in the **same folder** from which the program is executed. 
+All input files **MUST** be in the **same folder** from which the program is executed. If/when linDefMut, the *designations file* of Pango lineages as derived by HaploCoV is specified, by default the most recent version is downloaded from github. Please set *--update F* to disable this behaviour.
