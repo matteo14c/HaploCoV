@@ -1,0 +1,4 @@
+world	area	2022-10-15	2022-11-30	custom
+NAnorth	area	2022-10-15	2022-11-30	custom
+Euc	area	2022-10-15	2022-11-30	custom
+EuUK	area	2022-10-15	2022-11-30	custom

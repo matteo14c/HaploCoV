@@ -85,36 +85,6 @@ Geographic data are inferred directly from your metadata table, by processing th
 
 * Continent/Country/Region.
 
-If geographic data are reported in a different format, HaploCoV will not be able to process the information and will append NA values in columns 6 to 9.
-Importantly we must stress that HaploCoV does not perform any correction on the spelling/consistency of geographic data. Hence it is down to the user to provide input data that are as accurate and correct as possible.
-
-The file **areaFile** in the main repository of HaploCoV is used to assign countries to macro-geographic areas. 
-**areaFile** is a text file with 2 columns separated by tabulations. The first columns reports the name of a country, and the second column indicates the macro-geographic region to which the country is assigned.
-
-The following areas are defined
-
-1.  AfrCent: central Africa;
-2.  AfrEast: eastern Africa;
-3.  AfrNorth: northern Africa;
-4.  AfrSouth: southern Africa;
-5.  Afrw: western Africa;
-6.  Asc: central Asia;
-7.  AsiaEast: eastern Asia,
-8.  AsiaME: Middle East;
-9.  AsiaSE: South East Asia;
-10. AsiaSO: southern Asia;
-11. EuEa: eastern Europe;
-12. EuNO: northern Europe;
-13. EuSO: southern Europe;
-14. EuUK: United Kingdom;
-15. Euc: central Europe;
-16. NAcent: central America;
-17. NAnorth northern America;
-18. Oc: Oceania;
-19. SAM: South America.
-
-However custom/user defined "areas" can be specified simply by editing **areaFile** or by providing a new file with the same format.
-
 Formatting the input 
 ====================
 
@@ -142,7 +112,7 @@ addToTable.pl accepts the following options:
 * *--dayFrom*: include only genomes collected after this day;
 * *--outfile*: name of the output file;
 
-**A typical run of addToTable.pl should look something like:**
+**An example of a valid command line should look something like:**
 
 ::
 
@@ -169,7 +139,7 @@ NextStrainToHaploCoV.pl accepts the following options:
 
 **Execution**
 
-A typical command line for NextStrainToHaploCoV.pl is something like:
+A command line for NextStrainToHaploCoV.pl is something like:
 
 ::
 

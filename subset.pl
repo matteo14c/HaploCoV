@@ -31,16 +31,19 @@ my $startD=$arguments{"--startD"};
 my $endD=$arguments{"--endD"};
 my $oS=$startD;
 my $oE=$endD;
+my $nextNAdate=0;
 
 if ($startD ne "na")
 {
 	$startD=fix_date($startD);
 	$startD=diff_d($startD);
+	$nextNAdate=1;
 }
 if ($endD ne "na")
 {
 	$endD=fix_date($endD);
 	$endD=diff_d($endD);
+	$nextNAdate=1;
 }
 my $lineage=$arguments{"--lineage"};
 my $outfile=$arguments{"--outfile"};
@@ -69,6 +72,7 @@ sub subset
 	while(<IN>)
 	{
 		my ($id,$date,$offset,$depo,$odepo,$continent,$farea,$fcountry,$fregion,$flineage,$mut)=(split(/\t/,$_));
+		#next if $odepo-$offset>=60;
 		#print if $lineage eq $flineage;
 		next if $area ne "na" && $area ne $farea;
 		next if $country ne "na" && $country ne $fcountry;
@@ -76,6 +80,7 @@ sub subset
 		next if $region ne "na" && $fregion ne $region;
 		next if $offset>$endD  && $endD ne "na"; 
 		next if $offset<$startD && $startD ne "na";
+		next if $nextNAdate=1 && $date eq "NA";
 		print OUT;
 	}
 }

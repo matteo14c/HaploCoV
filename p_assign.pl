@@ -48,7 +48,7 @@ sub parallel_assign
 		{
 			die "Cannot fork a child: $!";
 		}elsif ($pid == 0) {
-			#print "Printed by $i child process\n";
+			#print "Printed by $i $file child process\n";
 			exec("perl assign.pl --metafile $file --dfile $lvarFile  --out $file\_Assign.tmp") || die "can't exec $!";
 			exit(0);
 		}else {
@@ -76,6 +76,7 @@ sub split_file
 	#print "$Totlines $nlines\n";
 	system("split -d -l $nlines $ifile SPLITcovidSeq")==0||die();
 	my @files=<SPLITcovidSeq*>;
+	#print "@files\n";
 	return(\@files);	
 }
 
@@ -121,14 +122,15 @@ sub check_arguments
 
 sub download_refMut
 {
-        print "I will now donload the most recent version of linDefMut to assign to Pango\n";
+        print "I will now donload the most recent version of linDefMut to assign Pango lineages\n";
+	print "will rename the old copy to linDefMut.old\n";
 	if (-e "linDefMut")
 	{
-		system("rm linDefMut")==0||die("could not remove the old version of linDefMut")
+		system("mv linDefMut.old")==0||die("could not remove the old version of linDefMut")
 	}
         print "Downloading linDefMut from the github repo. Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
-        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
+        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
 
 }
 
@@ -154,6 +156,13 @@ sub check_input_arg_valid
                 die("Can not allocate a negative number of processors. $n provided!");
 
 	}
+	if ($arguments{"--out"} eq "na")
+        {
+                print_help();
+                my $f=$arguments{"--out"};
+                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+        }
+
 
 }
 
@@ -166,12 +175,14 @@ sub print_help
         print " and a metadata file (see align.pl) with metadata associated to.\n";
         print " each genome file\n";
         print "##INPUT PARAMETERS\n\n";
-        print "--dfile <<filename\t input file with the list of variants and their characteristic mutations\n(this is the output of augmentClusters.pl)\n";
+        print "--dfile <<filename>>\t input file with the list of variants and their characteristic mutations\n(this is the output of augmentClusters.pl)\n";
         print "--metafile <<filename>>\tfile with metadata in .tsv format\n";
-	print "--nproc <<number>>\t number of processors/cores to use\n";
+	print "--nproc <<number>>\t number of processors/cores to use. Default 8\n";
         print "\n##OUTPUT PARAMETERS\n\n";
         print "--out <<name>>\tName of the output file. Defaults to ASSIGN_out.tsv\n";
-        print "\n##EXAMPLES:\n\n";
-        print "perl p_assign.pl --dfile defining.txt --metafile linearDataSorted.txt --nproc 8\n"
+	print "\n##IMPORTANT\n";
+        print "--dfile --metafile and --out are mandatory parameters\n";
+        print "\n##EXAMPLE:\n";
+        print "perl p_assign.pl --dfile defining.txt --metafile linearDataSorted.txt --nproc 8 --out assigned.txt\n"
 }
 

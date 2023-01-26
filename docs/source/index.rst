@@ -78,7 +78,6 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    whatnext.rst
    subsetting.rst
    customreports.rst
-   
 
 
 Indices and tables

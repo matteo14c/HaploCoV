@@ -1,693 +1,359 @@
 # HaploCoV: a set of utilities and methods to identify novel variants of SARS-CoV-2
 
+## Important
+Please be aware that this readme covers only the standard set-up and execution of HaploCoV. An extended manual, with a more complete overview of the tool and parameters is available at [readthedocs](https://haplocov.readthedocs.io/en/latest/).
+
 ## What this tool can do for you
 
-This repository contains a collection of Perl scripts and utilities that can be used to:
-* **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify allelic variants**, 
-* identify **regional alleles** reaching a **"high frequency"** locally or globally, 
-* **extend an existing classification** based on high frequency regional alleles and/or any list of alleles provided by the user , 
-* derive **potentially epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** 
-* and to **classify** one or more genomes according to the method described in *Chiara et al 2021* https://doi.org/10.1093/molbev/msab049 and/or any other classification system of your choice.
+HaploCoV is a collection of Perl scripts that can be used to:
+1. **align** complete assemblies of SARS-CoV-2 genomes with the reference genomic sequence and **identify genomic variants**, 
+2. pinpoint **regional variation** and flag genomic variant with **"increased frequency"** locally or globally,  
+3. **identify epidemiologically relevant variants and/or novel lineages/sub-lineages of the virus** (using a custom scoring system), 
+4. **extend an existing classification system** to include novel designations/variants,
+5. and to **classify** one or more genomes according to the method described in [Chiara et al 2021](https://doi.org/10.1093/molbev/msab049) and/or any other classification system of your choice. 
 
-Please be aware that an interactive version of this manual with the lastest documentation is also available at [readthedocs](https://haplocov.readthedocs.io/en/latest/)
+## HaploCoV
 
-## Important! Prerequisites
-### To run HaploCoV you **must meet all** of the following prerequisites:
+This software package is composed of **9 (*+3*)** utilities. Instructions concerning required input files, their format and how to configure HaploCoV are reported below (and in the extended [manual](https://haplocov.readthedocs.io/en/latest/)). 
+In brief, input files need to be formatted according to the format used by HaploCoV by applying either *addToTable.pl* or *NexStrainToHaploCoV.pl* (depending on the input, see below). 
+Then the complete HaploCoV workflow can be executed by running *HaploCoV.pl* (recommended) or, if you prefer, by running each  tool in the HaploCoV workflow in the right order yourself (please see [HaploCoV:Tools](https://haplocov.readthedocs.io/en/latest/impatient2.html)).
+The figure below provides a conceptual representation of the HaploCoV workflow and the tools used to execute each task.
+![image](https://github.com/matteo14c/HaploCoV/blob/a1d84694e38ce87341ce523d4ec28a56c4be7ef7/images/wf.png).
 
-### #1 Have access to SARS-CoV-2 genome sequences and associated metadata
-Right now the GISAID database [link](https://www.gisaid.org/) represents the most complete and up to date point of access to obtain SARS-CoV-2 data. Authorized users can download the complete collection of SARS-CoV-2 genome assemblies and associated metadata by following the procedure illustrated in the figure below.<br>
-![alt text](https://github.com/matteo14c/HaploCoV/blob/dcda4c6f1518e31882ddccacb5d7a8a72aa6998c/images/fig1.png)
 
-After de-compresson, 2 files should be obtained: 
-1. metadata.tsv a metadata table in .tsv format and; 
-2. sequences.fasta a multi-fasta file with SARS-CoV-2 genome sequences.
-These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/obtains all the data used for subsequent analyses.
+### Aim and rationale
 
-### Required metadata
-Please be aware that some metadata are **mandatory** to execute HaploCoV and that columns names in your metadata file **MUST** abide to the structure/names described below. Mandatory metadata:
-* a valid unique identifier for every isolate, column name: *"Virus name"*;
-* a collection date, column name *"Collection date"*;
-* a submission date, column *"Submission date"*;
-* location: the geographic place from where the isolated was collected; Column name: *"Location"*;
-* a valid lineage/group/class associated with the genome. Column name: *"Pango lineage"* 
+The main aim of the tool is to facilitate the identification of novel variants/lineages of SARS-CoV-2 showing:
+1. An increase in their prevalence (regional, national or global);
+2. Features associated with VOCs/VOIs (variants of concern or variants of interest);
+3. Both of the above.
 
-Dates must be provided in YYYY-MM-DD format. Locations in the following format: Continent/Country/Region.<br> Missing information must be indicated by NA (not available).<br>An example of a valid metadata table is reported below
+HaploCoV incorporates a standalone "scoring system" (*VOC-ness score* from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The minimum threshold for significance was derived empirically (see the paper for more details). 
 
-Virus name | Collection date | Submission date | Location | Pango Lineage |
------------|-----------------|-----------------|----------|---------------|
-hcov/somename_1| 2022-05-26| 2022-06-01 | Europe/Italy/Lombardy | BA.2.9
-hcov/somename_2| NA | 2022-06-01 | Europe/Italy/Apulia | BA.2.9.1|
+Increase/decrease in prevalence is inferred by analyses of the (available) metadata. By default novel candidate variants with a prevalence above 1% in a region/country, and showing an increase by at least 2 fold over 4 weeks are reported. 
+These parameters can be configured by the user at runtime.
 
-### Important: providing "external" data  
-
-While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however  metadata must always comply with the prerequisites indicated above and valid metadata tables must include 5 columns with the following names:
-* "Virus name";
-* "Collection date";
-* "Submission date";
-* "Location";
-* "Pango Lineage";
-
-### Important: using data from Nextstrain
-
-Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and metadata from Nexstrain, please refer to here: [link](https://nextstrain.org/sars-cov-2/) for more information.
-Metadata in "Nexstrain format" can be obtained from here: [link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). Since these data have already been processed by Nexstrain using their *ncov workflow*, allele variants are already included in the metadata file and hence **you will not need to execute *addToTable.pl* on this file**. The file however needs to be converted in "HaploCoV" format.  This can be done by using the *NextStrainToHaploCoV.pl* script included in this repository (see below).
-
-### #2 Have all of the configuration files included in this repository
-
-HaploCoV requires a set of configuration files to run. Tools/utility will quit and halt their execution if these configuration files are not found. All configuration files need to be in the **same folder** from where the utilities are executed.
-These files include:
-
-1. globalAnnot: a file with functional annotation of the complete collection of SARS-CoV-2 variants. This file can be generated by using CorGAT (see Chiara et al 2020), for your convenience, and up to date copy is  included in the this repository. The file is updated on a weekly basis (every Wednesday).  The most recent copy is automatically downloaded by LinToFeats.pl at every execution. 
-2. areaFile: This configuration file defines macro-geographic areas as described in Chiara et al 2022. The file can be edited (see Execution of custom analyses) to specify user defined macro-geographic regions.  
-3. linDefMut: contains defining mutations for every Pango Lineage. Updated on a weekly basis (every Wednesday). 
-
-While all the tools in HaploCoV that use these files will attempt to download the most recent version directly from this github repository, users are kindly asked to *double check* that all the configuration files are in place before executing their analyses.
-
-### #3 Have a working installation of Perl and mummer
-
-HaploCoV is written in the Perl programming language. Hence you will need Perl to run it. Perl should be already installed by default on any unix and Mac OSX system. Please follow this [link](https://www.perl.org/get.html) for instructions on how to install Perl 
-
-Please follow this [link](https://sourceforge.net/projects/mummer/files/ "Mummer Download") for detailed instruction on how to install and run Mummer. A detailed manual can also be found in CorGAT main documentation at [readthedocs](https://corgat.readthedocs.io/en/latest/prerequisites.html "Install Mummer").
-
-### #4 Computational resources
-
-While the HaploCoV workflow can be reasonably executed on a modern, state of the art, laptop please be aware that some of the input files might be extremely large in size. For example, the complete fasta file with all SARS-CoV-2 genome sequences avaiable from the GISAID database has a size in the excess of 300 Gb. While complete metadata files from GISAID are over 8 Gb in size.
-Moreover, some tasks/processes can potentially take up to a few days (see for example #6 Assign genomes to new groups) on a single processor. In the light of the above considerations we would kindly invite users to make sure that they have access to the required computational resources before executing the HaploCoV workflow. The table below briefly summarizes the requirements in terms of time, RAM memory and disk-space required by eacht tool in HaploCoV. 
-
-Tool | Input files | RAM memory (peak) | Time | Output |
------|-------------|-------------------|------|--------|
-addToTable.pl|sequences.fasta -> 332 G; metadata.tsv -> 8.0G| 6.0-8.0G| ~20k SARS-CoV-2 genomes per hour on a single CPU|6.0-8.0G|
-NextStrainToHaploCoV.pl| metadata.tsv->6.0-8.0G| <1G| ~10 min|3.0-4.0G|
-computeAF.pl|HaploCoV-formatted meta-data: 3.0-8.0G|4.0-6.0G| ~20 min| ~2.0G|
-augmentClusters.pl|HaploCoV-formatted meta-data: 3.0-8.0G| 6.0-8.0G|~20 min|novel lineages: few Kbs|
-assign.pl / p_assign.pl|HaploCoV-formatted meta-data: 3.0-8.0G|<1.0G|4M genomes per hour|HaploCoV-formatted meta-data: 3.0-8.0G|
-LinToFeats.pl|novel lineages: few Kbs|<1.0G|<5min|Lineage features, a few Kbs|
-report.pl|Lineage features, a few Kbs|<1.0G|<2min|prioritized lineages: a few Kbs|
-subset.pl|HaploCoV-formatted meta-data: 3.0-8.0G|<1.0G|5-10 min|HaploCoV-formatted meta-data: <3.0-8.0G|
-
-If you already have all your metadata in HaploCoV format, executing the full workflow should require less than 2hrs. However execution times might change depending on your computational environment. 
-
+The main output consists of a report file that summarizes the prevalence and features (as defined by the criteria outlined above) of novel candidate variants of SARS-CoV-2.  
 
 <hr>
 
-## Running HaploCoV
-
-This software package is composed of **6(*+2*)** very simple scripts. Prerequisites are stated above. 
-
-## Input files
-
-Three main inputs are required:
-* **the reference assembly** of the SARS-CoV-2 genome in fasta format
-* a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference
-* a **.tsv** file with metadata associated to the SARS-CoV-2 genome sequences included in the multifasta
-
-### Reference genome
-The reference genome of SARS-CoV-2 can be obtained from:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz
-on a unix system you can download this file, by
-
-`wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz`
-
-followed by
-
-`gunzip GCF_009858895.2_ASM985889v3_genomic.fna.gz`
-
-Please notice that however the *addToTable.pl* utility is going to download the file for you, if a copy of the reference genome is not found in the current folder. However, since the "wget" command is required this is supposed to work only unix and unix alike systems.
-
-### Metadata and sequences
-SARS-CoV-2 genomic sequences and associated metadata can be obtained from the GISAID (https://www.gisaid.org/) database. The following columns are required/expected to be found in the metadata file:
-* **Virus name** : identifiers of viral isolates. These names **MUST** match the names included in the multifasta file
-* **Location** : geographic place where the sample was collected. The expected format is continent/country/region
-* **Collection date** : date of collection of the sample. Format: YYYY-MM-DD
-* **Submission date** : date of submsision of the sample to the the database.  Format: YYYY-MM-DD
-* **Pango lineage** : Pango lineage (or group according to a nomenclature of choice) assigned to viral isolates
-
-If any of the columns indicated above (names must be exactly matched) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. Please be aware that this does not mean that you necessarily need to provide data from the GISAID database as the main input (see below), but just that the metadata that you provide must have columns names consistent with those reported above.
-If you do not have access to GISAID, you can obtain publicly available SARS-CoV-2 data processed according to their "ncov" workflow from Nextstrain [link]([https://nextstrain.org/sars-cov-2/). 
-### Important: Nextstain data 
-since metadata from Nextstrain have slightly different format than that used by HaploCov, you will need to convert them in "HaploCov" format by using *NextStrainToHaploCoV.pl*.
-
-Should you find any of this software useful for your work, please cite:
->**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.**
-
-Should you find any issue, please contact me at matteo.chiara@unimi.it , or open an issue here on github.
-<hr>
-
-## Step by step procedure
-
-## #1 Compile a metadata table in HaploCoV format
-
-All the tools and utilities in HaploCov operate on a large metadata table in tsv format (*HaploCoV* format from here onward). This table contains the required metadata (extracted from "metadata.tsv" or equivalent files) and the collection of allele variants for every SARS-CoV-2 genome included in the analyses.  
-If you obtained your data from **GISAID** you can obtain a metadata table in *Haplocov* format by using the *addToTable.pl* utility. If data were downloaded from Nexstrain, you can use *NextStrainToHaploCov.pl* instead (see below).
-
-## HaploCoV format for metadata
-An example of the data format used by HaploCoV (HaploCoV format) is reported in the table below:
-
-column 1 |column 2 |column 3 |column 4 |column 5 |column 6 |column 7 |column 8 |column 9 |column 10 |column 11 |
----------|---------|---------|---------|---------|---------|---------|---------|---------|----------|----------|
-genome ID|collection date|offset days from collection|deposition date| offset days from deposition|continent|macro-geographic region|country|region|lineage|list of allele variants|
-
-The file is delineated by tabulations. Allele variants are reported as a comma separated list. 
-The format is as follows<br>: 
-*genomicposition_ref|alt* i.e. *1_A|T* for example indicates a A to T substitution in position 1 of the reference genome<br>
-
-A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: [HaploCoVFormatted.txt](http://159.149.160.88/HaploCoVFormatted.txt.gz) in the form o a  with `gzip` compressed file. When de-compressed the file should be around 2.9G in size.  
-
-## Dates and time in HaploCoV
-
-HaploCoV can only read dates in the YYYY-MM-DD format. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represent day 0. This date represents the beginning of the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019).<br>
-For example Tue 31th Dec 2019 is day 1 according to HaploCoV notation and Sun 29th Dec 2019, represents day -1. In the HaploCoV metadata format, the 3rd column reports the offset in days between the isolation of a specific isolate and Dec 30th 2019; similarly the 5th column reports the offset from Dec 30th 2019 to the "deposition" of the genome sequence in a public database (typically in GISAID).<br>
-Metadata tables in HaploCov format are sorted in descending order by the 3rd column (offset of the collection date). This means that the "most ancient" genome will always be at the top of the file, while the most recently isolated at the bottom.<br>
-If you need to know the date of isolation (and offset with respect to day 0) of the most recent genome included in the dataset you can simply use this command in a unix-like shell environment:
-<br><br>
-` tail -n 1 linearDataSorted.txt | cut -f 2,3`
-<br><br>
-For your convenience, the file HaploCoV-dates.csv in this repo reports the conversion to HaploCoV offset format of all the dates from 2019-12-30 to 2025-12-30. Please feel free to refer to that file for dates conversion.
-
-## GISAID data: addToTable.pl
-
-addToTable.pl reads multifasta (*sequences.fasta*) and metadata files(*metadata.tsv*) and extracts all the information required for subsequent analyses. A helper script, *align.pl* is used to align sequences to the reference genome assembly of SARS-CoV-2 and derive allele variants.
-
-### Aligning SARS-CoV-2 genomes to the reference 
-The helper script *aling.pl* is used to derive allele variants by *addToTable.pl*; although you do not need to run it directly, please make sure that you have a copy of align.pl in the same folder from where *addToTable.pl* is executed. Identification of allele variants is performed by means of the MUMMER program. Execution will halt if MUMMER is not installed. Please see above for how to install MUMMER.
-All input files **MUST** be in the **same folder** from which the program is executed. 
-
-### Incremental addition of data
-addToTable.pl can add novel data/metadata  incrementally to a pre-existing table in "HaploCoV" format. This feature is extremely useful, since it allows users to add data incrementally to their HaploCoV installation, without the need to re-execute analyses from scratch. To incrementally add data, users just need to provide a non empty output file. **IF** the output file is not empty,  addToTable.pl will process the file and add only those genomes which are not already listed/present in your medatata table. Matching is by sequence identifier (column Virus name).  **Alternatively** the --dayFrom parameter can be used to specify a minimum "start day", and only genomes isolated after that day will be processed and included in the output file. Please refer to the section "Dates and time in HaploCov" to check how dates are handled in HaploCoV
-
-### Options
-addToTable.pl accepts the following options:
-
-* **--metadata**: input metadata file (tipically metadata.tsv from GISAID)
-* **--seq**: fasta file
-* **--nproc**: number of threads. Defaults to 8.
-* **--dayFrom**: include only genomes collected after this day
-* **--outfile**: name of the output file
-
-### A typical run of addToTable.pl should look something like:
-<br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `<br><br> 
-The final output will consist in a metadata table in HaploCoV format.  This table is required for all the subsequent analyses.
-
-### Execution times 
-Please be aware that typically a single thread/process can align genomes and derive allele variants of about 20k SARS-CoV-2 genomes per hour (160k genomes on 8 cores, or 320k on 16 cores). This would mean that processing the complete collection of the more than 11M genomes included in the GISAID database on June 10th 2022  from scratch will take about 20 days if only one core/process is used. Computation scales linearly, hence 3 days would be needed if 8 processes are used, and 1.5 days if 16 are used. Importantly, since data are added incrementally, this operation needs to be performed only once. 
-
-## NextStrain data: NextStrainToHaploCoV.pl
-
-If you have obtained your metadata files from Nexstrain instead of GISAID you will not need to process the data by addToTable.pl. Metadata tables from Nexstrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. Download is available from here[link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz). 
-Please be aware that however Nexstrain can re-distribute only publicly available data, which at the moment account for about 1/3 of all the data in GISAID.
-Data from Nexstrain still need to be converted in *HaploCoV* format. For this purpose you can use the utility *NextStrainToHaploCoV.pl*
-Contrary to addToTable.pl, NextStrainToHaploCoV.pl does not feature incremental addition of data: this was not implemented since the full Nexstrain table can be converted in *HaploCoV* format in 3 to 5 minutes. 
-
-### Options
-NextStrainToHaploCoV.pl accepts the following options
---metadata: name of the input file
---outfile: name of the output file
-
-## Execution
-
-A typical command line for NextStrainToHaploCoV.pl is something like:
-
-` NextStrainToHaploCoV.pl --infile metadata.tsv --outfile linearDataSorted.txt `
-
-The output file will be in *HaploCoV* format and can be used by computeAF.pl to compute allele frequencies 
-
-
-## #2 Compute high frequency alleles
-
-High frequency alleles are computed by *computeAF.pl* this program requires the metadata table in *HaploCoV* format compiled by addToTable.pl (or NextStrainToHaploCoV.pl) as the main input.
-The tool partitions genomes according to geographic metadata, and computes allele frequencies over a user defined time interval, in overlapping time windows of a user defined size. The main ouput consist of lists of "high frequency" allele variants at different level of geographic granularity: global (all genomes), macro(macro geographic areas) and countries(country) are taken into account. Macro areas are specified by the "areaFile" file included in the current repo.
-All the final outputs as well as all intermediate files, are saved in an output folder that can be specified by the user at run time with the option --outdir (see below). User also have the option to select the minimum frequency (as in allele frequency) and "persistency" (number of weeks above the AF threshold) thresholds for the identification of high frequency variants.
-
-### Options
-The script accepts the following parameters:
-* *--file* name of the metadata file (please see above) 
-* *--maxT* upper bound in days for the time interval to consider in the analysis (days are counted starting from 12-30-2019). A value of 1 corresponds to 12-31-2019. A value of 365 to 12-30-2020. And so on. 
-* *--minT* lower bound for the time interval. days are counted using the same logic described form maxT
-* *--interval*  size in days of overlapping time windows, defaults to 10
-* *--minCoF* minimum AF for high frequency alleles, defaults to 0.01 
-* *--minP* minimum persistence (number of overlapping time windows) for high freq alleles: only alleles that have a high frequency (>=minCoF) in at least this number of distinct time windows will be included in subsequent analyses,defaults to 3,
-* *--outdir*  output directory. This directory will hold the output files, including lists of high frequency alleles. Defaults to "./metadataAF"
-
-### Execution
-A typical run of computeAF.pl should look something like:
-<br><br>
-`perl computeAF.pl --file linearDataSorted.txt `          
-(where linearDataSorted.txt is is the file with metadata in HaploCoV format)
-<br><br>
-The output will be stored in the directory specified by --outdir (defaults to ./metadata), and will include:
-* allele frequency matrices for all the countries and macro-geographic areas (suffix \_AFOT.txt)
-* three files containing the lists of high frequency allele, showing a frequency above the user defined threshold for more that the timespan set by the user, at global (global_list.txt), macro-areas(area_list.txt) and country (country_list.txt) level.
-
-### High frequency alleles files from the github repo
-Any of global_list.txt, area_list.txt or country_list.txt can be used to provide the list of allele variants used to "expand" lineages/sub-lineages of SARS-CoV-2 by augmentClusters.pl.  Please see Chiara et al 2022 for a detailed discussion of the implications. 
-A copy of each of these files can also be found in the HaploCoV github repository, and each is updated/regenerated to incorporate new data on a weekly basis (every Wednesday). If you do not want to compute high frequency alleles yourself, you can download the files directly from *github*. On a unix system this can be done by using the  ` wget command`.
-For example:
-1. global_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt`
-2. area_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt`
-3. countries_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt`
-
-
-## #3 Derive novel groups
-
-Novel groups/sublineages of SARS-CoV-2 are identified by augmentClusters.pl. This utility is used to derive novel sub-groups/sub lineages within an existing classification of SARS-CoV-2 lineages/variants. The aim is to extend a "target" classification by the incoporation of local/regional high frequency alleles, which are used to infer/derive local variants of the virus. Users can specify the minimum size (minimum number of isolates included in the group) required for a novel group to be formed (--size) and the minimum distance (in terms of number of characteristic high frequency alleles, --dist) between newly formed and extant groups.
-The input is the metadata table in *HaploCoV* format. The output will consist of a simple text file including a list of SARS-CoV-2 variants/lineages (one per line) and the list of their characteristic (present in >50% of the genomes) allele variants. The file will include all the extant lineages/variants specified in the metadata table,  and also novel variants/sub-group formed by the tool. All novel variants/groups will be indicated by a suffix (--suffix) that can be specified by the user.
-
-### High frequencies alleles for Nexstrain data
-
-Collections of high frequency alleles available from the HaploCoV Github repository are derived from the periodic processing of the complete collection of SARs-CoV-2 genomes included in the GISAID database; and hence should provide a more comprehensive representation of high frequency alleles than that which could be obtained by processing publicly available data re-distributed by Nexstrain with computeAF.pl. In the light of these considerations, users that have access only to Nextstrain data are kindlly encouraged to take adavantage (and use) high frequency allele files that are available from this repository instead of using "computeAF.pl" on their data.
-Please see above for how to download the most recent version of any of those files.
-
-### Options
-
-The augmentClusters.pl accepts the following parameters:
-* --metafile name of the metadata file (please see above the section above concerning the format/mandatory information)
-* --posFile list of high frequency alleles (this is one of the main outputs of computeAF.pl, typically areas_list.txt)
-* --dist minimum edit distance (number of characteristic high frequency alleles) required for forming a novel group. Defaults to 2
-* --suffix suffix used to delineate novel lineages,defaults to N
-* --size minimum size for a new subgroup within a lineage/group, defaults to 100
-* --tmpdir directory used to store temporary files
-* --oufile name of the output file
-The main output will be saved in the current folder. 
-
-### Execution
-A typical run of augmentClusters.pl should look something like:
-<br><br>
-`perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt  --posFile areas_list.txt `
-<br><br>
-The main output file, lvar.txt will contain all current groups/lineages and newly formed groups/sub-lineages, and a complete list of their defining mutations, in txt format one per line. An example is outlined in the screenshot below.
-![alt text](https://github.com/matteo14c/HaploCoV/blob/bb50436aab85fb48c1f36d274964ddaac9072032/images/output.png)
-
-
-### Novel variants identified by HaploCoV
-Novel variants identified by HaploCoV will be reported in the output file produced by augmentClusters.pl. The format of this file is very simple: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic allele variants (defined here as those present in >50% of the isolates assigned to the group). Values are separated by spaces (see above).
-This file includes the complete collection of lineages/groups as defined in the reference input nomenclature, plus all the novel lineages/groups/sub-lineages formed by HaploCoV. Newly formed lineages/groups/sub-lineages are identified by a suffix that can be specified by the user and by a progressive number. The default value for this suffix is the letter "N". If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.1.17 lineage, these will be reported as:
-1. BA.1.17.N1 and;
-2. BA.1.17.N2;
-in the output file (see above).
-
-### Custom analyses
-
-"Custom" analyses can be executed by providing a customized --posFile, with a list of allele variants that are of interest to the user and are not necessarily of "high frequency" and/or derived HaploCoV. Please see the section "**Executing Custom Analyses**" for more details.
-
-## #4 Compute genomic features of SARS-CoV-2 lineages and sublineages
-
-The LinToFeats.pl utility computes "high level" genomic features of SARS-CoV-2 lineages/sub-lineages derived by augmentClusters.pl.
-A complete list of such high level features along with a brief description is provided in the features.csv file attached to this repo.
-The tool uses pre-computed annotations of SARS-CoV-2 variants obtained by CorGAT to derive its scores. Such annotations are available from the current repository (file: globalAnnot),and are updated on a weekly basis. At every execution the most recent version of the annotations is downloaded. 
-LinToFeats.pl takes the output of augmentClusters.pl as its main input, the output file is a simple tab delineated table where for every lineage/group in input, genomic features are computed.
-
-### Options
-The program requires only 3 parameters:
-* *--infile* file with lineages/groups and their characteristic allele variants. 1 lineage per line. (main output of augmentClusters.pl)
-* *--outfile* name of the output file
-* *--annotfile* file with CorGAT annotations of SARS-CoV-2 variants. Defaults to globalAnnot
-
-### Execution
-A typical run of LinToFeats.pl should look something like:
-<br><br>`perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `<br><br>
-The main output file: lvar_feats.tsv will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages.
-
-
-## #5 Prioritization of novel groups/lineages
-
-The report.pl utility can be used to compare newly created groups/sublineages with their parental lineages in the reference nomenclature and prioritize lineages/sub lineages of SARS-CoV-2 showing a high increase in score with respect to a parental lineage (see Chiara et al 2022). 
-The main input corresponds with the output of LinToFeats.pl. 
-Users are also required to specify the suffix used to indicate "novel" lineages/sublineages. 
-This suffix must match the equivalent suffix provided to augmentClusters.pl. The default value is N.
-The configuration file indicated by --scaling: provides the list of the features to be used in the computation of the final score. A complete description of the features used by LinToFeats.pl to compute scores can be found in the features.csv file attached to this github repo The default is the list of features described in Chiara et al 2022, the file should not be edited, if not for a very good reason. 
-The final output consist in a simple text file, in tsv format where high scoring variants/sub-variants are reported along with their score and the score of the parental lineage.
-
-### Options
-report.pl accepts the following input parameters:
-* *--infile* name of the input file. This is the output file of LinToFeats.pl
-* *--suffix* suffix used to identify novel lineages/subvariants by augmentClusters.pl (see --prefix)
-* *--scaling* defaults to "scalingFactors.csv", this configuration file in included in the github repo
-* *--outfile* a valid name for the output file
-
-### Execution 
-A typical run of report.pl should look something like:
-<br><br>`perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `<br><br>
-The main output file lvar_prioritization.txt will a list of the SARS-CoV-2 variants that show a significant increase in their genomic score with respect to a parent variant. These variants are more likely to pose an increased risk from an epidemiological perspective.
-
-## #6 Assign genomes to new groups
-
-HaploCoV incorporates *assign.pl* an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature which might have been derived by augmentClusters.pl. 
-The utility applies a simple algorithm based on phenetic distances (described in Chiara et al 2021). For every group, users need to provide a list of "characteristic" allele variants, here defined as those present in more than 50% of the genomes that form the group.
-For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
-
-Assign.pl takes 2 main input files: 1 a simple file with "group/lineage" defining variants; 2 a metadata table, in HaploCoV format. See linDefMut50 in the current github repository for an example of a file with lineage defining variants. The format is exactly the same as that of the output files produced augmentClusters.pl.
-
-### Assigning Pango Lineages 
-linDefMut50 in the current github repository provides a complete list of defining allele variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a weekly basis.
-
-### Assigning Haplogroups as defined in Chiara et al 2021
-HaploDefMut in the current github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in Chiara el al 2021. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a weekly basis.
-
-### Options
-assign.pl takes the following options:
-
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
-* *--metafile*: a metdata file in HaploCov format
-* *--out*: the name of the ouput file (defaults to **ASSIGNED_out.tsv**)
-
-### Execution
-To assign genomes to a lineages/group/classes you need to run
-<br><br>` assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned `<br><br>
-
-The output consists of a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly determined groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. No indicates no alternative assignments were identied, and hence that the genome was unambiguously assigned to a single group/lineage.
-
-column 1 |column 2 |column 3 |column 4 |column 5 |column 6 |column 7 |column 8 |column 9 |column 10 |column 11 |
----------|---------|---------|---------|---------|---------|---------|---------|---------|----------|----------|
-genome ID|collection date|delta days from collection|deposition date| delta days from deposition|continent|country|region|lineage|list of allele variants|alternative lineages|
-genome_1|2022-06-01|788|2022-06-11|798|Europe|Italy|Lombardy|BA.2|v1,v2,vn|no|
-genome_1|2022-05-01|758|2022-05-11|768|Europe|Italy|Lombardy|BA.2.9|v1,v2,vn|BA.2.9.1|
-
-### Execution times, and multithreading 
-
-On a single core/thread assign.pl can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility p_assign.pl included in this repository can be used to parallelize the execution of assign.pl if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required to assign 11M genomes.
-
-### p_assign.pl
-Multi-threading, the p_assign.pl utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
-The following input parameters are accepted:
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
-* *--metafile*: a metdata file in HaploCov format
-* *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**)
-* *--nproc*: number of processors/cores
-
-To execute it you can use:
-<br>
-` p_assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --nproc 8 --out  linearDataSorted.txt_reAssigned `
-<br>
-
-Input files are the same as those provided to assign.pl. Output format is in the same format described above.
-
-### Important p_assign.pl and assign.pl 
-Since p_assign.pl does directly make use of assign.pl whent it is executed, both scripts need to be in the same folder when invoking p_assign.pl. Execution will halt and raise an error is assign.pl is not found/is not in the same folder as p_assign.pl.
-
-All input files **MUST** be in the **same folder** from which the program is executed. 
-
-<hr>
-
-## For impatient people
-
-To do all of the above: 
+# How to run HaploCoV in brief
+ 
 ### GISAID data
-1. `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `
+1. `perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `.
 
 ### Nexstrain data
-1. ` perl NextStrainToHaploCoV.pl --metadata metadata.tsv --outfile linearDataSorted.txt `
+1. ` perl NextStrainToHaploCoV.pl --metadata metadata.tsv --outfile linearDataSorted.txt `.
 
 ### then
 
-2. `perl computeAF.pl --file linearDataSorted.txt `
+2. ` perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `.
 
-### OR
-
-` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/area_list.txt`
-
-### and Finally
-3. `perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt --posFile areas_list.txt `
-4. `perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
-5. `perl report.pl --infile lvar_feats.tsv --outfile lvar_prioritization.txt `
-6. `perl assign.pl --dfile lvar.txt --metafile linearDataSorted.txt --outfile --out HaploCoVAssignedVariants.txt `
-
-### OR 
-
-6. `perl p_assign.pl --dfile  lvar.txt --metafile linearDataSorted.txt --nproc 12 --out HaploCoVAssignedVariants.txt `
-
+### Finally
+Read the report (.rep) file.
+Track any interesting/additional novel variant that you identified
+(Optional, read the full manual for more detailed analyses).
+See the following sections for complete details.
 
 <hr>
 
-## Executing custom analyses
 
-The input to HaploCoV are very simple (yet relatively large) metadata tables. The easiest way to execute custom analyses on a subset of data of interest is simply to subset the input metadata accordingly.  On any unix system, this operation can be performed very easily by taking advantage of built-in shell utilities. Like for example: `grep` or `head` or `tail`. 
-A few examples are reported below.
+## Input files
 
-### subset.pl
+HaploCoV requires 3 (main) input files:
+* **the reference assembly** of the SARS-CoV-2 genome in fasta format;
+* a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference;
+* a **.tsv** file with matched (to the sequences in the fasta file) metadata;
+See the [Where do I get the data?](https://haplocov.readthedocs.io/en/latest/data.html) in the extended manual for more details on how to obtain these files.
 
-If you are not familiar with the unix shell, you can take advantage of the subset.pl script included in this repository to subset the data. The script accepts an input file in HaploCoV format, and extracts from the file only data that match user defined filters/criteria. When multiple criteria are provided, a logical “AND” is applied and only data that satisfy all the criteria/conditions specified by the user are extracted.
+If you find any of this software useful for your work, please cite:
+>**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.**
 
-### options
-Subset.pl allows the application/definition of the following filters:
-* *--Marea:* name of a macro geographic area as defined in “areaFile”;
-* *--country:*  name of a country;
-* *--region:* name of a region;
-* *--lineage:* name of a lineage. Must match exactly a valid name in the nomenclature;
-* *--startD:* start-date in <YYYY-MM-DD> format. Only genomes collected after this date will be extracted
-* *--endD:* end-date in <YYYY-MM-DD> format. Only genomes collected before this date will be extracted
-
-Mandatory parameters are *--infile* and *--outfile*. At least one of  *--area,--country,--filter
---lineage,--startD or --endD* should be set. If no filters are specified, execution will halt
-
-### A typical run of subset.pl should look something like:
-
- `perl subset.pl --infile HaploCoV_formattedMetadata --country Thailand --startD 2022-05-01 --outfile Thai_HaploCoV_formattedMetadata`
-
- The output file Thai_HaploCoV_formattedMetadata will include only genomes collected in Thailand starting from 2022-05-01 
-
- <hr>
- 
-### #1 Geographically restricted analyses: how to analyse a specific Area, Country or region of interest
-
-### Before you start, Important!
-Please be aware that HaploCoV does not perform any check on the accuracy and consistency of geographic data and metadata associated with viral genome sequences/isolates included in metadata tables. Metadata are derived *-as they are-* from their respective repositories. If you encounter any inconsistencies or errors in the naming of continents, countries or regions please contact data submitters and/or curators of the database from which data were obtained.
-
-### Basic statistics: how do I summarize geographic data
-Simple stats on the number of genomes associated with distinct Continents, Countries, Regions and or Macro-geographic regions can be easily obtained by combining the `cut` , `sort` and `uniq' unix commands. 
-These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file.
-
-column 6 |column 7 |column 8 | column 9 |
----------|---------|---------|----------|
-continent|macroArea|country|region|
-
-To obtain basic stats about any of such columns (in unix) you can:
-1. extract the desired column with ` cut`
-2. sort all the values in the column you selected by using the `sort` utility
-3. summarize the results with `uniq -c`
-
-For example you get a complete list of the countries in the metadata table as well as the total number of genome from every country, "simply" by piping these 3 commands
-<br><br>
-`cut -f 8 HaploCoVformattedData.txt | sort | uniq -c`
-<br><br>
-
-The output should look something like this:
-<br>
-<br>
-![alt text](https://github.com/matteo14c/HaploCoV/blob/7b64742f8ef1d05dbfe933fb07ae7282253ee3f0/images/Screenshot-countries.png)
-
-and should provide a complete list of the "countries" that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by 
-1. finding the name/s of the country/countries in the list
-2. using grep.
-
-For example this command will extract data from Venezuela:
-
-`grep -P "\tVenezuela\t" HaploCoVformattedData.txt >> dataFomMyCountriesOfInterest`
- 
- The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the `sort`, `uniq`, `cut` and `grep` utilities to find out all the options and set out the "pipeline" that is best suited for your needs. 
-
-<br>
-
-Alternatively you can use subset.pl to perform the same selection:
- 
- `perl subset.pl --infile HaploCoV_formattedMetadata --country Venezuela --outfile VenezuelaMetadata`
- 
-subset.pl supports subsetting/selection by macroArea (--Marea), country (--country), and region (--region), which correspond to columns 7,8 and 9 in the HaploCoV metadata file.
-
-### #2 Lineage/HG specific analyses: can I analyse a lineage of interest?
-
-Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with `grep`. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". i.e we need to tell grep that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\" symbol to "." in the regular expression to be passed to grep.
-For example if you are interested in "B.1.1.7" only you can subset you data like this:
-
-`grep -P "\tB\.1\.1\.7\t"  HaploCoVformattedData.txt > B117data`
-
-The "\t" symbol indicates a tabulation. It is used here since we want to make sure that the "word" *B.1.1.7* is the complete and full content of a column in our metadata file, otherwise we risk that other lineages containing the word *B.1.1.7* as a substring could be matched as well.
-The method described in *#1 :  Basic statistics: how do I summarize geographic data?* can be adapted and reapplied here to double check that our output file only includes genomes assigned to the lineage of interest. We just need to extract a different column: (number 10) in this case:
-
-<br>`cut -f 10 B117data |sort | uniq -c`<br>
-
-The output should be:
-<br>
-![alt text](https://github.com/matteo14c/HaploCoV/blob/df3e957a7e067643ffb3e5916e41840a18c03457/images/b117.png)
-<br>
- 
- Again subset.pl could be used as an alternative to execute the same task:
- 
- `perl subset.pl --infile HaploCoV_formattedMetadata --lineage B.1.1.7 --outfile B117data`
-
-### #3 Time constrained analyses: 
-
-If you want to analyse only genomes/isolates collected between any interval of time, you can subset an HaploCoV formatted file accordingly. 
-Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since HaploCoV formatted files are sorted by collection date, in descending order,all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the `head` and `tail` utilities.
-Collection dates in HaploCoV formatted  metadata files are reported in the second column. We can find the first occurence of any date of interest by applying grep to that column.
-For example like this:
-<br><br>
-`cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1`
-<br><br>
-Similarly we can find the last occurence of the end date with:
-`cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1`
-<br><br>
-Here `cut` is used to extract the column of interest (the second column in this case).  `grep` with the -n option reports every occurence of the date/dates of interest, and also the line number where the occurrence was found (-n). For the start date we use `head -n 1` since we are only interested in the first occurence of that date. On the other hand for the end date we use `tail -n 1` since in this case we need the last occurence.
-In the example results look something like:
-<br>
-![alt text](https://github.com/matteo14c/HaploCoV/blob/57668f83c7320f94884b4d6ae016a6545115fbe4/images/subsetDates.png)
-
-Hence lines, in between line 3688449 and line 4553984 hold all the data from the interval of time we want to analyse.
-To extract those lines we can simply combine the `head` and `tail` commands. We need a total of 4553984-3688449+1=865536 lines.
-
-`head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime`
-
-We use `head` to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use  `tail` to  grab only the 865536 lines that correspond with the offset between our start and end date.
- 
-The procedure described above requires some confidence with the unix shell, if you prefer a more streamlined solution you can (again) use subset.pl. The equivalent command should be something like:
- 
- `perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --outfile myIntervalOfTime`
+Should you find any issue, please contact me at matteo.chiara@unimi.it, or open an issue here on github.
+<hr>
 
 
-### #4 Can I combine #1,#2 and #3?
+## Running HaploCoV
 
-Yes of course. Suppose that you want to analyse:
+## #1 Compile a metadata table in HaploCoV format
 
-Interval of time -> 2021-12-24 to 2022-02-24
-Lineage -> BA.1.1
-Country -> USA
+All the tools and utilities in HaploCov operate on a large table in tsv format (*HaploCoV format* from here onward). 
+If you obtained your data from **GISAID** you can format your data in *Haplocov format* by using the *addToTable.pl* utility. If data were obtained from NextStrain, you can use *NextStrainToHaploCov.pl* instead (see below).
 
-First you will need to extract the data for your time interval of interest with:
+## *HaploCoV format* for metadata
+An example of the data format used by HaploCoV (*HaploCoV format*) is reported in the table below:
 
-`cut -f 2 HaploCoVformattedData.txt | grep -n "2021-12-24" |head -n 1` # Find the first occurence of the end date
+column 1 |column 2 |column 3 |column 4 |column 5 |column 6 |column 7 |column 8 |column 9 |column 10 |column 11 |
+---------|---------|---------|---------|---------|---------|---------|---------|---------|----------|----------|
+genome ID|collection date|offset days from collection|deposition date| offset days from deposition|continent|macro-geographic region|country|region|lineage|list of genomic variants|
 
-`cut -f 2 HaploCoVformattedData.txt | grep -n "2022-02-24" |tail -n 1` # Find the last occurence of the start date
+The file is delineated by tabulations. Genomic variants are reported in the form of a comma separated list. 
+The format is as follows: <br> 
+\<genomicposition\>_\<ref\>|\<alt\>  <br>
+i.e. 1_A|T indicates a A to T substitution in position 1 of the reference genome.<br>
 
-`head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime` #Extract the data, see above
+A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: [HaploCoVFormatted.txt](http://159.149.160.88/HaploCoVFormatted.txt.gz) in the form of a `gzip` compressed file. When de-compressed the file should be around 2.9G in size.  
 
-Then you can subset by lineage:
+## #1.1 GISAID data: addToTable.pl
 
-`grep -P "\tBA\.1\.1\t" myIntervalOfTime > myIntervalOfTime_BA11data`
+*addToTable.pl* reads multifasta (*sequences.fasta*) and metadata files (*metadata.tsv*) and extracts all the information required for subsequent analyses. 
 
-And finally by country
+### Options
+*addToTable.pl* accepts the following options:
 
-`grep -P "USA" myIntervalOfTime_BA11data > myIntervalOfTime_BA11data_USA`
+* **--metadata**: input metadata file (typically metadata.tsv from GISAID);
+* **--seq**: fasta file;
+* **--nproc**: number of threads. Defaults to 8;
+* **--dayFrom**: include only genomes collected after this day;
+* **--outfile**: name of the output file.
 
-Or again if you prefer a more compact alternative, you can use subset.pl :
- 
- `perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --lineage BA.1.1 --country USA --outfile myIntervalOfTime_BA11data_USA`
+### Execution:
+An example command looks like:
+<br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `.<br>
+The final output will consist of a metadata table in *HaploCoV format*.  This table is required for all the subsequent analyses.
+
+### Important: Incremental addition of data
+*addToTable.pl* can add novel data/metadata incrementally to a pre-existing table in *HaploCoV format*. This feature is extremely useful, since it allows users to add data incrementally, without the need to re-execute analyses from scratch. When the output file provided by the user is not empty, addToTable.pl will process only those genomes which are not already included in your metadata table. Matching is by sequence identifier (column Virus name).
+
+### Execution times 
+On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour. Computation scales linearly: 160k genomes on 8 cores, or 320k on 16 cores. This means that processing the complete collection of the more than 13M genomes included in the GISAID database on November 11th 2022 from scratch will take about 20 days if only one processor is used;  3 days would be needed if 8 processes are used; and 1.5 days if 16 are used. Importantly this operation needs to be performed only once, since the tool supports the incremental addition of data (see above). 
+
+## NextStrain data: NextStrainToHaploCoV.pl
+
+If you downloaded your metadata files from Nexstrain ([link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz)), you need to use the utility *NextStrainToHaploCoV.pl* to convert them in HaploCoV format.
+Unlike *addToTable.pl*, *NextStrainToHaploCoV.pl* does not support incremental addition of data to a pre-existing file: this metadata file can be converted in *HaploCoV format* in 3 to 5 minutes. 
+
+### Options
+*NextStrainToHaploCoV.pl* accepts the following options:
+* --metadata: name of the input file;
+* --outfile: name of the output file.
+
+## Execution
+
+An example of a valid command line for *NextStrainToHaploCoV.pl* is as follows:
+
+` NextStrainToHaploCoV.pl --metadata metadata.tsv --outfile linearDataSorted.txt `
+
+The output file *linearDataSorted.txt* will be in *HaploCoV format*.
+
+## #2 Use *HaploCoV.pl* to apply the full pipeline
+
+### *HaploCoV.pl*
+
+Once data has been converted in HaploCoV format, the complete workflow can be executed by applying *HaploCoV.pl*.<br> 
+*HaploCoV.pl* is the workhorse of HaploCoV and is the recommended way to execute our software.<br> 
+Users can specify a list of geographic regions/areas or countries and intervals of time to be considered in their analyses by providing a configuration file in text format (--locales).<br> 
+*HaploCoV.pl* will process the configuration file and apply the complete workflow to each entity therein included. For every distinct country, area or region results will be provided in the form of an individual report (.rep) file. 
+This .rep file will contain a list of candidate SARS-CoV-2 variants/lineages showing a significant increase of their *VOC-ness score* and/or prevalence, and which are probably worth to be monitored. More details on the interpretation of this report are provided in the section [How to interpret HaploCoV's results](https://haplocov.readthedocs.io/en/latest/haplocov.html#how-to-interpret-haplocov-s-results) of the manual.<br>
 
 <hr>
 
- 
-## Executing custom analyses: custom alleles set
+### Options
 
-Although HaploCoV was originally devised to use a predefined set of high frequency alleles (derived by computeAF.pl) to search for novel clusters of viral genomes, in principle any custom files with a list of allele variants of interest can be used for this task. This approach allows the identification of clusters/novel potential designations defined by any combination of allelic variants of interest.  
+HaploCoV.pl accepts the following options
+* --file: name of the input file (metadata file in HaploCoV format)
+* --locales: configuration file with the list of regions and countries to analyse
+* --param: configuration file with the set of parameters to be applied by HaploCoV in your analysis
+* --path: path to your HaploCoV installation
+* --varfile: additional file with defining genomic variants
 
-To execute custom analysis and identify potential new lineages/viral clusters defined by any arbitrary set of allelic variants, all you need to do is to provide a "custom" posFile with the (--posFile) option to augmentCluster.pl . This file has a very simple format: allelic variants are listed one per line. This is a minimal (viable) example:
-<br>
-<br>
-![alt text](https://github.com/matteo14c/HaploCoV/blob/1bcc5eb428e92a607e4d6d9e220d94b6dd4d929e/images/mylist.png)
-<br>
-Allelic variants of interest do not need to be in any specific order. All you need to do is to comply with the format used by HaploCoV. Allele variant should be indicated according to the following rules:
+### Execution
 
-`<genomic-position>_<reference-allele>|<alternative-allele>`
+An example of a valid command line is reported below:
 
-and always with respect to the reference Refseq assembly of the SARS-CoV-2 genome (refseq ID NC_045512 or see above: Running HaploCoV-> reference genome). 
-For example a C to T nucleotide substitution in position 241, should be indicated as:
+` perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `
 
-`241_C|T`
+Since in this case the type of analysis was set to "custom" and the target geographic region to Italy (in italy.loc, see "Locales file" below). The final output will be reported in a file called \"Italy\_custom.rep\".
 
-### Precomputed sets of allelic variants
+<hr>
 
-The main repository of HaploCoV incorporates precomputed sets of allelicc variants which can be used to identify novel potential groups of SARS-CoV-2 genomic sequences with different features.
+### Configuration (Locales file)
 
-These precomputed sets of alleles can broadly be categorized into 3 main classes:
+Locale(s) configuration files are used by *HaploCoV.pl* to set the main parameters for the execution of your analyses. These files need to have a tabular format and contain 5 colums separated by tabulations. An example of a valid locales file is illustrated below:
 
-1. *Highly variable genomes.* These are allelic variants found in at least 25 "highly divergent" genomic sequences, at not-overlapping 
-intervals of time of 60 days.  Highly divergent/variable genomes are defined as those carrying at least 6 or more allele variants 
-that are not characteristic to their assigned lineage. Intervals are non-overlapping windows of 60 days, starting from Mon 12-30-2019.  Dates are expressed in "HaploCoV format", i.e offsets from the start date 2019-12-30. For example the file: 900_960_list.txt contains allelic variants identified in at least 25 distinct highly variable genomes between day 900 and day 960 
-These files are stored under the folder: HighVar.<br> 
-2. *Country specific allele variants.* Allele variants reaching a frequency of 1% or higher, for at least 15 days  in a country at any time point from Mon 2019-12-30.   These files are stored under the folder: country. Each file is named  after the corresponding country. Thailand_list.txt reports the list of high frequency allelic variants observed in Thailand<br> 
-3. *Increased frequency alleles.* Allelic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020.  These files are stored under the folder: HighFreq. Each file is named according to the corresponding month: April2021_list.txt reports allele that increased in prevalence in April 2021 <br>
+location|qualifier|start-date|end-date  |genomic-variants|
+--------|---------|----------|----------|----------------|
+Italy   |country  |2022-01-01|2022-11-11|areas_list.txt  |
+Thailand|country  |2022-01-01|2022-11-11|custom          |
+world   |area     |2022-01-01|2022-11-11|custom          |
 
-All our collections of allelic variants are updated on a weekly basis. Tipically every Wednesday. All files are downloaded automatically at every new installation of HaploCoV. Specific files of interest can be downloaded when/if needed. For example, under unix systems by using the `wget` utility. Some examples are reported below:
+* location: a country, a region or a macrogeographic area (see [Geography and places](https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) in the manual) for more details;
+* qualifier: qualifier of the geographic entity, accepted values are: region, country or area. Again, refer to [Geography and places](https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) for more details;
+* start-date: lower limit of the interval of time on which to execute the analysis (see [Dates and time in HaploCoV](https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov));
+* end-date: upper limit of the interval of time;
+* genomic-variants: a comma separated list of files with high frequency genomic variants (see  [Genomic variants file](https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii)). Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature. If you do not wish to use a precomputed file, you can use the special word *custom*. High frequency genomic variants will be computed by HaploCoV based on your selection.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e. if the name of your genomic variants file is \"myVar\" the name of the report will be "\_myVar.rep" if instead *custom* was used, the name will be "\_custom.rep" (see below).
 
-1. HyperVariable:         `wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/alleleVariantsSet/HighVar/900_960_list.txt` 
-3. Country:      `wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country/alleleVariantsSet/country/Thailand_list.txt` 
-4. High-freq: `wget https://raw.githubusercontent.com/matteo14c/HaploCoV/HighFreq/master/alleleVariantsSet/HighFreq/April2021_list.txt` 
+The file locales.txt included in this repository provides a valid example of a locales configuration file. 
 
-## Possible applications. #1 identifying \<hyper-variable> clusters of genome sequences
+### Output (and intermediate files folder)
 
-Suppose that we want to identify groups/cluster of genome sequences that carry an excess of allelic variants with respect to their assigned lineage. Recent experience suggests that VOC variants of SARS-CoV-2 are characterised by a significantly increased number of allelic variants compared with their ancestors. This is particularly true for Omicron, but it does also apply to other VOCs. <br>
-As recently summarized by Markov et al in their review, antigenic drift might represent a major driving force for the evolution of SARS-CoV-2, and hence the next new VOC-VOI-VUM like variants might be characterised/defined by the accumulation of a large number of novel non-synonymous alleles.
->**Markov PV, Katzourakis A, Stilianakis NI. Antigenic evolution will lead to new SARS-CoV-2 variants with unpredictable severity. Nat Rev Microbiol. 2022;20(5):251-252. doi:10.1038/s41579-022-00722-z**
+The name of the main output by *HaploCoV.pl* is set automatically by the program by combining the value provided in the "location" (1rst) column, with value/values reported in the "genomic-variants" (5th) column of your locales configuration file. In the example above 3 different output files will be obtained:
 
-To identify "highly-variable" clusters of viral genomes in HaploCoV you can use augmentClusters.pl together with any of the sets of allelic variants available under the alleleVariantsSets/HighVar folder. Please notice however that each file in HighVar corresponds with a pre-defined interval of time. Hence is advised that only genomes isolated within a time-frame compatible with that indicated by the file should be included in your analyses. <br>
-For example if you want to analyse/identify highly variable clusters of genome sequences between genomes collected between days 840 and 900 (2022-05-01 and 2022-06-30) you will need to:
-1. subset your input file in HaploCoV format accordingly
-2. use augmentClusters.pl + 840_900_list.txt
-3. apply the "standard" HaploCoV workflow afterwards
+* Italy_areas_list.txt.rep
+* Thailand_custom.rep
+* world_custom.rep
 
-This would roughly translate into the following commands:
+Each execution of HaploCoV usually generates several temporary/intermediate files. Normally you will not need to read/process/use these files, however for your convenience, all the intermediate files will be in be saved in a distinct folder. The same conventions applied for naming the main output files is used also to give names to the  intermediate folders. 
+In the example outlined above, indermediate files will be saved in 3 different folders, called:
 
-`cut -f 2 HaploCoVformattedData.txt | grep -n "2022-04-30" |head -n 1` # Find the first occurence of the end date
+* Italy_areas_list.txt_results
+* Thailand_custom_results
+* world_custom_results
 
-`cut -f 2 HaploCoVformattedData.txt | grep -n "2022-06-30" |tail -n 1` # Find the last occurence of the start date
+The section [Intermediate files and what to make of them](https://haplocov.readthedocs.io/en/latest/haplocov.html#intermediate-files-and-what-to-make-of-them) in the manual provides a more complete description of all the intermediate output files that you will find in this folder.
 
-and then 
+<hr>
 
-`head -n XXXXXX HaploCoVformattedData.txt | tail -n YYYYYY > myIntervalOfTime` #Extract the data, see above
-where XXXXXX and YYYYYY are actually the line numbers of the slice of the file you need. Please see above for how to derive these numbers from the output of `cut` + `grep` + `head`/`tail`
- 
-or alternatively, with subset.pl:
- 
- `perl subset.pl -infile HaploCoVformattedData.txt --startD 2022-05-01  --endD 2022-06-30 --outfile myIntervalOfTime`
+### Genomic variants files (Configuration II)
 
-Once you have a file with only the data on interest -"myIntervalOfTime" in this case- you can simply run augmentClusters.pl. If you want to identify groups of highly variable sequences, you can set the --size and --dist parameters accordingly (see above for more details).<br> 
-In this example I will be searching for groups supported by at least 5 distinct genomic (--size 5) sequences, and carrying at least 6 additional allelic variants with respect to the assigned lineage/designation (--dist 6). However --size and --dist can be increased or decreased according to your needs.
+HaploCoV uses collections of genomic variants with high frequency in a specific country/region/locale to define and identify novel candidate variants/lineages of SARS-CoV-2.<br> 
+For your convenience, a collection of pre-computed files is available in this github repository. If you want to use one of these files, you simply have to enter the file/files name in the fifth column of your *locales* configuration file. HaploCoV will detect the file and run all the analyses. 
 
-`perl augmentClusters.pl --metafile myIntervalOfTime --posFile 840_900_list.txt --dist 6 --size 5 --outfile highlyVariableGroups`
+Precomputed sets of genomic variants/files can broadly be categorized into 4 main classes:
 
-at this point you can use LinToFeats.pl and report.pl to identify novel designations showing an increase in their HaploCoV score:
+1. *Highly variable genomes.* These are genomic variants found in at least 25 "highly divergent" genomic sequences (w.r.t the reference Pango lineage to which they are assigned). These files are stored under the folder: HighVar.
+2. *Country specific genomic variants.* Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a country at any time point from Mon 2019-12-30. These files are stored under the folder: country. 
+3. *Increased prevalence genomic variants.* Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: HighFreq. 
+4. *globally frequent genomic variants*. These are provided in the main github repository of HaploCoV, and include: 
+*global_list.txt*: frequent worldwide, *areas_list.txt*: frequent at at least one macro-geographic area and *country_list.txt*: frequent at at least one county.
 
-`perl LinToFeats.pl --infile  highlyVariableGroups --outfile  highlyVariableGroups_feats.tsv `
+Please see the section [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) for additional information. 
 
-`perl report.pl --infile highlyVariableGroups_feats.tsv --outfile highlyVariableGroups_prioritization.txt `
+Alternatively, if the pre-computed files do not suit their use case, users do also have the option to derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword *custom* needs to be indicated in the 5th column, and high frequency genomic variants will be computed on the current selection.   
 
-The file highlyVariableGroups_prioritization.txt will report the novel designations with a significant increase in their HaploCoV score. If-any, these novel designations should be probably added to the reference nomenclature.
+### Important: special/reserved keywords
 
-## Possible applications. #2 Analysing data from a specific country
+When the reserved word *world*  is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geographic origin.
 
-If you want to analyse data from only a specific country, this can be easily done by using allele variants files found under the alleleVariants/country folder. Again you will need to subset your HaploCoV formatted data accordingly, and retain only data from the country of interest. 
-This should be relatively easy. If for example we want to analyse only data from Thailand we can use the following commands:
+In the 5th column (genomic-variants) you can use the reserved word *custom* if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed genomic-variant file provided by HaploCoV. This option allows more flexibility. When *custom* is specified, high frequency genomic variants are determined dynamically based on the user selection. Please see the [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) in the manual for additional explanations.
 
-`grep -P "\tThailand\t" HaploCoVformattedData.txt > ThaiData` #extract data from Thailand 
- 
- or
- 
- `perl subset.pl --infile HaploCoVformattedData.txt --country Thailand --outfile ThaiData`
+### Advanced configuration
 
-And then
- 
-`perl augmentClusters.pl --metafile ThaiData --posFile Thailand_list.txt --outfile ThaiClusters.txt`
+This readme covers only the standard/basic requirements for the execution of HaploCoV. We kindly invite users to read the [manual](https://haplocov.readthedocs.io/en/latest) for a more thorough explanation of additional options (and configuration) of the workflow, and tips/instructions for how to make the best of each single tool.
 
-At this point we can resume the "standard" workflow of HaploCoV, and apply LinToFeats.pl and report.pl :
+<hr>
 
-`perl LinToFeats.pl --infile  ThaiClusters.txt --outfile  ThaiClusters_feats.tsv `
+# How to interpret HaploCoV's results
 
-`perl report.pl --infile ThaiClusters_feats.tsv --outfile ThaiClusters_prioritization.txt `
+The main output of HaploCoV consists of a file in .rep format. This is a simple text file that provides relevant information about novel (candidate) SARS-CoV-2 variants that demonstrated:
+
+1. an increase in their *VOC-ness* score; 
+2. an increase in their prevalence (regionally or globally);
+3. both of the above.
+
+The report contains 3 main sections, which are briefly discussed below. Please refer to the manual if you need additional explanations.
+The file "India_custom.rep" in the current repo, provides an example of .rep file. The file contains an analysis of "novel" variants identified by HaploCoV in India, between 2021-01-01 and 2021-04-30, that is when the Delta and Kappa variant of SARS-CoV-2 emerged and started to spread in the country.
+
+## Header and sections
+
+Headers and sections of the file are specified/set by \"#\" symbols. The first 4 lines summarize the results by reporting the number of novel candidate variants that:
+
+1. passed both the prevalence and score threshold;
+2. passed only the score threshold;
+3. passed only the prevalence thresholds.
+
+After the header, 3 distinct sections follow in the same order indicated by the above numbered list.  Each section is introduced by a "#" symbol, and concluded by the sentence: "A detailed report follows".
+In the report each candidate lineage/variant is introduced by a # followed by a progressive number and its name. Names are according to the convention explained in the section [Novel designations](https://haplocov.readthedocs.io/en/latest/genomic.html#novel-designations) of the manual, and are formed by juxtaposing:
+
+* the `name of the parental lineage`;
+* a `.`; 
+* a `one letter suffix(N by default)`;
+* `progressive number`. 
+
+I.e B.1.N1 descends from B.1 for example.
+
+The report includes two distinct and complementary sections. The first section reports information about the *VOC-ness* and on the defining genomic variants that prompted the identification of the novel candidate viral varianr/lineage, the second section summarizes its prevalence at the geographic locales specified by the user. Only places where a minimum prevalence threshold (1% by default) is reached are included.
+
+### Scores and novel genomic variants
+
+This section reports the following information:
+
+1. The parental lineage of a candidate variant (*Parent:*). The parental is the lineage/variant from which the lineage/variant defined by HaploCoV descends.
+As an example:
+
+`Parent: B.1 ` indicates that the parental lineage is B.1
+
+2. The *VOC-ness score* of the parental, and candidate new lineage/variant (*Score parent:* and *Score subV:* , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
+
+An example of a output line is reported below:
+`Score parent: 3.28 - Score subV: 15.10 `
 
 
-## Possible applications. #3 Can I combine #1 and #2? 
+3. A detailed comparison of the genomic variants gained or lost by the novel candidate lineage/designation w.r.t its parent. Which includes the following data:
+<br>3.1. *defined by*: reports the complete list of defining genomic variants of the novel lineage/designation
+<br>3.2. *gained (wrt parent)*: genomic variants that are new compared with the parent lineage
+<br>3.3. *lost (wrt parent)*: genomic variants associated with the parent lineage/designation, but not with the novel candidate lineage/designation
 
-Yes of course! You can apply all of the above to any type of selection. For example:
- 
- 1. use highly variable alleles, but limited to data from a specific country
- 2. use highly variable alleles, but limited to data from a specific lineage
- 3. use country-specific alleles on a specific lineage and only in any interval of time of your interest
- 
-By using subset.pl or/and the commands outlined above it should be easy to subset the data and then apply augmentClusters.pl in any way that suites your needs.
-And obviously in case of doubts/questions and or need for additional files that are not included in HaploCoV you can always drop me a mail or alternatively open an issue here on Github
- 
-# Regards, from the HaploCoV development "team"
- 
- 
+Genomic variants are provided as a list separated by " " and in the same format indicated above:
+<br> 
+\<genomicposition\>_\<ref\>\|\<alt\>  <br>
+i.e. 1_A\|T indicates a A to T substitution in position 1 of the reference genome.<br>
+
+An example of the output is reported below: 
+
+`Genomic variants:`
+        <br><br>`defined by: 210_G\|T 241_C\|T 3037_C\|T 4181_G\|T 21618_C\|G 22995_C|A 19220_C\|T `
+        <br><br>`gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T `
+        <br><br>`lost (wrt parent): `
+        
+In this case the novel candidate lineage/variant is defined by 3 additional genomic variants compared to its parental.
 
 
+### Prevalence
 
+This part of the report summarizes the observed prevalence of novel candidate variants/lineages over a time span defined by the user(4 weeks by default) at different locales. The aim is to identify/flag variants that had a high prevalence (default 1% or more) and which demonstrated a significant increase in their spread (2 fold or more).
+Please refer to the manual, and specifically to [Prevalence report](https://haplocov.readthedocs.io/en/latest/increase.html) for detailed instructions on how the prevalence of a variant is computed and reported by HaploCoV, and more importantly for how to set parameters according to your needs.
+The prevalence report comprises 3 sections.
 
+### Prevalence above the threshold (1% by default)
+
+Here we report the number of distinct intervals and the complete list of locales where/when a prevalence above the minimum prevalence threshold was observed.
+
+For example:
+<br>`AsiaSO::India::Delhi:5 AsiaSO::India::WestBengal:1`
+
+Indicates that the novel candidate lineage/variant had a prevalence above the minimum cut-off value at 5 distinct intervals in Delhi and at only a single interval in 
+West Bengal.
+
+### Increase (2 fold by default)
+
+For every interval/span of time (default 4 weeks) where the novel candidate lineage/variant had a prevalence above the user defined threshold and an increase of X folds (X=2 by default) or higher in prevalence, this section reports:
+
+The place were the increase was observed, the prevalence at the initial time point of the interval, and the prevalence at the last time point of the interval
+
+For example:
+<br>`Interval: 2021-04-01 to 2021-04-28, increase at 1 locale(s) `<br>
+ <br>`List of locale(s): AsiaSO::India::Delhi:0.03-(76),0.08-(117)`<br>
+
+Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence.
+
+The sentence ` The candidate variant/lineage did not show an increase in prevalece greater than the threshold at any interval or locale
+` is used when no data are available and/or the novel variant did not show an increase in its prevalence.
+
+### Prevalence in time
+
+This section reports the latest prevalence of the candidate variant/lineage as estimated by HaploCoV. For example:
+<br>`Latest prevalence:`<br>
+        <br>`AsiaSO 2021-04-30 0.0294-(136)`<br>
+        <br>`AsiaSO::India 2021-04-30 0.0294-(136)`<br>
+
+indicates that the latest prevalence of the candidate lineage/variant at April 30th 2021, was 0.029 (~3%) in South Asia and India. 
+
+<hr>
+
+# What to do next
+
+If you identified a novel variant of SARS-CoV-2 with "interesting" genomic features, you should probably report the variant to Health authorities in your country and to the scientific community.<br>
+
+Normally [virological.org](https://virological.org/) or [Pango](https://github.com/cov-lineages/pango-designation/issues/) would be the right place to start.
+If the novel candidate variant was identified by HaploCoV, *HaploCoV.pl* (see [--varfile](https://haplocov.readthedocs.io/en/latest/haplocov.html#designations-file)) or *augmentClusters.pl* (see [here](https://haplocov.readthedocs.io/en/latest/novel.html)) should/could have provided a file with the complete list of genomic variants that define your novel lineage/lineages of interest.
+It might be worthwhile to add this/these definitions to your favourite *Genomics variant file* (see [here](https://haplocov.readthedocs.io/en/latest/genomic.html)) and use *assign.pl* or *p_assign.pl* to re-assign genomic sequences using the augmented nomenclature.<br> 
+
+Whence the novel nomenclature is assigned, you can extract the data (and metadata) of the novel candidate lineage/variant from a HaploCoV formatted metadata table (like for example the output of *assign.pl*) by using the *subset.pl* utility included in this repo.  The section [Subsetting data](https://haplocov.readthedocs.io/en/latest/subsetting.html) of the manual illustrates some possible applications of this tool, and explains how to use it to extract data of interest. <br>
+Finally the *increase.pl* utility can be used to calculate the prevalence of your novel/candidate variant/lineages in space and time and derive global patterns (if any and if your novel designations was not already derived from the analysis of all the available genome sequences).<br>
+All these topics are covered in the [manual](https://haplocov.readthedocs.io/en/latest/index.html) of HaploCoV. Please take a look at the manual in order to see how to make the best of the tools and utilities.
+
+<hr>
+
+### If you are reading this, you have made your way through the readme! 
+### Congratulations and regards! The HaploCoV "development team"

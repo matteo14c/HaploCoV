@@ -11,4 +11,3 @@ It might be worthwile to add this/these definitions to your favourite "Genomics 
 Whence the novel nomenclature is assigned, you can extract the data (and metadata) of the novel candidate lineage/variant from a HaploCoV formatted metadata table (like for example the output of *assign.pl*) by using the *subset.pl* utility included in github repo.  The next section of the manual illustrates some possible applications of the tool, and explains how to use it to extract data of interest. 
 
 Finally the *increase.pl* utility can be used to calculate the prevalence of your novel/candidate variant/variants in space and time and derive global patterns (if any and if your novel designations were not already derived from the analysis of all the available genome sequences) and/or identify countries or places where it is prevalent. 
-

@@ -70,7 +70,8 @@ sub metadataToPos
 			"Collection date"=>"na",
 			"Submission date"=>"na",
 			"Location"=>"na",
-			"Pango lineage"=>"na"
+			"Pango lineage"=>"na",
+
 		);
 	}
 	return (\%lock);	
@@ -135,9 +136,14 @@ sub metadataToLists
 		my $v=$vl[$i];
 		if ($lock{$v})
 		{
-			$lock{$v}=$i 
+			$lock{$v}=$i;
+		#to deal with inconsistent naming in gisaid metadata table
+		}elsif ($v eq "Pango lineage" || $v eq "Lineage"){
+			$lock{"Pango lineage"}=$i;
 		}
 	}
+	#  again to deal with inconsistent naming in gisaid metadata
+	$lock{"Submission date"}=$lock{"Collection date"} if $lock{"Submission date"} eq "na";
 
 	foreach my $MV (keys %lock)
 	{
@@ -158,7 +164,7 @@ sub metadataToLists
 	while (<IN>)
 	{
 		$c++;
-		print "#$c sequences aquired\n" if $c%1000000==0;
+		print "#$c sequences acquired\n" if $c%1000000==0;
 		my @data=(split(/\t/));
 		my $id=$data[$Iv];
 		$id=fix_strain($id);
@@ -298,12 +304,16 @@ sub parallel_align
                         push(@childs,$pid);
                 }
         }
-	print "Now aligning with $numP processes: c:@childs\n";
+	print "Now aligning with $numP processes\n";
         foreach(@childs){
                 my $tmp=waitpid($_,0);
         }
 	#print "o:@outfiles\n";
 	merge(\@outfiles,$ofile);
+	if ($infile eq "tmpMissingSeq.fa")
+	{
+		system("rm $infile")==0||die("could not remove temporary file with missing sequences\n");
+	}
 	foreach my $ifile (@infiles)
 	{
 		system("rm $ifile")==0||die("could not remove temporary file $ifile\n");
@@ -422,25 +432,31 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--metadata"};
-                die("No valid input file provided. $f does not exist!");
+                die("Reason:\nNo valid input file provided. $f does not exist!");
         }
 	if ($arguments{"seq"} eq "na" || (! -e $arguments{"--seq"}))
         {
                 print_help();
                 my $f=$arguments{"--seq"};
-                die("No valid input  list file provided. $f does not exist!");
+                die("Reason:\nNo valid sequence file provided. $f does not exist!");
         }
 	if ($arguments{"--nproc"}<0)
 	{
 		print_help();
 		my $m=$arguments{"--nproc"};
-		die("Num threads can not be <0. $m provided\n");
+		die("Reason:\nNum threads can not be <0. $m provided\n");
 	}
 	if ($arguments{"--dayFrom"}<-3500)
         {
                 print_help();
                 my $m=$arguments{"--dayFrom"};
-                die("Start day can not be <-3500. $m provided\n");
+                die("Reason:\nStart day can not be <-3500. $m provided\n");
+        }
+	if ($arguments{"--outfile"} eq "na")
+        {
+                print_help();
+                my $f=$arguments{"--outfile"};
+                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
         }
 }
 
@@ -467,10 +483,10 @@ sub print_help
         print "--seq <<filename>>\t fasta file\n";
         print "--dayFrom <<integer>>\t keep only genomes isolated after this day. Default -2500\n";
 	print "--nproc <<integer>>\t number of processes to align genomes and call variants. Default 8 \n";
-	print "--outfile <<filename>>\t output metadata file in HaploCoV format. If the file is not empty\n";
+	print "--outfile <<filename>>\t output metadata file in HaploCoV format. If the file is not empty\n\n";
 	print "novel data/metadata will be appended to the bottom of the file\n";
         print "Mandatory parameters are --seq, --metadata  and --outfile\n";
-        print "the file needs to be in the current folder.\n\n";
+        print "the files needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";
         print "1# input is metadata.tsv:\nperl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --outfile HaploCoV_formattedMetadata\n\n";
 }

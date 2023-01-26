@@ -11,6 +11,7 @@ my %arguments=
 "--suffix"=>"N",
 "--size"=>100,
 "--tmpdir"=>"novelGs",
+"--deffile"=>"na",
 "--outfile"=>"na"
 );
 #
@@ -20,6 +21,7 @@ check_arguments();
 check_input_arg_valid();
 #
 #
+
 
 #############################################################
 # Get arguments
@@ -31,7 +33,7 @@ my $prefix=$arguments{"--suffix"};
 my $size=$arguments{"--size"};
 my $outdir=$arguments{"--tmpdir"};
 my $outfile=$arguments{"--outfile"};
-
+my $deffile=$arguments{"--deffile"};
 
 check_exists_command('mkdir') or die "$0 requires mkdir to create a temporary directory\n";
 
@@ -40,10 +42,14 @@ unless (-e $outdir)
         system ("mkdir $outdir")==0||die();
 }
 
+if ($deffile eq "linDefMut")
+{
+	download_refMut();
+}
 
 my ($Hpos,$LPos)=build_L_pos($posFile);
-my ($data,$have,$clin)=compress_groups($metafile,$Hpos,$outdir);
-allocate_groups($data,$have,$dist,$size,$outdir,$prefix,$outfile,$clin);
+my ($data,$have)=compress_groups($metafile,$Hpos,$outdir,$deffile);
+allocate_groups($data,$have,$dist,$size,$outdir,$prefix,$outfile);
 
 
 ######################################################################
@@ -76,40 +82,18 @@ sub compress_groups
 	my $file=$_[0];
 	my %HFpos=%{$_[1]};
 	my $outdir=$_[2];
+	my $deffile=$_[3];
 	open(IN,$file);
-
-	#1 identify lineage defining mutations if file was not provided
-	#print " #1\n";
-	my %Clin=();
+	
 	my %Dlin=();
-	open(IN,$file);
 
-	while(<IN>)
+	if ($deffile ne "na")
 	{
-		chomp();
-		my ($lin,$var)=(split(/\t/))[9,10];
-		next if $lin eq "";
-                next if $lin eq "Unassigned";
-                next if $lin eq "NA";
-
-		$Clin{$lin}++;
-		my @vars=(split(/\,/,$var));
-		foreach my $vr (@vars)
-		{
-			$Dlin{$lin}{$vr}++;
-		}
+		%Dlin=%{read_def($deffile)}; 
+	}else{
+		%Dlin=%{build_def($file)}
 	}
 
-	foreach my $lin (sort{$a<=>$b} keys %Dlin)
-	{
-		my $tot=$Clin{$lin};
-		foreach my $var (keys %{$Dlin{$lin}})
-		{
-			my $prev=$Dlin{$lin}{$var}/$tot;
-			delete $Dlin{$lin}{$var} if $prev<0.5;
-		}
-	}
-	#die();
 	# 2 identify genomes with common patterns of HF variants within a lineage
 	# and store them
 	#
@@ -140,7 +124,6 @@ sub compress_groups
 		}
 		chop($genomeString);
 		$candNew{$lin}{$genomeString}++ if $Nvar>=$dist;
-
 	}
 =pod
 	#print " #3\n";
@@ -178,7 +161,58 @@ sub compress_groups
 		close(OUT);
 	}
 =cut
-	return(\%candNew,\%Dlin,\%Clin)
+	return(\%candNew,\%Dlin)
+}
+
+sub build_def
+{
+	my $file=$_[0];
+	my %Dlin=();
+	my %Clin=();
+	open(IN,$file);
+	while(<IN>)
+        {
+                chomp();
+                my ($lin,$var)=(split(/\t/))[9,10];
+                next if $lin eq "";
+                next if $lin eq "Unassigned";
+                next if $lin eq "NA";
+
+                $Clin{$lin}++;
+                my @vars=(split(/\,/,$var));
+                foreach my $vr (@vars)
+                {
+                        $Dlin{$lin}{$vr}++;
+                }
+        }
+        foreach my $lin (sort{$a<=>$b} keys %Dlin)
+        {
+                my $tot=$Clin{$lin};
+                foreach my $var (keys %{$Dlin{$lin}})
+                {
+                        my $prev=$Dlin{$lin}{$var}/$tot;
+                        delete $Dlin{$lin}{$var} if $prev<0.5;
+                }
+        }
+	return (\%Dlin);
+}
+
+sub read_def
+{
+	my $file=$_[0];
+	open(IN,$file);
+	my %Dlin=();
+	open(IN,$file);
+	while(<IN>)
+	{
+		chomp();
+		my ($lin,@lmut)=(split());
+		foreach my $var (@lmut)
+		{
+			$Dlin{$lin}{$var}=1;
+		}
+	}
+	return(\%Dlin);
 }
 
 sub allocate_groups
@@ -190,7 +224,7 @@ sub allocate_groups
         my $outdir=$_[4];
 	my $prefix=$_[5];
 	my $varFile=$_[6];
-	my %Clin=%{$_[7]};
+	#my %Clin=%{$_[7]};
 
 	open(OUT,">$outdir/$varFile.log");
 	open(MAIN,">$varFile");
@@ -231,7 +265,6 @@ sub allocate_groups
 
 		# set start id and a empty list of lineages already printed
 		my $start=1;
-        	my $totG=$Clin{$G};
         	
 		print OUT "$G\n";
 		my $id=0;
@@ -239,8 +272,9 @@ sub allocate_groups
 		{
 			my $id++;
                 	my $tot=$data{$G}{$sub};
+
 			next unless $tot>=$size; #|| ($tot/$totG>=0.01 && $tot>$size/2);
-		
+
 			# novel group: defined by HG muts
 			# not necessarily
 			my %localHG=();#%HGdata;
@@ -328,34 +362,40 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--metafile"};
-                die("Invalid metadata file provided. $f does not exist!");
+                die("Reason\:\nInvalid metadata file provided. $f does not exist!");
         }
 	if ($arguments{"--posFile"} eq "na" ||  (! -e ($arguments{"--posFile"})))
         {
                 print_help();
                 my $f=$arguments{"--posFile"};
-                die("Invalid list of positions file provided. $f does not exist!");
+                die("Reason:\nInvalid list of positions file provided. $f does not exist!");
         }
 
         if ($arguments{"--dist"}<0)
         {
                 print_help();
                 my $m=$arguments{"--dist"};
-                die("Distance between groups can not be <0. $m provided\n");
+                die("Reason:\nDistance between groups can not be <0. $m provided\n");
         }
 	
 	if ($arguments{"--size"}<0)
         {
                 print_help();
                 my $m=$arguments{"--size"};
-                die("Groups size can not be <0. $m provided\n");
+                die("Reason:\nGroups size can not be <0. $m provided\n");
         }
 	if ($arguments{"--outfile"} eq "na")
         {
                 print_help();
                 my $f=$arguments{"--outfile"};
-                die("Invalid outfile name provided. $f please provide a valide name using --outfile");
+                die("Reason:\nInvalid outfile name provided. $f please provide a valide name using --outfile");
         }
+	if ($arguments{"--deffile"} ne "na" && (! -e $arguments{"--deffile"} ))
+	{
+		print_help();
+		my $f=$arguments{"--deffile"};
+		die("Reason:\nInvalid lineage defining mutations file provided. $f does not exitst\n");
+	}
 
 }
 
@@ -364,6 +404,19 @@ sub check_exists_command {
     return $check;
 }
 
+sub download_refMut
+{
+        print "I will now donload the most recent version of linDefMut to assign Pango lineages\n";
+        print "will rename the old copy to linDefMut.old\n";
+        if (-e "linDefMut")
+        {
+                system("mv linDefMut.old")==0||die("could not remove the old version of linDefMut")
+        }
+        print "Downloading linDefMut from the github repo. Please download this file manually, if this fails\n";
+        check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
+        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
+
+}
 
 sub print_help
 {
@@ -392,6 +445,7 @@ sub print_help
         print "--suffix <<character>>\t suffix for new lineages,defaults to N\n";
         print "--size <<integer>>\t minimum size for a new subgroup within a lineage, defaults to 100\n";
         print "--tmpdir <<dirname>>\t defaults to \"./novelGs\", output directory\n";
+	print "--deffile <<filename>>\t If \"./linDefMut\", is specified the most recent copy will be downloaded from github\n";
         print "--outfile <<filename>>\t name of the output file\n";
 	print "\n To run the program you MUST provide  --metafile, --outfile and --posFile\n";
         print " all the file needs to be in the folder from which the script is executed.\n\n";
