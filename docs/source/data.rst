@@ -1,7 +1,7 @@
 Where do I get the data
 =======================
 
-HaploCoV requires 3 main files:
+HaploCoV requires 3 input files:
 
 * **the reference assembly** of the SARS-CoV-2 genome in fasta format;
 * a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference;
@@ -40,7 +40,7 @@ GISAID
 
 To run HaploCoV you **need** SARS-CoV-2 genome sequences and associated metadata.
 
-Right now the  `GISAID <https://gisaid.org>`_ database is the most complete and up to date point of access to obtain SARS-CoV-2 data. 
+Right now the  `GISAID <https://gisaid.org>`_ EpiCoV database is the most complete and up to date point of access to obtain SARS-CoV-2 genomic data and associated metadata. 
 Authorized users can download the complete collection of SARS-CoV-2 genome assemblies and their metadata by following the procedure illustrated in the figure below.
 
 .. figure:: _static/fig1.png
@@ -54,12 +54,18 @@ After de-compresson, 2 files should be obtained:
 
 These files provide the main input to *addToTable.pl*; the utility in HaploCoV that extracts/formats all the data for subsequent analyses.
 
-Alternatively users can also download a set of genomes of interest by selecting the corresponding entries from the web interface of GISAID. In this case the "Patient status metadata" must be used as the metadata file.
+GISAID-Augur
+============
+
+Users that do not have full to the download of a complete dump of the GISAID EpiCoV database, can use the web interface to download a set of genomes of interest by selecting the corresponding entries. 
+HaploCoV is compatible with the input format used by the Augur pipeline, hence users must download their selection of entries in the "Input for the Augur pipeline" format.
 See figure below.
 
 .. figure:: _static/gisaid2.png
    :scale: 80%
    :align: center
+
+The files are normally downloaded in the form of a *.tar* archive. After unpacking a *.fasta* file with the sequences **XXX.sequences.fasta** and a *.tsv* file with metadata **XXX.metadata.tsv** should be obtained. These files can be provided in input to *addToTable.pl*.
 
 Required metadata
 =================
@@ -73,8 +79,8 @@ Mandatory metadata:
 * location: the geographic place from where the isolated was collected, column name: *"Location"*;
 * a valid lineage/group/class associated with the genome. Column name: *"Pango lineage"* or *"Lineage"*.
 
-Dates must be provided in YYYY-MM-DD format. 
-Locations in the following format: Continent/Country/Region. 
+Dates must be provided in *YYYY-MM-DD* format. 
+Locations in the following format: *Continent/Country/Region*. 
 Missing information must be indicated by *NA* (not available).
 Sequence identifiers can not be replaced by *NA* values.
 
@@ -100,20 +106,21 @@ An example of a valid metadata table is reported below.
      - Asia / Thailand / Buriram
      - BA.5
 
-If any of the columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
-This does not mean that HaploCoV can process only data from the GISAID database (see below), but only that the metadata that you provide **must have** column names consistent with those indicated above.
+If your data were obtained from the GISAID EpiCoV database, according to the instructions provided above, all the requirements should be satisfied.
+Please notice that however, that if any piece of data/columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
+This does not mean that HaploCoV can process only data from the GISAID EpiCoV database, but that is alternative repositories are sued, users must make sure that their metadata **have** column names consistent with those indicated above (see next sections).
 
 Nextstrain
 ==========
 
-Users that do not have access to GISAID can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
+Users that do not have access to GISAID EpiCoV can obtain the complete collection of publicly available SARS-CoV-2 sequences and associated metadata from Nexstrain, please refer to `here <https://nextstrain.org/sars-cov-2/>`_ for more information.
 Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. Since these data have already been processed by Nexstrain using their *ncov workflow*, genomic variants are already included in the metadata file and hence **you will not need** to download genomic sequences and align them to the reference genome. 
 However, Nextstrain data still needs to be converted in *HaploCoV format*.  This can be done by using *NextStrainToHaploCoV.pl* (see below).
 
 Important: providing "external" data  
 ====================================
 
-While HaploCoV was designed to work with data from GISAID, the tool can in principle work also with data from other sources, however metadata must always comply with the format described above.
+While HaploCoV was designed to work mainly with data from GISAID, the tool can in principle work also with data from other sources, however metadata must always comply with the format described above.
 Valid metadata tables must include 5 columns with the following names:
 
 * *"Virus name"*;
@@ -122,4 +129,4 @@ Valid metadata tables must include 5 columns with the following names:
 * *"Location"*;
 * *"Pango Lineage" or "Lineage"*;
 
-Names must match exactly. HaploCoV is case-sensitive.
+Names must match exactly. 
