@@ -27,8 +27,6 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
 
  2. wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/area_list.txt
 
-
-**and \"Then\"**
 **Identify novel designations (3):**
 
 ::
