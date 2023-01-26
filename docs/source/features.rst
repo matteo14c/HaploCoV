@@ -10,9 +10,10 @@ LinToFeats.pl takes the output of augmentClusters.pl as its main input, the outp
 **Options**
 The program requires only 3 parameters:
 
-* *--infile* file with lineages/groups and their characteristic allele variants. 1 lineage per line (main output of augmentClusters.pl);
-* *--outfile* name of the output file;
-* *--annotfile* file with CorGAT annotations of SARS-CoV-2 variants. Defaults to globalAnnot.
+* *--infile* file with lineages/groups and their characteristic genomic variants. 1 lineage per line (main output of augmentClusters.pl);
+* *--annotfile* file with CorGAT annotations of SARS-CoV-2 variants. Defaults to globalAnnot;
+* *--update*  update globalAnnot to the most recent version? T=true. F=false. Default=T.;
+* *--outfile* name of the output file.
 
 **Execution**
 
@@ -22,4 +23,4 @@ An example of a valid command line for the execution of LinToFeats.pl is:
 
  perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
 
-The main output file: *lvar_feats.tsv* will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages.
+The main output file: *lvar_feats.tsv* will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages. By default the most recent version of the *globalAnnot* file is downloaded from the HaploCoV github repo at every execution (--update T), this is strongly reccommended, please do not modify the defaults unless for a valid reason.
