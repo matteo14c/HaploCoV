@@ -1,12 +1,12 @@
 Subsetting data
 ===============
 
-The input to HaploCoV are very simple (yet relatively large) metadata tables. The easiest way to execute custom analyses on a subset of data of interest is simply to subset the input metadata accordingly.  On any unix system, this operation can be performed very easily by taking advantage of built-in shell utilities. Like for example: `grep` or `head` or `tail`. 
+The input to HaploCoV consists in simple (yet relatively large) tables. The easiest way to execute custom analyses on a subset of data of interest is simply to subset the data accordingly.  On any unix system, this operation can be performed by using  built-in shell utilities. Like for example: `grep` or `head` or `tail`. 
 A few examples are reported below.
 
 **subset.pl**
 
-If you are not familiar with the unix shell, you can take advantage of the *subset.pl* script included in the main repository, to subset tdata. The script accepts an input file in *HaploCoV format*, and extracts data that match user defined filters/criteria. When multiple criteria are provided, a logical **AND** is applied and only data that satisfy all the criteria/conditions specified by the user are extracted.
+If you are not familiar with the unix shell, you use take advantage of the *subset.pl* script included in the main repository, to subset data. The script accepts an input file in *HaploCoV format*, and extracts data that match user defined filters/criteria. When multiple criteria are provided, a logical **AND** is applied and only data that satisfy all the criteria/conditions specified by the user are extracted.
 
 **options**
 Subset.pl allows the application/definition of the following filters:
@@ -44,7 +44,9 @@ HaploCoV does not perform any check on the accuracy and consistency of geographi
 
 **Basic statistics: how to summarize geographic data**
 
-Simple stats on the number of genomes associated with distinct Continents, Countries, Regions and or Macro-geographic regions can be easily obtained by combining the ``cut`` , ``sort`` and ``uniq`` unix commands. 
+**Unix shell**
+
+Simple stats on the number of genomes associated with distinct Continents, Countries, Regions and or Macro-geographic regions can be obtained by combining the ``cut`` , ``sort`` and ``uniq`` unix commands. 
 These data are stored in columns 6 to 9 of your HaploCoV-formatted metadata file.
 
 .. figure:: _static/table4.png
@@ -58,7 +60,7 @@ To obtain basic stats about any of such columns (in unix) you can:
 2. sort all the values in the column you selected by using the ``sort`` utility;
 3. summarize the results with ``uniq -c``.
 
-For example you get a complete list of the countries in the metadata table as well as the total number of genome from every country, "simply" by piping these 3 commands
+For example you get a complete list of the countries in the metadata table as well as the total number of genome from every country by "piping" these 3 commands
 
 ::
 
@@ -71,7 +73,7 @@ The output should look something like this:
    :scale: 70%
    :align: center
 
-and should provide a complete list of the countries that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed simply by:
+and should provide a complete list of the countries that are listed in column 8 (as well as the total number of genomes associated with that country). At this point selection of one (or more) countries of interest can be performed  by:
 
 1. finding the name/s of the country/countries in the list;
 2. using ``grep``.
@@ -85,7 +87,9 @@ For example this command will extract data from Venezuela:
 The same approach can be applied likewise to any geographic level metadata/column to extract data from specific areas/locales. Feel free to read the manuals of the ``sort``, ``uniq``, ``cut`` and ``grep`` to find out all the options and set out the "pipeline" that is best suited for your needs. 
 
 
-**Alternatively** you can use subset.pl to perform the same selection:
+**subset.pl**
+ 
+ you can use subset.pl to perform the same selection explained above:
 
 ::
  
@@ -93,10 +97,11 @@ The same approach can be applied likewise to any geographic level metadata/colum
  
 subset.pl supports subsetting/selection by macroArea (--Marea), country (--country), and region (--region), which correspond to columns 7,8 and 9 in the HaploCoV metadata file.
 
-Lineage/HG specific analyses: can I analyse a lineage of interest?
-==================================================================
+Select a specific lineage/HG
+==============================
 
-Of course this is completely possible. All you need to know is the exact full name of the lineage of interest. Again this can be done with ``grep``. Afterall lineage designations are stored in column 10 in HaploCoV formatted files. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". I.e. we need to tell``grep`` that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to ``grep``.
+**unix shell**
+To extract data of a specific lineage/HG all you need to know is the exact name of the lineage of interest. The ``grep`` command can be used to extract/select only lines that match that specific name from your HaploCoV formatted file. The only (minor) caveat is that Pango lineage names contain the "." symbol. In regular expressions the "." symbol is a meta-character that matches any single character. Hence it needs to be "escaped". I.e. we need to tell``grep`` that we want to match the actual "." character and not the metacharacter. This is done by prepending a "\\" symbol to "." in the regular expression to be passed to ``grep``.
 For example if you are interested in ``B.1.1.7`` only you can subset your data like this:
 
 ::
@@ -115,8 +120,9 @@ The output should be:
 .. figure:: _static/b117.png
    :scale: 70%
    :align: center
-   
-If you prefer to use **subset.pl** the same results can be obtained by the following command:
+
+**subset.pl**
+If you are not familiar with ``grep`` **subset.pl**  can be used to perform the selection of a lineage of interest. An example command is reported below.
 
 ::
  
@@ -124,9 +130,10 @@ If you prefer to use **subset.pl** the same results can be obtained by the follo
  
 Please notice that only a single lineage can be specified at a time. 
 
-Time constrained analyses: 
-===========================
+Select by time
+==============
 
+**unix shell**
 If you want to analyse only genomes/isolates collected between any interval of time, you can subset a table in *HaploCoV format* accordingly. 
 Suppose for example that we want to analyse only sequences collected between 2021-12-24 and 2022-02-24, you will need to extract a "slice"  of the file containing data collected within the dates of interest. Since files in *HaploCoV format* are sorted by collection date, in descending order, all we need to do is to find the first line corresponding with the start date, and the last line corresponding with the end date. Subsetting can then be performed with the ``head`` and ``tail`` utilities.
 Collection dates in HaploCoV formatted  metadata files are reported in the second column. We can find the first occurrence of any date of interest by applying grep to that column.
@@ -158,7 +165,8 @@ To extract those lines we can simply combine the `head` and `tail` commands. We 
  head -n 4553984 HaploCoVformattedData.txt | tail -n 865536 > myIntervalOfTime
 
 We use ``head`` to extract the first 4553984 lines in the file, which contain all the data up to 2022-02-24 (our end-date). Subsequently we use `tail` to grab only the 865536 lines that correspond with the offset between our start and end date.
- 
+
+**subset.pl**
 The procedure described above requires some confidence with the unix shell, if you prefer a more streamlined solution you can (again) use **subset.pl**. The equivalent command should be something like:
 
 ::
@@ -169,6 +177,7 @@ The procedure described above requires some confidence with the unix shell, if y
 Can I combine all of the above?
 ===============================
 
+**unix shell**
 Yes, of course. Suppose that you want to analyse:
 
 Interval of time -> 2021-12-24 to 2022-02-24
@@ -205,5 +214,6 @@ And finally by country
 Or again if you prefer a more compact alternative, you can use subset.pl :
 
 ::
- 
+
+**subset.pl**
  perl subset.pl --infile HaploCoV_formattedMetadata --startD 2021-12-24 --endD 2022-02-24 --lineage BA.1.1 --country USA --outfile myIntervalOfTime_BA11data_USA.
