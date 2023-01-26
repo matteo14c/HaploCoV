@@ -65,7 +65,13 @@ See figure below.
    :scale: 80%
    :align: center
 
-The files are normally downloaded in the form of a *.tar* archive. After unpacking a *.fasta* file with the sequences **XXX.sequences.fasta** and a *.tsv* file with metadata **XXX.metadata.tsv** should be obtained. These files can be provided in input to *addToTable.pl*.
+
+Data will be downloaded in the form of a *.tar* archive. After unpacking two files should be obtained:
+
+1. a *.fasta* file with the sequences: **XXX.sequences.fasta**; 
+2. and a *.tsv* file with metadata **XXX.metadata.tsv**. 
+
+These files can be provided in input to *addToTable.pl*.
 
 Required metadata
 =================
@@ -106,9 +112,8 @@ An example of a valid metadata table is reported below.
      - Asia / Thailand / Buriram
      - BA.5
 
-If your data were obtained from the GISAID EpiCoV database, according to the instructions provided above, all the requirements should be satisfied.
-Please notice that however, that if any piece of data/columns indicated above (names **must be matched exactly**) is not found in your metadata table, execution of HaploCoV will halt and an error message will be raised. 
-This does not mean that HaploCoV can process only data from the GISAID EpiCoV database, but that is alternative repositories are sued, users must make sure that their metadata **have** column names consistent with those indicated above (see next sections).
+If your data were obtained from the GISAID EpiCoV database and following to the instructions provided above, all the requirements should be satisfied.
+Please notice that however, if any piece of data/columns (names indicated above **must be matched exactly**) is not found in your metadata table, the execution of *addToTable.pl* will halt and an error message will be raised. 
 
 Nextstrain
 ==========
@@ -117,10 +122,10 @@ Users that do not have access to GISAID EpiCoV can obtain the complete collectio
 Metadata in "Nexstrain format" can be obtained from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. Since these data have already been processed by Nexstrain using their *ncov workflow*, genomic variants are already included in the metadata file and hence **you will not need** to download genomic sequences and align them to the reference genome. 
 However, Nextstrain data still needs to be converted in *HaploCoV format*.  This can be done by using *NextStrainToHaploCoV.pl* (see below).
 
-Important: providing "external" data  
+Important: providing "custom" data  
 ====================================
 
-While HaploCoV was designed to work mainly with data from GISAID, the tool can in principle work also with data from other sources, however metadata must always comply with the format described above.
+While HaploCoV was designed to work mainly with data from GISAID EpiCoV, the tool can in principle work also with data from other sources, including "custom" data that are not included in any repository. Please notice that however metadata must always comply with the format described above.
 Valid metadata tables must include 5 columns with the following names:
 
 * *"Virus name"*;
