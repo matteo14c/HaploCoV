@@ -28,12 +28,14 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
  2. wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/area_list.txt
 
 
-**and \"Finally\"**
-**Identify novel designations (3); compute features/voc-ness score(5); assign the novel designations(6); compute the prevalence (7);**
+**and \"Then\"**
+**Identify novel designations (3):**
 
 ::
 
  3. perl augmentClusters.pl --outfile lvar.txt --metafile linearDataSorted.txt --posFile areas_list.txt
+
+**Compute features/voc-ness score(4+5):** 
 
 ::
 
@@ -42,6 +44,8 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
 ::
 
  5. perl report.pl --file lvar_feats.tsv --outfile lvar_prioritization.txt
+
+**Assign the novel designations(6):** 
 
 ::
 
@@ -54,7 +58,7 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
  6. perl p_assign.pl --dfile  lvar.txt --metafile linearDataSorted.txt --nproc 12 --out HaploCoVAssignedVariants.txt
 
 
-**Prevalence report:**
+**Compute the prevalence (7):**
 
 ::
 
