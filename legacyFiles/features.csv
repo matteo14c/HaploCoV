@@ -1,0 +1,85 @@
+id	description
+orf1ab:numTotal	total number of defining allele variants in orf1ab
+AF5	total number of allele variants with AF>5% and <10% within the lineage
+orf1ab:numIncr	total number of defining allele variants  increasing by at least a 1.5 fold in frequency in the last 6 months in orf1ab
+orf1ab:numINF	total number of inframe indels defining allele variants in orf1ab
+numIF	defining allele variants: total number of inframe indels
+AF10	total number of allele variants with AF>=10% and <25% within the lineage
+numNS	defining allele variants: total number of non synonymous substitutions
+EpiGlobal	total number of allele variants (silent and not) at predicted epitopes sites
+orf1ab:numDecr	total number of defining allele variants  decreasing by at least a 1.5 fold in frequency in the last 6 months in orf1ab
+AF90	total number of non silent allele variants at orf1a and orf1ab cleavage sites
+orf1ab:numNS	total number of non-synonymous defining allele variants in orf1ab
+EpiRatio	ratio between silent and non silent allele variants at predicted epitopes sites
+num	total number of defining (AF>50%) allele variants
+orf1ab:numPos	total number of defining allele variants in orf1ab predicted to be  under positive selection according to Hyphy
+total	total number of allele variants with AF>=1% within the lineage
+geneN:numPos	total number of defining allele variants in N predicted to be  under positive selection according to Hyphy
+spike:numDecr	total number of defining allele variants  decreasing by at least a 1.5 fold in frequency in the last 6 months in S
+spike:numPos	total number of defining allele variants in S predicted to be  under positive selection according to Hyphy
+geneN:EpiRatio	ratio between silent and non silent allele variants at predicted epitopes sites in N
+spike:numTotal	total number of defining allele variants in S
+spike:EpiRatio	ratio between silent and non silent allele variants at predicted epitopes sites in spike
+geneM:numDam	total number of deleterious (frameshift, premature stop) defining allele variants in M
+geneN:numIncr	total number of defining allele variants  increasing by at least a 1.5 fold in frequency in the last 6 months in N
+geneM:numDecr	total number of defining allele variants  decreasing by at least a 1.5 fold in frequency in the last 6 months in M
+spike:numIncr	total number of defining allele variants  increasing by at least a 1.5 fold in frequency in the last 6 months in S
+spike:numS	total number of non-synonymous defining allele variants in S
+spike:numINF	total number of inframe indels defining allele variants in S
+spike:numDom	total number of non-silent defining allele variants in annotated uniprot domains in S
+geneM:EpiRatio	ratio between silent and non silent allele variants at predicted epitopes sites in M
+geneN:numINF	total number of inframe indels defining allele variants in N
+metaORF:numNS	total number of non-synonymous defining allele variants in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+spike:numNS	total number of non-synonymous defining allele variants in S
+metaORF:numDom	total number of non-silent defining allele variants in annotated uniprot domains in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+metaORF:numIncr	total number of defining allele variants  increasing by at least a 1.5 fold in frequency in the last 6 months in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+metaORF:EpiRatio	ratio between silent and non silent allele variants at predicted epitopes sites in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+numGlobal	defining allele variants: total number of non silent (sum of numNS, numD and numIF)
+orf1ab:EpiRatio	ratio between silent and non silent allele variants at predicted epitopes sites in orf1ab
+geneN:numTotal	total number of defining allele variants in N
+metaORF:numTotal	total number of defining allele variants in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+numD	defining allele variants: total number with deleterious effect (frameshift, premature stop)
+geneN:numDam	total number of deleterious (frameshift, premature stop) defining allele variants in N
+geneN:numDom	total number of non-silent defining allele variants in annotated uniprot domains in N
+geneN:numNS	total number of non-synonymous defining allele variants in N
+AF1	total number of allele variants with AF>=1% and <5 within the lineage
+AF25	total number of allele variants with AF>=25% and <50% within the lineage
+AF50	total number of allele variants with AF>=50% and <90% within the lineage
+geneE:numDecr	total number of defining allele variants  decreasing by at least a 1.5 fold in frequency in the last 6 months in E
+geneM:numPos	total number of defining allele variants in M predicted to be  under positive selection according to Hyphy
+geneM:numINF	total number of inframe indels defining allele variants in M
+geneM:numNeg	total number of defining allele variants in M predicted to be  under negative selection according to Hyphy
+orf1ab:numNeg	total number of defining allele variants in orf1ab predicted to be  under negative selection according to Hyphy
+geneE:numIncr	total number of defining allele variants  increasing by at least a 1.5 fold in frequency in the last 6 months in E
+geneE:numTotal	total number of defining allele variants in E
+geneN:numDecr	total number of defining allele variants  decreasing by at least a 1.5 fold in frequency in the last 6 months in N
+geneE:numNeg	total number of defining allele variants in E predicted to be  under negative selection according to Hyphy
+CLV	total number of allele variants at TRS sites
+geneE:numDom	total number of non-silent defining allele variants in annotated uniprot domains in E
+geneM:numTotal	total number of defining allele variants in M
+geneE:EpiRatio	ratio between silent and non silent allele variants at predicted epitopes sites in E
+orf1ab:numS	total number of silent defining allele variants in orf1ab
+geneM:numS	total number of silent defining allele variants in M
+geneE:numINF	total number of inframe indels defining allele variants in E
+orf1ab:numDam	total number of deleterious (frameshift, premature stop) defining allele variants in orf1ab
+geneM:numDom	total number of non-silent defining allele variants in annotated uniprot domains in M
+geneE:numS	total number of silent defining allele variants in E
+numS	defining allele variants: total number of synonymous substitutions
+geneM:numIncr	total number of defining allele variants  increasing by at least a 1.5 fold in frequency in the last 6 months in M
+TRS	total number of allele variants at TRS sites
+spike:numNeg	total number of defining allele variants in S predicted to be  under negative selection according to Hyphy
+geneE:numPos	total number of defining allele variants in E predicted to be  under positive selection according to Hyphy
+geneN:numS	total number of silent defining allele variants in N
+orf1ab:numDom	total number of non-silent defining allele variants in annotated uniprot domains in orf1ab
+spike:numDam	total number of deleterious (frameshift, premature stop) defining allele variants in S
+GLN	total number of defining allele variants at glycosilation sites
+geneM:numNS	total number of non-synonymous defining allele variants in M
+geneE:numDam	total number of deleterious (frameshift, premature stop) defining allele variants in E
+geneE:numNS	total number of non-synonymous defining allele variants in E
+geneN:numNeg	total number of defining allele variants in N predicted to be  under negative selection according to Hyphy
+metaORF:numDecr	total number of defining allele variants  decreasing by at least a 1.5 fold in frequency in the last 6 months in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+metaORF:numS	total number of silent defining allele variants in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+metaORF:numDam	total number of deleterious (frameshift, premature stop) defining allele variants in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+metaORF:numINF	total number of inframe indels defining allele variants in  in non structural proteins (all proteins with the exclusion of N,E,M,S)
+metaORF:numPos	total number of defining allele variants in  in non structural proteins (all proteins with the exclusion of N,E,M,S) predicted to be  under positive selection according to Hyphy
+metaORF:numNeg	total number of defining allele variants in  in non structural proteins (all proteins with the exclusion of N,E,M,S) predicted to be  under negative selection according to Hyphy

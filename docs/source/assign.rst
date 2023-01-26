@@ -1,52 +1,92 @@
 6 Assign genomes to new groups
 ===============================
 
-HaploCoV incorporates *assign.pl* an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature which might have been derived by augmentClusters.pl. 
-The utility applies a simple algorithm based on phenetic distances (described in Chiara et al 2021). For every group, users need to provide a list of "characteristic" allele variants, here defined as those present in more than 50% of the genomes that form the group.
+*assign.pl* is an efficient and quick method that can assign SARS-CoV-2 genomes to any nomenclature of choice; including, but not limited to, the "expanded" nomenclature derived by *augmentClusters.pl*. 
+The utility applies a simple algorithm based on phenetic distances (described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_). Users need to provide a *designations file*, see `here <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>`_.
 For every isolate in the input file, distances to all the groups/lineages/variants in the nomenclature are computed, and finally the genome is assigned to the group with the highest similarity. In case of multiple groups/classes/lineages with identical similarity levels, the most ancestral lineage/group/class is selected. 
 
-*assign.pl* takes 2 main input files: 1 a simple file with "group/lineage" defining variants; 2 a metadata table, in HaploCoV format. See linDefMut in the current github repository for an example of a file with lineage defining variants. The format is exactly the same as that of the output files produced augmentClusters.pl.
+*assign.pl* takes 2 main input files: 
+
+1. a *designations file*. See linDefMut in the github repository for an example of a file with lineage defining variants (or alternatively `Designations files <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>` in the manual). ; 
+2. a metadata table, in *HaploCoV format*. 
+The output is in HaploCoV format.
 
 **Assigning Pango Lineages** 
-*linDefMut* in the current github repository provides a complete list of defining allele variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a weekly basis.
+The file *linDefMut* in the github repository provides a complete list of defining genomic variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a bi-weekly basis.
 
 **Assigning Haplogroups as defined in Chiara et al 2021**
-*HaploDefMut* in the current github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in Chiara el al 2021. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a weekly basis.
+*HaploDefMut* in the github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a bi-weekly basis.
 
 **Options**
 *assign.pl* takes the following options:
 
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
-* *--metafile*: a metdata file in HaploCov format
-* *--out*: the name of the ouput file (defaults to **ASSIGNED_out.tsv**)
+* *---dfile*: *designations file*;
+* *--metafile*: a metadata file in *HaploCov format*;
+* *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**).
 
 **Execution**
-To assign genomes to a lineages/group/classes you need to run
+To assign genomes to a lineages/group/classes you need to run:
 
 ::
 
  assign.pl  --dfile linDefMut50  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned
  
-The output consists of a table in HaploCoV format, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *No* indicates no alternative assignments were idenfied, and hence that the genome was unambiguously assigned to a single group/lineage.
+The output consists of a table in *HaploCoV format*, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *no* indicates no alternative assignments were identified, and hence that the genome was unambiguously assigned to a single group/lineage. When multiple assignments are identified, a comma separated list is provided.
 
-.. figure:: _static/table3.png
-   :scale: 60%
-   :align: center
+.. list-table:: Locales File
+   :widths: 30 30 30 30 30 30 30 30 30 30 30 30
+   :header-rows: 1
 
-
+   * - Heading genome ID
+     - Heading collection date
+     - Heading offset days (collection)
+     - Heading deposition date
+     - Heading offset days (deposition)
+     - Heading continent
+     - Heading macro-area
+     - Heading country
+     - Heading region
+     - Heading lineage
+     - Heading genomic variants
+     - Heading alternative lineage
+   * - genome1
+     - 2022-06-01
+     - 788
+     - 2022-06-11
+     - 798
+     - Europe
+     - EuSo
+     - Italy
+     - Lombardy
+     - BA.2.9
+     - v1,v2,vn 
+     - BA.2.9.1
+   * - genome2
+     - 2022-05-01
+     - 758
+     - 2022-05-11
+     - 768
+     - Europe
+     - EuSo
+     - Italy
+     - Lombardy
+     - BA.2
+     - v1,v2,vn 
+     - no
+   
 **Execution times, and multithreading** 
 
-On a single core/thread *assign.pl* can assign the complete collection of more than 11M of genomes included in GISAID to pango lineages in less than 3 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than seven minutes are required to assign 11M genomes.
+Using a single core/thread *assign.pl* can assign the complete collection of more than 15M of genomes included in GISAID to Pango lineages in about 4 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than fifteen minutes are required to assign 15M genomes.
 
 **p_assign.pl**
 
-Multi-threading, the p_assign.pl utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
+Multi-threading, the *p_assign.pl* utility included in this repo provides means to execute assign.pl on multiple threads/cores/processors.
 The following input parameters are accepted:
 
-* *---dfile*: input file list of SARS-CoV-2 lineages/sub lineages along with characteristic mutations
-* *--metafile*: a metdata file in HaploCov format
-* *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**)
-* *--nproc*: number of processors/cores
+* *---dfile*: *designations file*;
+* *--metafile*: a metadata file in *HaploCov format*;
+* *--out*: the name of the output file (defaults to **ASSIGNED_out.tsv**);
+* *--nproc*: number of processors/cores.
 
 To execute it you can use:
 
@@ -57,6 +97,6 @@ To execute it you can use:
 Input files are the same as those provided to *assign.pl*. Output format is in the same format described above.
 
 .. warning::
-Since *p_assign.pl* does directly make use of *assign.pl* whent it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error is *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
+Since *p_assign.pl* does directly make use of *assign.pl* when it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error if *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
 
 All input files **MUST** be in the **same folder** from which the program is executed. 
