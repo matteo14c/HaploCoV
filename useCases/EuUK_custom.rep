@@ -1,0 +1,145 @@
+# A total of 5 novel candidate sublineage(s)/subvariant(s) passed either the score or prevalence based thresholds
+# Of these 1 passed both the thresholds
+# 0 passed the score threshold only
+# and 4  passed the prevalence threshold only
+# The following candidate variants/lineages passed both the treshold(s). A detailed report follows
+
+######
+#1 B.1.1.N1
+Parent: B.1.1
+
+Score parent: 4.62 - Score subV: 15.83
+Genomic variants: 
+	defined by: 241_C|T 913_C|T 3037_C|T 3267_C|T 5388_C|A 5986_C|T 6954_T|C 11288_TCTCTTGCC|......... 14408_C|T 14676_C|T 15279_C|T 16176_T|C 17615_A|G 21765_TTTATT|...... 21992_TCG|... 23063_A|T 23271_C|A 23403_A|G 23604_C|A 23709_C|T 24506_T|G 24914_G|C 27972_C|T 28048_G|T 28111_A|G 28280_G|C 28281_A|T 28282_T|A 28881_G|A 28882_G|A 28883_G|C 28977_C|T
+
+	gained (wrt parent): 28048_G|T 913_C|T 23063_A|T 3267_C|T 28281_A|T 21992_TCG|... 5388_C|A 23604_C|A 15279_C|T 14676_C|T 11288_TCTCTTGCC|......... 28280_G|C 16176_T|C 6954_T|C 28111_A|G 21765_TTTATT|...... 24506_T|G 17615_A|G 23709_C|T 28977_C|T 28883_G|C 28882_G|A 23271_C|A 28282_T|A 5986_C|T 27972_C|T 28881_G|A 24914_G|C
+
+	lost (wrt parent): 28881_GGG|AAC
+
+
+# Prevalence in time
+
+Interval: 2020-10-21 to 2020-11-12, increase at 3 locale(s)
+	List of locale(s): EuUK:0.01-(3995),0.10-(4333) EuUK::UnitedKingdom:0.01-(3995),0.10-(4333) EuUK::UnitedKingdom::England:0.01-(3562),0.10-(4296)
+
+Number of intervals above the prevalence threshold, by locale:
+	 EuUK:1 EuUK::UnitedKingdom:1 EuUK::UnitedKingdom::England:1
+
+Latest prevalence:
+	EuUK 2020-11-12 0.1018-(4333)
+	EuUK::UnitedKingdom 2020-11-12 0.1018-(4333)
+	EuUK::UnitedKingdom::England 2020-11-12 0.1027-(4296)
+
+# No candidate variants/lineages passed only the score threshold
+# Skipping to variants that passed the prevalence threshold
+
+# The following candidate variants/lineages passed the prevalence threshold only. A detailed report follows
+
+#####
+#1 B.1.1.307.N1
+Parent: B.1.1.307
+
+Score parent: 5.75 - Score subV: 6.67
+Genomic variants: 
+	defined by: 241_C|T 1210_G|T 3037_C|T 9802_G|T 12067_G|T 13667_C|T 14408_C|T 15957_G|T 19017_C|T 23403_A|G 27865_A|T 27866_T|A 28881_G|A 28882_G|A 28883_G|C 29785_T|A
+
+	gained (wrt parent): 28881_G|A 27866_T|A 19017_C|T 27865_A|T 28883_G|C 28882_G|A
+
+	lost (wrt parent): 28881_GGG|AAC 27865_AT|TA
+
+
+# Prevalence in time
+
+Interval: 2020-09-17 to 2020-10-07, increase at 3 locale(s)
+	List of locale(s): EuUK:0.01-(2220),0.03-(3080) EuUK::UnitedKingdom:0.01-(2220),0.03-(3080) EuUK::UnitedKingdom::England:0.01-(1526),0.03-(2986)
+
+Number of intervals above the prevalence threshold, by locale:
+	 EuUK:5 EuUK::UnitedKingdom:5 EuUK::UnitedKingdom::England:5
+
+Latest prevalence:
+	EuUK 2020-11-12 0.0062-(4333)
+	EuUK::UnitedKingdom 2020-11-12 0.0062-(4333)
+	EuUK::UnitedKingdom::England 2020-11-12 0.0063-(4296)
+
+#####
+#2 B.1.177.N3
+Parent: B.1.177
+
+Score parent: 7.22 - Score subV: 10.06
+Genomic variants: 
+	defined by: 204_G|T 241_C|T 445_T|C 3037_C|T 6286_C|T 11533_A|G 14408_C|T 21255_G|C 21614_C|T 22227_C|T 23403_A|G 24334_C|T 26424_T|C 26801_C|G 27752_C|T 27944_C|T 28932_C|T 29645_G|T
+
+	gained (wrt parent): 21614_C|T 24334_C|T 11533_A|G 204_G|T 26424_T|C 27752_C|T
+
+	lost (wrt parent):
+
+
+# Prevalence in time
+
+Interval: 2020-09-10 to 2020-10-01, increase at 2 locale(s)
+	List of locale(s): EuUK:0.01-(1113),0.03-(3390) EuUK::UnitedKingdom:0.01-(1113),0.03-(3390)
+
+Interval: 2020-09-17 to 2020-10-07, increase at 3 locale(s)
+	List of locale(s): EuUK:0.01-(2220),0.04-(3080) EuUK::UnitedKingdom:0.01-(2220),0.04-(3080) EuUK::UnitedKingdom::England:0.01-(1526),0.04-(2986)
+
+Number of intervals above the prevalence threshold, by locale:
+	 EuUK:7 EuUK::UnitedKingdom:7 EuUK::UnitedKingdom::England:7 EuUK::UnitedKingdom::Wales:1
+
+Latest prevalence:
+	EuUK 2020-11-12 0.0344-(4333)
+	EuUK::UnitedKingdom 2020-11-12 0.0344-(4333)
+	EuUK::UnitedKingdom::England 2020-11-12 0.0347-(4296)
+	EuUK::UnitedKingdom::Wales 2020-10-07 0.0870-(46)
+
+#####
+#3 B.1.1.37.N1
+Parent: B.1.1.37
+
+Score parent: 5.35 - Score subV: 7.00
+Genomic variants: 
+	defined by: 241_C|T 1344_T|C 3037_C|T 4291_A|T 8683_C|T 14408_C|T 15406_G|T 16260_C|T 19862_C|T 19960_A|G 21637_C|T 23403_A|G 28169_A|G 28881_G|A 28882_G|A 28883_G|C
+
+	gained (wrt parent): 19960_A|G 28881_G|A 16260_C|T 19862_C|T 1344_T|C 4291_A|T 28883_G|C 28882_G|A
+
+	lost (wrt parent): 28881_GGG|AAC
+
+
+# Prevalence in time
+
+Interval: 2020-09-10 to 2020-10-01, increase at 3 locale(s)
+	List of locale(s): EuUK:0.02-(1113),0.05-(3390) EuUK::UnitedKingdom:0.02-(1113),0.05-(3390) EuUK::UnitedKingdom::England:0.02-(929),0.06-(2761)
+
+Number of intervals above the prevalence threshold, by locale:
+	 EuUK:6 EuUK::UnitedKingdom:6 EuUK::UnitedKingdom::England:5
+
+Latest prevalence:
+	EuUK 2020-11-12 0.0048-(4333)
+	EuUK::UnitedKingdom 2020-11-12 0.0048-(4333)
+	EuUK::UnitedKingdom::England 2020-11-12 0.0044-(4296)
+
+#####
+#4 B.1.177.N1
+Parent: B.1.177
+
+Score parent: 7.22 - Score subV: 9.94
+Genomic variants: 
+	defined by: 204_G|T 241_C|T 445_T|C 1758_C|T 3037_C|T 5575_C|T 6286_C|T 14408_C|T 15753_A|G 19655_A|G 21255_G|C 21614_C|T 22227_C|T 23403_A|G 26801_C|G 27944_C|T 28932_C|T 29645_G|T
+
+	gained (wrt parent): 15753_A|G 204_G|T 5575_C|T 1758_C|T 19655_A|G 21614_C|T
+
+	lost (wrt parent):
+
+
+# Prevalence in time
+
+Interval: 2020-10-07 to 2020-10-28, increase at 3 locale(s)
+	List of locale(s): EuUK:0.01-(3080),0.02-(5906) EuUK::UnitedKingdom:0.01-(3080),0.02-(5906) EuUK::UnitedKingdom::England:0.01-(2986),0.02-(5526)
+
+Number of intervals above the prevalence threshold, by locale:
+	 EuUK:3 EuUK::UnitedKingdom:3 EuUK::UnitedKingdom::England:4
+
+Latest prevalence:
+	EuUK 2020-11-12 0.0162-(4333)
+	EuUK::UnitedKingdom 2020-11-12 0.0162-(4333)
+	EuUK::UnitedKingdom::England 2020-11-12 0.0161-(4296)
+

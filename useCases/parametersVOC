@@ -1,0 +1,17 @@
+computeAF.pl
+augmentClusters.pl
+--size	25
+--dist	6
+--deffile	linDefMut
+LinToFeats.pl
+--update	F
+--annotfile	globalAnnot
+report.pl
+p_assign.pl
+--nproc	4
+increase.pl
+--days	7
+--minFC	2
+--minP	0.01
+--nInt	4
+--pass	F

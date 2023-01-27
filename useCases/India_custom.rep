@@ -1,0 +1,36 @@
+# A total of 1 novel candidate sublineage(s)/subvariant(s) passed either the score or prevalence based thresholds
+# Of these 0 passed both the thresholds
+# 1 passed the score threshold only
+# and 0  passed the prevalence threshold only
+# No candidate variants/lineages passed both thresholds
+# Skipping to variants that passed the score threshold
+
+# The following candidate variants/lineages passed only the score treshold. A detailed report follows
+
+######
+#1 B.1.1.N1
+Parent: B.1.1
+
+Score parent: 4.42 - Score subV: 18.58
+Genomic variants: 
+	defined by: 210_G|T 241_C|T 1191_C|T 1267_C|T 3037_C|T 5184_C|T 9891_C|T 11418_T|C 12946_T|C 14408_C|T 15451_G|A 16466_C|T 18176_C|T 20262_A|G 21618_C|G 21987_G|A 22029_CTAATG|...... 22917_T|G 22995_C|A 23403_A|G 23604_C|G 24410_G|A 25469_C|T 26767_T|C 27638_T|C 27739_C|T 27752_C|T 28248_ACAATT|...... 28461_A|G 28881_G|T 29402_G|T 29742_G|T
+
+	gained (wrt parent): 26767_T|C 28461_A|G 21618_C|G 16466_C|T 27752_C|T 210_G|T 24410_G|A 29402_G|T 18176_C|T 28248_ACAATT|...... 22995_C|A 23604_C|G 20262_A|G 27739_C|T 12946_T|C 15451_G|A 27638_T|C 9891_C|T 22917_T|G 22029_CTAATG|...... 5184_C|T 11418_T|C 28881_G|T 1267_C|T 29742_G|T 21987_G|A 1191_C|T 25469_C|T
+
+	lost (wrt parent): 28881_GGG|AAC
+
+
+# Prevalence in time
+
+The candidate variant/lineage did not show an increase in prevalece greater than the threshold at any interval or locale
+
+Number of intervals above the prevalence threshold, by locale:
+	 AsiaSO:2 AsiaSO::India:2 AsiaSO::India::India:2
+
+Latest prevalence:
+	AsiaSO 2021-04-28 0.7895-(19)
+	AsiaSO::India 2021-04-28 0.7895-(19)
+	AsiaSO::India::India 2021-04-28 0.7895-(19)
+
+# No candidate variants/lineages passed the prevalence threshold
+
