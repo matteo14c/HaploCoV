@@ -57,7 +57,7 @@ See the following sections for complete details.
 
 <hr>
 
-# Some example Use Cases
+# Examples and Use Cases
 
 The folder useCases in the main repository provides a collection of files and examples that can be used to test HaploCoV for the identification of novel variants of SARS-CoV-2. Three use cases are provided, all associated with emergence of a VOC:
 
@@ -65,9 +65,10 @@ The folder useCases in the main repository provides a collection of files and ex
 2. Delta in India;
 3. Omicron in South Africa.
 
-For every use case only genomic sequences collected within an interval compatible with the emergence of each of the VOC, and from the country where the VOC was first reported were extracted from the complete dataset of publicly available SARS-CoV-2 genome sequence (as processed by Nexstrain by means of their Ncov workflow). Subsequently all the genomes assigned to a VOC-related lineages were manually re-assigned to their parental lineage and HaploCoV was applied to verify if VOC lineages could be re-intified from scratch.
-Since publicly avaliable data do not include the complete collection of genomic sequences available in GISAID, default parameters were modified accordingly and the number of genomic sequences required to support the formation of a new designations was reduced to 25 (parametes file paramVOC).
+For every use case only genomic sequences collected within an interval compatible with the emergence of each VOC, and from the country where a VOC was first reported, were extracted from the complete dataset of publicly available SARS-CoV-2 genome sequence (as processed by Nexstrain by means of their Ncov workflow). Subsequently, all the genomes assigned to VOC-related lineages were manually re-assigned to their parental, non-VOC lineage. Finally, HaploCoV was applied to verify if VOC lineages could be re-intified from scratch.
 Users are kindly invited to re-run/re-proccess these use case to verify and test the main functionalities of HaploCoV.
+
+Please notice that since publicy avaliable data include  only about 36% of the complete collection of genomic sequences available in GISAID, default parameters were adjusted to cope with the reduced number of sequences. In particular the number of supporting genomic sequences required to form a designation was lowered to 25 (parameters file paramVOC).
 
 ## Use case 1. Alpha
 
@@ -76,26 +77,46 @@ The following HaploCoV command can be used to process the file and derive novel 
 
 ` perl HaploCov.pl --file alphaNX --locales alpha.loc --param paramVOC `.
 
-The locales file *alpha.loc* resticts set scope of the analysis to the United Kingdom (area=EuUK) and to sequences collected in between 2020-09-01 and 2020-11-15.
-The final output of HaploCoV will be writtent in the *EuUK_custom.rep* report file. Intermediate files will be stored in the folder: *EuUK_custom_results*. Please refer to the following sections in the manual available at readthedocs (and below) for a more comprehensive explanation of these files and what they do: 
+The locales file *alpha.loc* restricts the scope of the analysis to the United Kingdom (area=EuUK) and to sequences collected inbetween 2020-09-01 and 2020-11-15.
+The final output of HaploCoV will be written in the report file *EuUK_custom.rep*. Intermediate files will be stored in the folder: *EuUK_custom_results*. 
+<br>
+
+Please take a look to these sections in the manual at readthedocs (and below) for a more comprehensive explanation of these files and what they do: 
 
 * [locales file](https://haplocov.readthedocs.io/en/latest/haplocov.html#configuration-locales-file); 
 * [parameters file](https://haplocov.readthedocs.io/en/latest/haplocov.html#advanced-configuration-parameters-file);
 * [report file](https://haplocov.readthedocs.io/en/latest/haplocov.html#id5);
 * [intermediate files](https://haplocov.readthedocs.io/en/latest/haplocov.html#id4).
 
-As you can see from figure XX according to the report.: \"5 novel candidate sublineage(s)/subvariant(s) \" were found (see screenshot below), but only 1 did pass both the score, and prevalence threshold. This novel variant, designated as B.1.1.N1 is defined 28 additional genomic variants compared to the parental lineage, and is associated with an astounding increase in *VOC-ness* score of ~11 points. According to report, B.1.1.N1 shows an increase in prevalence from 1% (0.01) to 10% (0.1) in between 2020-10-21 to 2020-11-12, in the United Kingdom and in England.
-In the light of the above observations, it is easy to infer that B.1.1.N1 corresponds with B.1.1.7, the original lineage of the Alpha VOC. The Alpha variant hence was successfully identified.
+As you can see from the figure below, according to the report.: \"5 novel candidate sublineage(s)/subvariant(s) \" were found by HaploCoV, but only 1 did pass both the score and prevalence threshold. This novel candidate lineage, designated as B.1.1.N1 is defined 28 additional genomic variants compared to the parental lineage, and is associated with an astounding increase in *VOC-ness* score of ~11 points. According to report, B.1.1.N1 shows an increase in prevalence from 1% (0.01) to 10% (0.1) in between 2020-10-21 to 2020-11-12, in the United Kingdom and in England.
+Based on these observations is easy to infer that B.1.1.N1 corresponds with B.1.1.7, the first lineage of the Alpha VOC.
 
 ## Use case 2. Delta
 
-*deltaNX* contains a total of 673 genomic sequences of SARS-CoV-2 isolated in the India between 2020-11-01. 
+*deltaNX* contains a total of 673 genomic sequences of SARS-CoV-2 isolated in the India between 2020-11-01 and 2021-05-01. 
 By running: 
 
 ` perl HaploCov.pl --file deltaNX --locales delta.loc --param paramVOC `.
 
-HaploCoV can be applied to this dataset to derive novel variants. Results will we written in the report file India_custom.rep.
-According to the output, only one "interesting" variant was identified by HaploCoV: B.1.N1. The novel designation has 34 additional defining genomic variant compared with its parent. The VOC-ness score is increased from 4.42 to 18.58
+HaploCoV can be applied to this dataset to derive novel variants; *delta.loc* specifies the country to be analysed (India) and the interval of time (2020-11-01 to 2021-05-01). Results will be written in the report file *India_custom.rep*, intermediate files to *India_custom_results*.
+<br>
+According to the output file (screenshot below), only one "interesting" variant was identified by HaploCoV: B.1.N1. The novel designation has 34 additional defining genomic variant compared with its parent. The VOC-ness score is increased from 4.42 to 18.58. 
+Although the novel designation has a prevalence of almost 80% by 2021-04-28, according to HaploCoV it does not show a 2 fold increase in prevalence at any time point. 
+<br>
+The intermediate file *India_assigned.txt.prev* in the *India_custom_results* folder can be used to obtain a more detailed picture of the spread of this variant.
+According to this "extended" prevalence report, the novel designation is first observed at 2021-03-30, and shows a prevalence of ~ 45% by then (see screenshot). Although the prevalence of the variant grows rapidly, a 2 fold increase is not observed in the interval of time included in the analysis.
+<br>
+We speculate that this is probably due to the patchy pattern of available data. Indeed we observe that no prevalence is reported for several interval of time in *India_assigned.txt.prev*; this indicates that for several intervals less than 10 genomic sequences were available, 10 being the minimum number of sequences required by HaploCoV to do this computation (see [prevalence report](https://haplocov.readthedocs.io/en/latest/increase.html) in the manual for a more comprehensive explanation). 
+
+## Use case 3. Omicron
+
+*omicronNX* includes 1009 genomic sequences of SARS-CoV-2 isolated in the South Africa between 2021-07-01 and 2021-12-31. 
+By running: 
+
+` perl HaploCov.pl --file omicronNX --locales omicron.loc --param paramVOC `.
+
+HaploCoV can be applied to analyse these data. According to the specfications provided by *omicron.loc* only isolates from South Africa, and in between 2021-07-01 and 2021-12-31 will be analysed.
+Main results will be saved in *SouthAfrica_custom.rep*. Intermediate files in *SouthAfrica_custom_results*.
 
 
 <hr>
