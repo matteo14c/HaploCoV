@@ -4,10 +4,11 @@ use strict;
 my %arguments=
 (
 "--dfile"=>"na",
-"--metafile"=>"na",                  # directory with alignment files. Defaults to current dir
+"--infile"=>"na",                  # directory with alignment files. Defaults to current dir
 "--nproc"=>8,
+"--update"=>"T",
 #####OUTPUT file#############################################
-"--out"=>"na" #file #OUTPUT #tabulare
+"--outfile"=>"na" #file #OUTPUT #tabulare
 );
 
 check_arguments();
@@ -16,11 +17,12 @@ check_arguments();
 #######################################################################################
 # read parameters
 my $lvarFile=$arguments{"--dfile"};
-my $metafile=$arguments{"--metafile"};
+my $metafile=$arguments{"--infile"};
 my $nProc=$arguments{"--nproc"};
-my $ofile=$arguments{"--out"};
+my $ofile=$arguments{"--outfile"};
+my $update=$arguments{"--update"};
 
-if ($lvarFile eq "linDefMut")
+if ($lvarFile eq "linDefMut" && $update eq "T")
 {
 	download_refMut();
 }
@@ -49,7 +51,7 @@ sub parallel_assign
 			die "Cannot fork a child: $!";
 		}elsif ($pid == 0) {
 			#print "Printed by $i $file child process\n";
-			exec("perl assign.pl --metafile $file --dfile $lvarFile  --out $file\_Assign.tmp") || die "can't exec $!";
+			exec("perl assign.pl --infile $file --dfile $lvarFile  --outfile $file\_Assign.tmp") || die "can't exec $!";
 			exit(0);
 		}else {
 			push(@childs,$pid);
@@ -116,13 +118,14 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n"); #HELP.txt
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
 
 sub download_refMut
 {
-        print "I will now donload the most recent version of linDefMut to assign Pango lineages\n";
+        print "I will now download the most recent version of linDefMut to assign Pango lineages\n";
 	print "will rename the old copy to linDefMut.old\n";
 	if (-e "linDefMut")
 	{
@@ -138,30 +141,37 @@ sub download_refMut
 
 sub check_input_arg_valid
 {
-        if ($arguments{"--metafile"} eq "na" ||  (! -e ($arguments{"--metafile"})))
+        if ($arguments{"--infile"} eq "na" ||  (! -e ($arguments{"--infile"})))
         {
                 print_help();
-                my $f=$arguments{"--metafile"};
-                die("Invalid metadata file provided. $f does not exist!");
+                my $f=$arguments{"--infile"};
+                die("Reason:\nInvalid metadata file provided: $f. Please provide a valid file!");
         }
         if ($arguments{"--dfile"} eq "na" ||  (! -e ($arguments{"--dfile"})))
         {
                 print_help();
                 my $f=$arguments{"--dfile"};
-                die("Invalid metadata file provided. $f does not exist!");
+                die("Reason:\nInvalid metadata file provided. $f does not exist!");
         }
 	if ($arguments{"--nproc"}<0){
 		print_help();
 		my $n=$arguments{"--nproc"};
-                die("Can not allocate a negative number of processors. $n provided!");
+                die("Reason:\nCan not allocate a negative number of processors. $n provided!");
 
 	}
-	if ($arguments{"--out"} eq "na")
+	if ($arguments{"--outfile"} eq "na" || $arguments{"--outfile"} eq "." )
         {
                 print_help();
-                my $f=$arguments{"--out"};
-                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+                my $f=$arguments{"--outfile"};
+                die("Reason:\n$f is not a valid name for the output file. Please provide a valide name using --outfile");
         }
+
+	if ($arguments{"--update"} ne "T" && $arguments{"--update"} ne "F"){
+		print_help();
+                my $f=$arguments{"--update"};
+                die("Reason:\nNo valid argument provided to --update. --update was set to $f. This parameter can only be \"T\"=true or \"F\"=false!");
+	
+	}
 
 
 }
@@ -171,18 +181,19 @@ sub print_help
 {
         print " This utility can be used assign SARS-CoV-2 genomes a classification.\n";
         print " The main inputs consist in a file with a list of variants\n";
-        print " and their characteristic mutations (outout of augmentClusters.pl).\n";
-        print " and a metadata file (see align.pl) with metadata associated to.\n";
-        print " each genome file\n";
+        print " and their characteristic genomic variants (designations file),\n";
+        print " and a metadata file in HaploCoV format.\n";
         print "##INPUT PARAMETERS\n\n";
-        print "--dfile <<filename>>\t input file with the list of variants and their characteristic mutations\n(this is the output of augmentClusters.pl)\n";
-        print "--metafile <<filename>>\tfile with metadata in .tsv format\n";
-	print "--nproc <<number>>\t number of processors/cores to use. Default 8\n";
+        print "--dfile <<filename>>\t Designations file. If linDefMut is used, the most recent version will be\n";
+	print "                    \t downloaded from the HaploCoV github repository. See below;\n";
+        print "--infile <<filename>>\tfile with metadata in HaploCoV format;\n";
+	print "--nproc <<number>>\t number of processors/cores to use. Defaults to 8;\n";
+	print "--update <<logical>>\t update linDefmut to the most recent version? T=true. F=false. Default=T.\n";
         print "\n##OUTPUT PARAMETERS\n\n";
-        print "--out <<name>>\tName of the output file. Defaults to ASSIGN_out.tsv\n";
+        print "--outifile <<name>>\tName of the output file. Defaults to ASSIGN_out.tsv\n";
 	print "\n##IMPORTANT\n";
-        print "--dfile --metafile and --out are mandatory parameters\n";
+        print "--dfile --infile and --outfile are mandatory parameters\n";
         print "\n##EXAMPLE:\n";
-        print "perl p_assign.pl --dfile defining.txt --metafile linearDataSorted.txt --nproc 8 --out assigned.txt\n"
+        print "perl p_assign.pl --dfile defining.txt --infile HaploCoV.tsv --nproc 8 --outfile assigned.txt\n"
 }
 

@@ -109,6 +109,17 @@ sub process_data
 	my %countInterval=();
 	my $c=0;
 	open(IN,$file);
+	my $header=<IN>;
+	my @fields=(split(/\t/,$header));
+	my $fields=@fields;
+	unless ($fields==11 || $fields==12)
+	{
+		die("\n The input is not in the expected format: I got $fields columns,\n but I expect 10 (HaploCoV formatted file) or 11(HaploCoV formatted file+assign.pl).\n\n Please provide a valid file.\n\n");
+	}
+	unless ($fields[2] eq "offsetCD")
+	{
+		die("\n Your 3rd column is called $fields[2], but the name should be offsetCD. Is the file in HaploCoV format?\n\n Please check.\n\n"); 
+	}	
 	while(<IN>)
 	{
 		chomp();
@@ -185,6 +196,7 @@ sub process_data
 	{
 		
 		open(OUT,">$outdir/$spec\_list.txt");
+		print OUT "Genomic-variant\t$spec\n";
 		foreach my $pos (keys %{$freqPos{$spec}})
 		{
 			my @list=@{$freqPos{$spec}{$pos}};
@@ -232,6 +244,7 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -247,7 +260,7 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--file"};
-                die("Reason:\nNo valid input file provided. $f is not a valid input. Specify a valid input with --file!");
+                die("Reason:\nNo valid input file provided: $f is not a valid input. Specify a valid input with --file!");
         }
 	if ($arguments{"--maxT"}<0)
 	{
@@ -278,37 +291,39 @@ sub check_input_arg_valid
 
 sub print_help
 {
-        print " This utility is meant to:\n"; 
+        print "\n This utility is meant to:\n"; 
 	print " 1) read a metadata table file produced addToTable.pl or an equivalent\n"; 
 	print " user supplied file and;\n"; 
-	print " 2) compute allele frequencies of SARS-CoV-2 genetic variants\n";  
+	print " 2) compute frequencies of SARS-CoV-2 genomic variants\n";  
 	print " over time, globally in geographic macroAreas (see areas) and countries.\n\n"; 
 	print " The final output will consist in a series of files with high frequency\n";
-        print " allele variants at different geographic granularity (global, country,\n"; 
+        print " genomic variants at different geographic granularity (global, country,\n"; 
 	print " and  macroAreas)\n";
-        print " The main input is the medata-table produced by addToTable.pl and \n";
-	print " --file is the only mandatory parameters. Optional parameters include:\n\n";
+        print " The main input is the metada-table in HaploCoV format.\n";
+	print " --file is the only mandatory parameter.\n\n Optional parameters include:\n";
 	print " 1) minimum allele frequency threshold;\n"; 
 	print " 2) allele persistence threshold (see below);\n"; 
-	print " 3) start and 4) of the time interval to include in the analysis\n";
+	print " 3) start and 4) of the time interval to include in the analysis;\n";
 	print " 5) the size of \"time\" windows at which allele frequencies are computed;\n";
-	print " 6) a name for the folder where the output files will be stored\n\n";
+	print " 6) a name for the folder where the output files will be stored.\n\n";
 	print " The tool will compute a table with allele frequencies over time\n";
 	print " for every country and macroarea in the time-span specified by the user\n"; 
-	print " (prefix AFOT_); and derive a comprehensive list of high frequency alleles\n";
-        print " according to users specified criteria at global, area and country level\n";
+	print " (prefix AFOT_); and derive a comprehensive list of high frequency genomic variants\n";
+        print " according to users specified criteria at global, area and country level.\n";
 	print " The latter can be used to identify candidate novel variants of SARS-CoV-2\n"; 
 	print " within an existing nomenclature by using \"augment.pl\"\n\n";  
 	print "##INPUT PARAMETERS\n\n";
-        print "--file <<filename>>\t provides the metadata file\n";
-        print "--maxT <<integer>>\t defaults to 900 upper bound of time interval\n";
-        print "--minT <<integer>>\t defaults to -10 lower bount od the time interval\n";
-	print "--interval <<integer>>\t defaults to 10, size in days of overlapping time windows\n";
-	print "--minCoF <<float>>\t defaults to 0.01, minimum AF for high frequency alleles \n";
-	print "--minP <<integer>>\t defaults to 3, minimum persistence (number of intervals) for high freq alleles\n";
-	print "--outdir <<dirname>>\t defaults to \"./metadataAF\", output directory\n";
+        print "--file <<filename>>\t HaploCoV formatted file;\n";
+        print "--maxT <<integer>>\t upper bound for the time interval. Defaults to the highest value (most recent date)\n";
+	print "                  \t in the 3rd column of your HaploCoV formatted file;\n";
+        print "--minT <<integer>>\t lower bound of the time interval. Defaults to 10;\n";
+	print "--interval <<integer>>\t size in days of overlapping time windows. Defaults to -10;\n";
+	print "--minCoF <<float>>\t minimum AF(X100) for high frequency alleles. Defaults to 1 (1%); \n";
+	print "--minP <<integer>>\t minimum persistence (number of intervals) for high freq genomic variants. Defaults to 3;\n";
+	print "--outdir <<dirname>>\t output directory. Defaults to \"./metadataAF\".\n";
         print "\nTo run the program you MUST provide at least --file\n";
         print "the file needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";
-        print "1# input is metadata.tsv:\nperl compute_AF.pl --file metadata.tsv\n\n";
+        print "1# input is HaploCoV.tsv:\nperl compute_AF.pl --file HaploCoV.tsv\n";
+	print "2# output files will be stored in metadataAF\n\n";
 }

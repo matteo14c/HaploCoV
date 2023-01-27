@@ -3,9 +3,9 @@ use strict;
 my %arguments=
 (
 "--dfile"=>"na",
-"--metafile"=>"na",                  # directory with alignment files. Defaults to current dir
+"--infile"=>"na",                  # directory with alignment files. Defaults to current dir
 #####OUTPUT file#############################################
-"--out"=>"na" #file #OUTPUT #tabulare
+"--outfile"=>"na" #file #OUTPUT #tabulare
 );
 
 check_arguments();
@@ -14,8 +14,8 @@ check_arguments();
 #######################################################################################
 # read parameters
 my $lvarFile=$arguments{"--dfile"};
-my $metafile=$arguments{"--metafile"};
-my $ofile=$arguments{"--out"};
+my $metafile=$arguments{"--infile"};
+my $ofile=$arguments{"--outfile"};
 
 check_input_arg_valid();
 
@@ -66,7 +66,16 @@ sub assign
 	my %pos=%{$_[2]};
 
 	open(OUT,">$ofile");
+	print OUT "genomeID\tcollectionD\toffsetCD\tdepositionD\toffsetDD\tcontinent\tarea\tcountry\tregion\tpangoLin\tlistV\talt\n";
 	open(IN,$metafile);
+	my $header=<IN>;
+        my @fields=(split(/\t/,$header));
+        my $fields=@fields;
+        unless ($fields==11 || $fields==12)
+        {
+                die("\n The input is not in the expected format: I got $fields columns,\n but I expect 10 (HaploCoV formatted file) or 11(HaploCoV formatted file+assign.pl).\n\n Please provide a valid file.\n\n");
+        }
+
 	while(<IN>)
 	{
 		chomp();
@@ -163,17 +172,18 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n"); #HELP.txt
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
 
 sub check_input_arg_valid
 {
-        if ($arguments{"--metafile"} eq "na" ||  (! -e ($arguments{"--metafile"})))
+        if ($arguments{"--infile"} eq "na" ||  (! -e ($arguments{"--infile"})))
         {
                 print_help();
-                my $f=$arguments{"--metafile"};
-                die("Reason:\nInvalid metadata file provided. $f does not exist! Please provide a valid input file with --metafile\n");
+                my $f=$arguments{"--infile"};
+                die("Reason:\nInvalid metadata file provided. $f does not exist! Please provide a valid input file with --infile\n");
         }
 	if ($arguments{"--dfile"} eq "na" ||  (! -e ($arguments{"--dfile"})))
         {
@@ -181,12 +191,13 @@ sub check_input_arg_valid
                 my $f=$arguments{"--dfile"};
                 die("Reason:\nInvalid metadata file provided. $f does not exist!");
         }
-	if ($arguments{"--out"} eq "na")
+	if ($arguments{"--outfile"} eq "na" || $arguments{"--outfile"} eq "." )
         {
                 print_help();
-                my $f=$arguments{"--out"};
-                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+                my $f=$arguments{"--outfile"};
+                die("Reason:\n$f is not a valid name for the output file. Please provide a valide name using --outfile");
         }
+
 
 
 }
@@ -195,17 +206,17 @@ sub check_input_arg_valid
 sub print_help
 {
         print " This utility can be used assign SARS-CoV-2 genomes a classification.\n";
-        print " The main inputs consist in a file with a list of variants\n";
-        print " and their characteristic mutations (output of augmentClusters.pl or any equivalent file) \n";
+        print " The main inputs consist in a file with a list of SARS-CoV-2 variants\n";
+        print " and their characteristic genomic variants (Designations file) \n";
 	print " and a metadata file in HaploCoV format.\n";
         print "##INPUT PARAMETERS\n\n";
-        print "--dfile <<filename\t input file with the list of variants and their characteristic mutations\n(this is the output of augmentClusters.pl)\n";
-        print "--metafile <<filename>>\tfile with metadata in .tsv format\n";
+        print "--dfile <<filename\t designations file (viral variants and defining genomic variants);\n";
+        print "--infile <<filename>>\t input file in HaploCoV format;\n";
         print "\n##OUTPUT PARAMETERS\n\n";
-        print "--out <<name>>\tName of the output file. Defaults to ASSIGNEDScore_out.tsv\n";
+        print "--outfile <<name>>\tName of the output file.\n";
 	print "\n##IMPORTANT\n";
-	print "all the parameters are required\n";
+	print "All the parameters are mandatory/required\n";
         print "\n##EXAMPLE:\n";
-	print "perl assign.pl --dfile defining.txt --metafile metadata.tsv --out metadata.assigned\n"
+	print "perl assign.pl --dfile defining.txt --infile HaploCoV.tsv --outfile HaploCoV.assigned.tsv\n"
 }
 

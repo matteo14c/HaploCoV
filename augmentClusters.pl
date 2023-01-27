@@ -12,6 +12,7 @@ my %arguments=
 "--size"=>100,
 "--tmpdir"=>"novelGs",
 "--deffile"=>"na",
+"--update"=>"T",
 "--outfile"=>"na"
 );
 #
@@ -34,6 +35,7 @@ my $size=$arguments{"--size"};
 my $outdir=$arguments{"--tmpdir"};
 my $outfile=$arguments{"--outfile"};
 my $deffile=$arguments{"--deffile"};
+my $update=$arguments{"--update"};
 
 check_exists_command('mkdir') or die "$0 requires mkdir to create a temporary directory\n";
 
@@ -42,7 +44,7 @@ unless (-e $outdir)
         system ("mkdir $outdir")==0||die();
 }
 
-if ($deffile eq "linDefMut")
+if ($deffile eq "linDefMut" && $update eq "T")
 {
 	download_refMut();
 }
@@ -84,7 +86,20 @@ sub compress_groups
 	my $outdir=$_[2];
 	my $deffile=$_[3];
 	open(IN,$file);
-	
+
+	my $header=<IN>;
+	my @fields=(split(/\t/,$header));
+	my $fields=@fields;
+	unless ($fields==11 || $fields==12)
+        {
+                die("\n The input is not in the expected format: I got $fields columns,\n but I expect 10 (HaploCoV formatted file) or 11(HaploCoV formatted file+assign.pl).\n\n Please provide a valid file.\n\n");
+        }
+        unless ($fields[2] eq "offsetCD")
+        {
+		die("\n Your 3rd column is called $fields[2], but the name should be offsetCD. Is the file in HaploCoV format?\n\n Please check.\n\n");
+        }
+
+
 	my %Dlin=();
 
 	if ($deffile ne "na")
@@ -228,6 +243,7 @@ sub allocate_groups
 
 	open(OUT,">$outdir/$varFile.log");
 	open(MAIN,">$varFile");
+	print MAIN "designation genomicVariants\n";
 	my @Gs=keys %data;
 	#print "	#3\n";
 	foreach my $G (@Gs)
@@ -317,6 +333,13 @@ sub build_L_pos
 {
 	my $pos_file=$_[0];
 	open(IN,$pos_file);
+	my $header=<IN>;
+        my $fields=(split(/\t/,$header));
+        unless ($fields==2)
+        {
+                die("\n The input is not in the expected format: I got $fields columns, but I expect 2.\n\n Please provide a valid file.\n\n");
+        }
+
 	my %HFpos=();
 	my @HFpos=();
 	while(<IN>)
@@ -352,6 +375,7 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -362,13 +386,13 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--metafile"};
-                die("Reason\:\nInvalid metadata file provided. $f does not exist!");
+                die("Reason\:\nInvalid or no metadata file provided: $f. Please provide a valid file!");
         }
 	if ($arguments{"--posFile"} eq "na" ||  (! -e ($arguments{"--posFile"})))
         {
                 print_help();
                 my $f=$arguments{"--posFile"};
-                die("Reason:\nInvalid list of positions file provided. $f does not exist!");
+                die("Reason:\nInvalid genomic variants file provided: $f. Please provide a valid file!");
         }
 
         if ($arguments{"--dist"}<0)
@@ -384,18 +408,26 @@ sub check_input_arg_valid
                 my $m=$arguments{"--size"};
                 die("Reason:\nGroups size can not be <0. $m provided\n");
         }
-	if ($arguments{"--outfile"} eq "na")
+	if ($arguments{"--outfile"} eq "na" || $arguments{"--outfile"} eq "." )
         {
                 print_help();
                 my $f=$arguments{"--outfile"};
-                die("Reason:\nInvalid outfile name provided. $f please provide a valide name using --outfile");
+                die("Reason:\n$f is not a valid name for the output file. Please provide a valide name using --outfile");
         }
+
 	if ($arguments{"--deffile"} ne "na" && (! -e $arguments{"--deffile"} ))
 	{
 		print_help();
 		my $f=$arguments{"--deffile"};
 		die("Reason:\nInvalid lineage defining mutations file provided. $f does not exitst\n");
 	}
+	if ($arguments{"--update"} ne "T" && $arguments{"--update"} ne "F"){
+                print_help();
+                my $f=$arguments{"--update"};
+                die("Reason:\nNo valid argument provided to --update. --update was set to $f. This parameter can only be \"T\"=true or \"F\"=false!");
+
+        }
+
 
 }
 
@@ -420,36 +452,37 @@ sub download_refMut
 
 sub print_help
 {
-        print " This utility is used to derive novel sub-groups/sub lineages of SARS-CoV-2\n"; 
-	print " within an existing classification\n"; 
+        print "\n This utility is used to derive novel sub-groups/sub lineages of SARS-CoV-2\n"; 
+	print " within an existing classification.\n"; 
 	print " Users need to provide:\n\n"; 
-	print " 1) --metafile a metadata file containing a table with the list of genetic\n"; 
-	print " variants and the class/lineaged assigned to each genoneme (addToTable.pl);\n";
-	print " 2) --posFile a list of high frequency genetic variants (see computeAF.pl and\n";
-	print " or collections of allele-sets available from the github repo)\n\n";
+	print " 1) --metafile a metadata file in HaploCoV format;\n"; 
+	print " 2) --posFile a list of high frequency genomic variants (see computeAF.pl and/or\n";
+	print " collections available from the HaploCoV github repo).\n\n";
 	print " The tool identifies all possible sub-groups/lineages within any extant group/lineage\n";
 	print " according to parameters set by the user.\n";
 	print " Criteria for the definition of novel groups/subgroups are specified by:\n";
-	print "	--dist minimum phenetic distance to an extant group (default 2)\n";  
+	print "	--dist minimum phenetic distance to an extant group (default 2);\n";  
 	print " and --size: minimum number of distinct genomes in the group (default 100).\n";
 	print " Only novel groups with a at least --dist or more additional characteristic\n"; 
 	print " genetic variants, and larger than --size are reported in the final output.\n"; 
 	print " The final output itself consist in a simple text file, where every line\n";
-	print " reports the name of a lineage/class, and the list of characteristic allele\n";
-	print " variants of that lineage\n";
-	print " Newly formed lineages/classes are idenfitified by specified by --prefix.\n\n";
+	print " reports the name of a lineage/variant, and the list of characteristic genomic\n";
+	print " variants that define a lineage.\n";
+	print " Newly formed lineages/classes are identified by the string specified by --suffix.\n\n";
         print "##INPUT PARAMETERS\n\n";
-	print "--metafile <<filenane>>\t metadata file\n";
-        print "--posFile <<filename>>\t allele variant file: list of high frequency variants (by computeAF.pl)\n";
-	print "--dist <<integer>>\t defaults to 2 minimum edit distance to create a subgroup within a lineage\n";
-        print "--suffix <<character>>\t suffix for new lineages,defaults to N\n";
-        print "--size <<integer>>\t minimum size for a new subgroup within a lineage, defaults to 100\n";
-        print "--tmpdir <<dirname>>\t defaults to \"./novelGs\", output directory\n";
-	print "--deffile <<filename>>\t If \"./linDefMut\", is specified the most recent copy will be downloaded from github\n";
-        print "--outfile <<filename>>\t name of the output file\n";
+	print "--metafile <<filenane>>\t metadata file in HaploCoV format;\n";
+        print "--posFile <<filename>>\t genomic variant file (use computeAF.pl, or pre-computed files)\n";
+	print "--dist <<integer>>\t minimum edit distance to create a subgroup within a lineage. Defaults to2\n";
+        print "--suffix <<character>>\t suffix for new lineages. Defaults to N;\n";
+        print "--size <<integer>>\t minimum size for a new subgroup within a lineage. Defaults to 100;\n";
+        print "--tmpdir <<dirname>>\t temporary files directory. Defaults to \"./novelGs\";\n";
+	print "--deffile <<filename>>\t file with lineage defining genomic variants. If \"./linDefMut\", is specified\n"; 
+	print "                      \t the most recent copy will be downloaded from the HaploCoV github repo;\n";
+        print "--update <<logical>>\t update linDefmut to the most recent version? T=true. F=false. Default=T.\n";
+	print "--outfile <<filename>>\t name of the output file\n";
 	print "\n To run the program you MUST provide  --metafile, --outfile and --posFile\n";
-        print " all the file needs to be in the folder from which the script is executed.\n\n";
+        print " all the file needs to be in the same folder from where the program is executed.\n\n";
         print "\n##EXAMPLE:\n\n";
-        print "1# perl augmentClusters.pl --outfile lvar.txt --metafile HaploCoV_formattedMetadata --posFile areas_list.txt \n\n";
+        print "1# perl augmentClusters.pl --outfile lvar.txt --metafile HaploCoV.tsv --posFile areas_list.txt \n\n";
 }
 

@@ -18,7 +18,9 @@ check_input_arg_valid();
 my $metadata=$arguments{"--metadata"}; #file con varianti
 my $ofile=$arguments{"--outfile"};
 
-check_exists_command('sort') || die("The shell sort command is required to sort the output file\n");
+check_exists_command('sort') || die("The unix shell sort  is required to sort the output file\n");
+check_exists_command('rm') || die("The unix shell command rn is required to remove temporary files\n");
+check_exists_command('cat') || die("The unix shell command cat is required to concatenate temporary files\n");
 
 my $refile="GCF_009858895.2_ASM985889v3_genomic.fna";
 unless (-e $refile)
@@ -43,31 +45,40 @@ sub metadataToLists
 	my $metadataFile=$_[0];
 	my $ofile=$_[1];
 	my $ref=$_[2];
-	open(OUT,">$ofile");
+	open(OUT,">$ofile.tmp");
 	my %areas=%{areas()};	
 	open(IN,$metadataFile);
 	my $header=<IN>;
+	chomp($header);
+	my %lock=();
+	my @head=(split(/\t/,$header));
+	for (my $i=0;$i<=$#head;$i++)
+	{
+		$lock{$head[$i]}=$i;
+	}
+	my @reserved= qw (substitutions region country date deletions strain insertions pango_lineage division date_submitted);
+	foreach my $r (@reserved)
+	{
+		die("A metadata file in Nexstrain format should have a column called: $r\n But $r was not found in your file. Execution will stop") unless exists $lock{$r}
+	}
+
 	while (<IN>)
 	{
 		chomp();
 		my @data=(split(/\t/));
-		my $nfil=@data;
-		if ($nfil!=55)
-		{
-			die ("Input file is in an unknown format: expected 55 tab delimited columns!\nGot $nfil\n");
-		}
-		my $id=$data[0];
+		
+		my $id=$data[$lock{"strain"}];
 		$id="NA" if $id eq "?";
-		my $d=$data[6];
-		my $s=$data[28];
-		my $p=$data[20];
+		my $d=$data[$lock{"date"}];
+		my $s=$data[$lock{"date_submitted"}];
+		my $p=$data[$lock{"pango_lineage"}];
 		$p="NA" if $p eq "?";
-		my $continent=$data[7];
-		my $country=$data[8];
-		my $region=$data[9];
-		my $alleles=$data[52];
-		my $ins=$data[51];
-		my $del=$data[48];
+		my $continent=$data[$lock{"region"}];
+		my $country=$data[$lock{"country"}];
+		my $region=$data[$lock{"division"}];
+		my $alleles=$data[$lock{"substitutions"}];
+		my $ins=$data[$lock{"insertions"}];
+		my $del=$data[$lock{"deletions"}];
 		my $lvar=build_listVar($alleles,$ins,$del,$ref);
 
 		$id=fix_strain($id);
@@ -88,9 +99,12 @@ sub metadataToLists
 		print OUT "$id\t$d\t$delta\t$s\t$delta_sub\t$continent\t$area\t$country\t$region\t$p\t$lvar\n";
 
 	}
-	system("sort -n -k 3 $ofile  > $ofile.srt")==0||die("could not sort the output file by date\n");
-        system("mv $ofile.srt $ofile")==0||die("could not sort the output file by date\n");
-
+	system("sort -n -k 3 $ofile.tmp  > $ofile.srt")==0||die("Could not create the temporary file $ofile.tmp\n");
+	close(OUT);
+	open(OUT,">$ofile");
+	print OUT "genomeID\tcollectionD\toffsetCD\tdepositionD\toffsetDD\tcontinent\tarea\tcountry\tregion\tpangoLin\tlistV\n";
+	system("cat $ofile.srt >> $ofile")==0||die("Could not sort the output file\n");
+	system("rm $ofile.tmp  $ofile.srt")==0||die("Could not remove temporary files\n");
 }
 
 sub fix_strain
@@ -272,6 +286,7 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -283,29 +298,29 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--file"};
-                die("Reason:\nNo valid input file provided. $f does not exist!");
+                die("Reason:\nNo valid input file provided. Please provide one!");
         }
-	if ($arguments{"--outfile"} eq "na")
+	if ($arguments{"--outfile"} eq "na" || $arguments{"--outfile"} eq ".")
 	{
 		print_help();
 		my $f=$arguments{"--outfile"};
-                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+                die("Reason:\nNo valid output file provided. Please provide a valid name!");
 	}
 }
 
 sub print_help
 {
-        print " This utility is meant to 1) convert metadata of SARS-CoV-2 isolates from Nextstrain";
-	print " to HaploCov format\n";
+        print "\n This utility is meant to 1) convert metadata of SARS-CoV-2 isolates from Nextstrain";
+	print " to HaploCov format.\n";
 	print " The final output will consist in a metadata table in HaploCov format, which can\n";
-	print " be used as the input to several other utilities in HaploCoV\n";
+	print " be used as the input to several other utilities in HaploCoV.\n";
 	
 
 	print "##INPUT PARAMETERS\n\n";
-        print "--metadata <<filename>>\t metadata file\n";
-	print "--outfile <<filename>>\t output metadata file in HaploCoV format. Defaults to\n";
+        print "--metadata <<filename>>\t metadata file;\n";
+	print "--outfile <<filename>>\t output metadata file in HaploCoV format.\n";
         print "\n Mandatory parameters: --metadata \n";
         print "the file needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";
-        print "1# input is metadata.tsv:\nperl compute.pl --metadata metadata.tsv  --outfile HaploCoV_formattedMetadata\n\n";
+        print "1# input is metadata.tsv:\nperl compute.pl --metadata metadata.tsv --outfile HaploCoV.tsv\n\n";
 }

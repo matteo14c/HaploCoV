@@ -12,7 +12,7 @@ my %arguments=
 "--minFC"=>2,          # min time
 "--minP"=>0.05,
 "--nInt"=>4,
-"--minG"=>1,
+"--minG"=>10,
 "--pass"=>"T",
 #
 "--outfile"=>"na"
@@ -48,6 +48,18 @@ my %decode=();
 
 
 open(IN,$dataFile);
+my $header=<IN>;
+my @fields=(split(/\t/,$header));
+my $fields=@fields;
+unless ($fields==11 || $fields==12)
+{
+	die("\n The input is not in the expected format: I got $fields columns,\n but I expect 10 (HaploCoV formatted file) or 11(HaploCoV formatted file+assign.pl).\n\n Please provide a valid file.\n\n");
+}
+unless ($fields[9] eq "pangoLin")
+{
+	die("\n Your 10th column is called $fields[9], but the name should be pangoLin. Is the file in HaploCoV format?\n\n Please check.\n\n");
+}
+
 while(<IN>)
 {
 	my ($genome,$date1,$days1,$date2,$days2,$continent,$area,$country,$region,$lineage,$string)=(split(/\t/));
@@ -195,6 +207,7 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -205,7 +218,7 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--file"};
-                die("Reason:\nNo valid input file provided. --file is set to $f and. And $f does not exist !");
+                die("Reason:\nNo valid input file provided: $f. Please provide a valid file!");
         }
         if ($arguments{"--days"}<0)
         {
@@ -250,17 +263,16 @@ sub check_input_arg_valid
 sub print_help
 {
         print " This utility is meant to:\n";
-        print " 1) read a metadata table file produced addToTable.pl or an equivalent\n";
-        print " user supplied file and;\n";
+        print " 1) read a metadata table oin HaploCoV format;\n";
         print " 2) compute the prevalence of SARS-CoV-2 variants at different locales\n";
-        print " (i.e country, regions or macorAreas) and generate a detailed report\n";
-	print " with the list of SARS-CoV-2 variants that have increased their prevalence\n\n";
+        print " (i.e. country, regions or macorAreas), and generate a detailed report\n";
+	print " with the list of SARS-CoV-2 variants that have increased their prevalence.\n\n";
         print " The final output will consist in a large file, with the complete list of lineages\n";
         print " or variants that have increased their prevalence during any time-interval included\n";
-        print " in the file, by a factor greater or equal than --minFC\n";
-        print " The main input is the medata-table produced by addToTable.pl and \n";
+        print " in the file by a factor greater or equal than --minFC.\n";
+        print " The main input is the medata-table in HaploCoV format \n";
         print " --file is the only mandatory parameter. Optional parameters include:\n\n";
-        print " 1) the size, in days of time units used for computing the prevalence (--days)\n";
+        print " 1) the size, in days of time units used for computing the prevalence (--days). Defaults to 7;\n";
         print " 2) the minimum level of increase in prevalence to report (--minFC);\n";
         print " 3) a prevalence threshold, value below the threshold will not be reported (--minP)\n";
        	print " 4) the number of time units to include in the analysis (--nInt)\n";
@@ -273,14 +285,14 @@ sub print_help
         print " The report produced by this tool be used to detect novel variants of SARS-CoV-2 that are increasing their\n";
         print " prevalence in time, at different levels of geographic granularity\"\n\n";
         print "##INPUT PARAMETERS\n\n";
-        print "--file <<filename>>\t provides the metadata file\n";
-        print "--days <<integer>>\t defaults to 7 size of time units used to estimate the prevalence, in days\n";
-        print "--minFC <<integer>>\t defaults to 2, minimum fold of increase in prevalence (i.e default=2 folds)\n";
-        print "--nInt <<integer>>\t defaults to 4, number of consecutive time units used to form and interval \n";
-        print "--minP <<integer>>\t defaults to 0.05, minimum level of prevalence\n";
-	print "--minG <<integer>>\t defaults to 5, minimum number of genomes\n (only lineages associated with --minG or more are reported)\n";
+        print "--file <<filename>>\t provides the HaploCoV formatted file\n";
+        print "--days <<integer>>\t size of time units used to estimate the prevalence, in days. Defaults to 7:\n";
+        print "--minFC <<integer>>\t minimum fold of increase in prevalence. Defaults to 2: 2fold increase;)\n";
+        print "--nInt <<integer>>\t number of consecutive time units used to form and interval. Defaults to 4;\n";
+        print "--minP <<integer>>\t minimum level of prevalence. Defaults to 0.05;\n";
+	print "--minG <<integer>>\t minimum number of genomes (only lineages associated with --minG or more are reported). Defaults to 10;\n";
         print "--pass <<logical>>\t defaults to T (true),include only variants that fulfilled all the criteria specified by\n";
-       	print "                  \t--minFc, --minP and --minG in the report, if set to F (false) all variants will be reported instead\n";
+       	print "                  \t--minFc, --minP and --minG in the report, if set to F (false) all variants will be reported instead;\n";
 	print "--outfile <<filname>>\t output file. Defaults to <<infile>>.prev\n";
         print "\nTo run the program you MUST provide at least --file\n";
         print "the file needs to be in the current folder.\n\n";

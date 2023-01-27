@@ -143,7 +143,7 @@ sub compute_vocness
 			$vocness+=$addV;
 			if ($addV>1)
 			{
-				print "\t controlla $k $data[$pos] $max $min $addV\n";
+				print "\t something went wrong, max value should be 1: I got $k $data[$pos] $max $min $addV\n";
 			}
 
         	}
@@ -198,6 +198,7 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -209,20 +210,20 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--infile"};
-                die("Reason:\nInvalid input file provided. $f does not exist!");
+                die("Reason:\nInvalid input file provided: $f. Please provide a valid file!");
         }
 	if ($arguments{"--scaling"} eq "na" ||  (! -e ($arguments{"--scaling"})))
         {
                 print_help();
                 my $f=$arguments{"--scaling"};
-                die("Reason:\nInvalid configuration file provided. $f does not exist!");
+                die("Reason:\nInvalid configuration file provided: $f. Please provide a valid file!");
         }
 
-        if ($arguments{"--outfile"} eq "na")
+        if ($arguments{"--outfile"} eq "na" || $arguments{"--outfile"} eq "." )
         {
                 print_help();
                 my $f=$arguments{"--outfile"};
-                die("Reason:\nInvalid outfile name provided. $f please provide a valide name using --outfile");
+                die("Reason:\n$f is not a valid name for the output file. Please provide a valide name using --outfile");
         }
 
 }
@@ -231,16 +232,17 @@ sub print_help
 {
         print " This utility is used compare scores as obtained by LinToFeats.pl\n";
 	print " and priotitize lineages/sub lineages of SARS-CoV-2 showing an\n"; 
-	print " increased score with respect to its parental lineage\n";
+	print " increased score with respect to its parental lineage.\n";
         print " Users are required to provide:\n";
 	print " 1) --infile an input file, this corresponds to the output of LinToFeats.pl;\n";
         print " 2) the suffix used to indicate \"novel\" lineages/sublineages.This suffix\n";
-       	print " MUST match that used by augmentClusters.pl. The default value is N.\n";
+       	print " MUST match that used by augmentClusters.pl. The default value is N;\n";
         print " 3) a configuration file --scaling: with the list of features used for the\n";
        	print " computation of the final score.\n\n";
-        print " A complete description of the features can be found in the features.csv file\n";	print " in this github repo\n";
+        print " A complete description of the features can be found in the features.csv file\n";	
+	print " in this github repo.\n";
         print " The final output consist in a simple text file, in tsv format, where\n";
-       	print " high scoring varants/sub-variants are reported\n";
+       	print " varants/sub-variants and scores are reported.\n";
         print " Please see Chiara et al 2022 (under review) for more details\n";
         print "##INPUT PARAMETERS\n\n";
         print "--infile <<filename>>\t scores compute by LinToFeats.pl \n";

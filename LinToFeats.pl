@@ -8,6 +8,7 @@ my %arguments=
 "--infile"=>"na",         # name of the input file
 "--corgat"=>"./",
 "--annotfile"=>"globalAnnot",
+"--update"=>"T",
 "--outfile"=>"na"          # max time
 );
 
@@ -25,10 +26,11 @@ my $linfile=$arguments{"--infile"};
 my $outfile=$arguments{"--outfile"};
 my $corgat=$arguments{"--corgat"};
 my $annotfile=$arguments{"--annotfile"};
+my $update=$arguments{"--update"};
 
 ###########################################################
 # download required files
-if ($annotfile eq "globalAnnot")
+if ($annotfile eq "globalAnnot" && $update eq "T")
 {
 	download_annot();
 }
@@ -150,6 +152,8 @@ sub print_scores
 
 	while(<IN>)
 	{
+		next if $_=~/designations/;
+		#skip header;
 		my %annot=();
 		foreach my $gene (@genes)
 		{
@@ -402,14 +406,14 @@ sub download_annot
 
 	if (-e "globalAnnot")
 	{
-		print "An older copy of globalAnnot was detected in your system\n";
-		print "I will rename the old copy to globalAnnot.old\n";
+		print "A copy of globalAnnot was detected in your system\n";
+		print "I will rename it to globalAnnot.old\n";
 		system("mv globalAnnot globalAnnot.old")==0||die("could not remove old annotation files\n");
 	}
 	if (-e "globalAnnot.gz")
 	{
-		print "An older copy of globalAnnot was detected in your system\n";
-                print "I will rename the old copy to globalAnnot.gz.old\n";
+		print "A copy of globalAnnot.gz was detected in your system\n";
+                print "I will rename the it to globalAnnot.gz.old\n";
 
 		system("mv globalAnnot.gz globalAnnot.old.gz")==0||die("could not remove old annotation files\n");
 	}
@@ -442,6 +446,7 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -453,14 +458,15 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--infile"};
-                die("Reason:\nInvalid variants file provided. $f does not exist!");
+                die("Reason:\nInvalid variants file provided: $f. Please provide a valid file!");
         }
-        if ($arguments{"--outfile"} eq "na")
+	if ($arguments{"--outfile"} eq "na" || $arguments{"--outfile"} eq "." )
         {
                 print_help();
                 my $f=$arguments{"--outfile"};
-                die("Reason:\nInvalid outfile name provided. $f please provide a valide name using --outfile");
+                die("Reason:\n$f is not a valid name for the output file. Please provide a valide name using --outfile");
         }
+
         if ( !(-e $arguments{"--corgat"}."annotate.pl") && !(-e $arguments{"--annotfile"})  )
         {
                 print_help();
@@ -468,42 +474,49 @@ sub check_input_arg_valid
 		my $k==$arguments{"--annotfile"};
                 die("Reason:\nCan not find annotate.pl in your CorGAT installation at $corgat and your --annotfile $k does not exist\nThis means that variant annotation can not be performed\nPlease read the manual\n");
         }
+	if ($arguments{"--update"} ne "T" && $arguments{"--update"} ne "F"){
+                print_help();
+                my $f=$arguments{"--update"};
+                die("Reason:\nNo valid argument provided to --update. --update was set to $f. This parameter can only be \"T\"=true or \"F\"=false!");
+
+        }
 }
 
 sub print_help
 {
         print " This utility is used to derive genomic annotations and high level\n";
-       	print " features from sub-groups/sub lineages of SARS-COV-2;\n";
+       	print " features from sub-groups/sub lineages of SARS-COV-2.\n";
 	print " Users need to provide:\n\n";
         print " 1) --infile an input file, in simple text format with the list of\n";  
-	print " nucleotide variants characteristic of each lineage/sublineage.\n"; 
-	print " Such file can be obtained by running augmentClusters.pl \n"; 
+	print " genomic variants characteristic of each lineage/sublineage.\n"; 
+	print " Such file can be obtained by running augmentClusters.pl;\n"; 
 	print " 2) a file with precomputed CorGAT annotations of SARS-CoV-2 variants\n"; 
 	print " (--annotfile). Such file is provided in the main github repo of HaploCoV\n";
-       	print " (see globalAnnoT). This file is updated on a weekly basis\n";
+       	print " (see globalAnnot). This file is updated on a bi-weekly basis:\n";
 	print " OR, ALTERNATIVELY, --corgat 3) a path to a local installation of CorGAT.\n"; 
 	print " Please be aware that if --annotfile is not provided, annotations will\n";
 	print " will be derived by running CorGAT on every lineage. Execution\n";
 	print " times will be increased by a 10 fold at least!!!\n"; 
 	print " IMPORTANT: If your installation of CorGAT is not valid and --annotfile\n";
-	print " does not exist, the tool will halt and raise an error message\n";
+	print " does not exist, the tool will halt and raise an error message;\n";
         print " 4) a valid output file name --outfile\n\n";
-        print " The script will compute functional annotation of the all the genetic\n"; 
+        print " The script will compute functional annotation of the all the genomic\n"; 
 	print " variants characteristic of every lineage and return a table with genomic\n";
 	print " features. A complete description of the features can be found in the\n"; 
-	print " \"features.csv\" file included in this github repo\n\n";
+	print " \"features.csv\" file included in this github repo of HaploCoV.\n\n";
         print " The final output consist in a simple text file, in tsv format.\n"; 
 	print " This file can be provided to report.pl to identify \"high scoring\" variants\n";
 	print " that are likely to be interesting from an epidemiological perspective\n";
-        print " Please see Chiara et al 2022 (under review) for more details\n\n";
+        print " Please see Chiara et al 2022 (under review) for more details.\n\n";
         print "##INPUT PARAMETERS\n\n";
-        print "--infile <<filename>>\t file with lineages/groups defining allele variants\n";
-        print "--outfile <<filenane>>\t name of the output file\n";
-        print "--corgat <<directory>>\t path to corgat. defaults to \"./corgat\"\n";
-	print "--annotfile <<filename>>\t file with precomputed annotations. See globalAnnot\n";
-        print "\nTo run the program you MUST provide --infile, --outilfe and at least one of either --corgat or --annotfile\n";
-        print "all file needs to be in the current folder.\n\n";
+        print "--infile <<filename>>\t file with lineages/groups defining genomic variants;\n";
+        print "--outfile <<filenane>>\t name of the output file;\n";
+        print "--corgat <<directory>>\t path to corgat. defaults to \"./corgat\";\n";
+	print "--annotfile <<filename>>\t file with precomputed annotations. See globalAnnot.\n";
+        print "--update <<logical>>\t update globalAnnot to the most recent version? T=true. F=false. Default=T.\n";
+	print "\nTo run the program you MUST provide --infile, --outilfe\n";
+        print "all file needs to be in the folder from where the program is executed.\n\n";
         print "\n##EXAMPLE:\n\n";
-        print "1# input is lvar.txt output is score.csv:\nperl LinToFeats.pl --infile lvar.txt --annotfile globalAnnot --outfile scores.csv \n\n";
+        print "1# input is lvar.txt output is score.csv:\nperl LinToFeats.pl --infile lvar.txt --outfile scores.csv \n\n";
 }
 

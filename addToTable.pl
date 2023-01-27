@@ -31,6 +31,7 @@ check_exists_command('mkdir') or die "$0 requires mkdir to create a temporary di
 check_exists_command('sort') or die  "$0 requires sort to order the output file\n";
 check_exists_command('split') or die "$0 requires split to split the input fasta file\n";
 check_exists_command('cat') or die "$0 requires cat to concatenate input fasta files\n";
+check_exists_command('nucmer') or die "$0 requires nucmer from the mummer package to align genome sequences. Please install nucmer\n";
 
 
 ###########################################################
@@ -70,7 +71,7 @@ sub metadataToPos
 			"Collection date"=>"na",
 			"Submission date"=>"na",
 			"Location"=>"na",
-			"Pango lineage"=>"na",
+			"Pango lineage"=>"na"
 
 		);
 	}
@@ -111,6 +112,12 @@ sub metadataToLists
 	{
 		print "indexing $ofile\n";
 		open(IN,$ofile);
+		my $header=<IN>;
+		my @sizes=(split(/\t/,$header));
+		unless ($#sizes==10)
+		{
+			die("\n Your file in HaploCoV format does not have 11 columns as expected.\nExecution will halt.\nThis is the header of your input file:\t$header.\n\nPlease provide a valid file in HaploCoV format\n");
+		}
 		my $c=0;
 		while(<IN>)
 		{
@@ -138,9 +145,16 @@ sub metadataToLists
 		{
 			$lock{$v}=$i;
 		#to deal with inconsistent naming in gisaid metadata table
-		}elsif ($v eq "Pango lineage" || $v eq "Lineage"){
+		}elsif ($v eq "Pango lineage" || $v eq "Lineage" || $v eq "pangolin_lineage"){
 			$lock{"Pango lineage"}=$i;
-		}
+		}elsif ($v eq "date" || $v eq "Collection date"){
+			$lock{"Collection date"}=$i;
+		}elsif ($v eq "country" || $v eq "Location"){
+			$lock{"Location"}=$i;
+		}elsif ($v eq "strain" || $v eq "Virus name"){
+			 $lock{"Virus name"}=$i;
+		}	
+
 	}
 	#  again to deal with inconsistent naming in gisaid metadata
 	$lock{"Submission date"}=$lock{"Collection date"} if $lock{"Submission date"} eq "na";
@@ -173,8 +187,22 @@ sub metadataToLists
 		my $s=$data[$Is];
 		my $p=$data[$Ip];
 		my $location=$data[$Ir];
-		my ($continent,$country,$region)=(split(/\//,$location));
-        	$country=~s/\s+//g;
+		my $continent="";
+		my $country="";
+		my $region="";
+
+		if ($location=~/\//)
+		{
+			($continent,$country,$region)=(split(/\//,$location));
+		}else{
+			#augur data;
+			$country=$location;
+			$region=$data[$Ir+1];
+			$continent=$data[$Ir-1];
+		}
+		 $country=~s/\s+//g;
+
+
 		my $area=$areas{$country} ? $areas{$country} : "NA";
 		$continent=~s/\s+//g;
 		$region=~s/\s+//g;
@@ -358,7 +386,7 @@ sub linearize
 	my $ofile=$_[2];
 	#print "$ofile\n";
 	my %vars=();
-	open(OUT,">>$ofile");
+	open(OUT,">$ofile.tmp");
 	my $NAst="NA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA";
 	
 	open(LIN,$file);
@@ -370,8 +398,17 @@ sub linearize
                 print OUT "$curID\t$metadata\t$vars";
 	}
 	system("rm $file")==0||die("could not remove temporary file $file\n");	
-	system("sort -n -k 3 $ofile  > $ofile.srt")==0||die("could not sort the output file by date\n");
-	system("mv $ofile.srt $ofile")==0||die("could not sort the output file by date\n");
+	system("sort -n -k 3 $ofile.tmp  > $ofile.srt")==0||die("could not sort the output file by date\n");
+	close(OUT);
+	unless (-e $ofile)
+	{
+		open(OUT,">$ofile");
+		print OUT "genomeID\tcollectionD\toffsetCD\tdepositionD\toffsetDD\tcontinent\tarea\tcountry\tregion\tpangoLin\tlistV\n";
+		close(OUT);
+	}
+	system("cat $ofile.srt >> $ofile")==0||die("Could not write the output file\n");
+	system("rm $ofile.tmp $ofile.srt")==0||die("Could not remove temporary files\n");
+
 }
 
 sub download_ref
@@ -392,7 +429,7 @@ sub download_areas
         print "addToTable.pl will try to Download the file from github\n";
         print "Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download areafile\nHit <<which wget>> on the terminal to check if you have wget\n";
-        system("https://raw.githubusercontent.com/matteo14c/HaploCoV/master/areaFile")==0||die("Could not retrieve the required file areafile. The file is not in the current folder. Please download it!\n");
+        system("https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/areaFile")==0||die("Could not retrieve the required file areafile. The file is not in the current folder. Please download it!\n");
 
 }
 
@@ -417,6 +454,7 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
+			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -432,13 +470,13 @@ sub check_input_arg_valid
         {
                 print_help();
                 my $f=$arguments{"--metadata"};
-                die("Reason:\nNo valid input file provided. $f does not exist!");
+                die("Reason:\nNo valid input file provided. Please provide one!");
         }
 	if ($arguments{"seq"} eq "na" || (! -e $arguments{"--seq"}))
         {
                 print_help();
                 my $f=$arguments{"--seq"};
-                die("Reason:\nNo valid sequence file provided. $f does not exist!");
+                die("Reason:\nNo valid sequence file provided. Please provide one!");
         }
 	if ($arguments{"--nproc"}<0)
 	{
@@ -452,41 +490,41 @@ sub check_input_arg_valid
                 my $m=$arguments{"--dayFrom"};
                 die("Reason:\nStart day can not be <-3500. $m provided\n");
         }
-	if ($arguments{"--outfile"} eq "na")
+	if ($arguments{"--outfile"} eq "na" || $arguments{"--outfile"} eq "." )
         {
                 print_help();
                 my $f=$arguments{"--outfile"};
-                die("Reason:\nNo valid output file provided. --outfile was set to $f. This is not a valid name!");
+                die("Reason:\n$f is not a valid name for the output file. Please provide a valide name using --outfile");
         }
+
 }
 
 sub print_help
 {
-        print " This utility is meant to 1) read a metadata table file; 2) read a fasta file\n"; 
+        print "\n This utility is meant to 1) read a metadata table file; 2) read a fasta file\n"; 
 	print " of SARS-CoV-2 genome sequences; 3) identify sequences that have already been\n";
 	print " processed by align.pl and 4) process the novel sequences and 5) provide an\n";
-	print " output file with up to date data and metadata to be used by other main utilities \n";
-	print " provided by HaploCoV\n";
-	print " The final output will consist in a metadata table in HaploCov format\n";
-	print " Temporary output files are written to the user specified folder, \"--genomes\"\n";
+	print " output in HaploCoV format to be used by other main utilities\n";
+	print " provided by HaploCoV.\n";
+	print " Temporary output files are written to the user specified folder, \"--genomes\".\n";
 	print " The align.pl utility form HaploCov is used to identify genetic variants\n";
 	print " with respect to the reference genome of SARS-CoV-2. This process is executed\n";
 	print " in parallel on 8 threads by default. Number of thread to use can be specified\n";
 	print " by --nproc.\n";
 	print " Users do also have the option to exclude sequences collected before a user specified\n";
 	print " date from their analysis. This is controlled by the --dayFrom option. Default is -2500\n";
-	print " Please see the main documentation of HaploCov to lear more about how dates are handled\n\n"; 
+	print " Please see the main documentation of HaploCov to lear more about how dates are handled.\n\n"; 
 	
 
 	print "##INPUT PARAMETERS\n\n";
-        print "--metadata <<filename>>\t metadata file\n";
-        print "--seq <<filename>>\t fasta file\n";
-        print "--dayFrom <<integer>>\t keep only genomes isolated after this day. Default -2500\n";
-	print "--nproc <<integer>>\t number of processes to align genomes and call variants. Default 8 \n";
-	print "--outfile <<filename>>\t output metadata file in HaploCoV format. If the file is not empty\n\n";
-	print "novel data/metadata will be appended to the bottom of the file\n";
+        print "--metadata <<filename>>\t metadata file;\n";
+        print "--seq <<filename>>\t fasta file;\n";
+        print "--dayFrom <<integer>>\t keep only genomes isolated after this day. Default -2500;\n";
+	print "--nproc <<integer>>\t number of processes to align genomes and call variants. Default 8;\n";
+	print "--outfile <<filename>>\t output metadata file in HaploCoV format. If the file is not empty\n";
+	print "                      \t novel data/metadata will be appended to the bottom of the file.\n\n";
         print "Mandatory parameters are --seq, --metadata  and --outfile\n";
         print "the files needs to be in the current folder.\n\n";
         print "\n##EXAMPLE:\n\n";
-        print "1# input is metadata.tsv:\nperl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --outfile HaploCoV_formattedMetadata\n\n";
+        print "1# input is metadata.tsv:\nperl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --outfile HaploCoV.tsv\n\n";
 }
