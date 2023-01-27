@@ -1,0 +1,70 @@
+########################################################
+# Important! please notice that parameters name and
+# their values need to be separated by tabulations
+# an error will be raised otherwise
+#########################################################
+# computeAF.pl identifies high frequency genomic variants
+# please refer to the manual of the tool for more details
+computeAF.pl
+#start intertal
+--minT	-10
+#interval size
+--interval	10
+#minimum frequency (1=1%)
+--minCoF	1
+#minimum intervals above the prevalence (3)
+--minP	3
+########################################################
+# augmentClusters.pl uses the high frequency genomic
+# variants identified by computeAF.pl to derive novel
+# designations in your nomenclature. Please refer to the
+# manual for a more comprehensive description
+augmentClusters.pl
+#minimum number of genomes to support a new designation
+--size	100
+#mininum number of high frequency genomic variants to create
+#a new designation 
+--dist	2
+#suffix used to indicate novel designations
+--suffix	N
+#######################################################
+# LinToFeats.pl computes "high" level genomic features
+# used to compute the VOCness score. Features are based
+# on CorGAT's annotations
+LinToFeats.pl
+#annotation file from corgat
+--annotfile	globalAnnot
+######################################################
+# report.pl computes VOCness scores and generates a 
+# report. Scores of the novel designations are compared
+# with their parental to see/verify if there is an
+# increase
+report.pl
+# suffix used to indicate novel designations-
+--suffix	N
+#####################################################
+# p_assign.pl assigns the newly established designation 
+# to the genomic data provided in input to HaploCoV.pl
+# the tool can execute several jobs in parallel
+p_assign.pl
+#number of parallel processes
+--nproc	8
+####################################################
+# increase.pl creates a prevalence report with detailed
+# data concerning the prevalence of SARS-CoV-2 variants
+# at different locales. The report is processed by HaploCoV
+# to identify variants that increased their prevalence
+increase.pl
+#size in days of time interval
+--days	7
+#minimum fold change of increase 
+--minFC	2
+#minimum prevalence
+--minP	0.01
+#number of intervals to compare
+--nInt	4
+#minimum number of genomes needed at an interval
+--minG	10
+#report only designations that passed the FC filter?
+#T=TRUE, F=FALSE
+--pass	F
