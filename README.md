@@ -28,7 +28,7 @@ The main aim of the tool is to facilitate the identification of novel variants/l
 2. Features associated with VOCs/VOIs (variants of concern or variants of interest);
 3. Both of the above.
 
-HaploCoV incorporates a standalone "scoring system" (*VOC-ness score* from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The minimum threshold for significance was derived empirically (see the paper for more details). 
+HaploCoV incorporates a standalone "scoring system" (*VOC-ness score* from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The suggested minimum treshold is 2.5 or 10% of the total score (see the paper for more details). 
 
 Increase/decrease in prevalence is inferred by analyses of the (available) metadata. By default novel candidate variants with a prevalence above 1% in a region/country, and showing an increase by at least 2 fold over 4 weeks are reported. 
 These parameters can be configured by the user at runtime.
@@ -57,6 +57,48 @@ See the following sections for complete details.
 
 <hr>
 
+# Some example Use Cases
+
+The folder useCases in the main repository provides a collection of files and examples that can be used to test HaploCoV for the identification of novel variants of SARS-CoV-2. Three use cases are provided, all associated with emergence of a VOC:
+
+1. Alpha in the UK;
+2. Delta in India;
+3. Omicron in South Africa.
+
+For every use case only genomic sequences collected within an interval compatible with the emergence of each of the VOC, and from the country where the VOC was first reported were extracted from the complete dataset of publicly available SARS-CoV-2 genome sequence (as processed by Nexstrain by means of their Ncov workflow). Subsequently all the genomes assigned to a VOC-related lineages were manually re-assigned to their parental lineage and HaploCoV was applied to verify if VOC lineages could be re-intified from scratch.
+Since publicly avaliable data do not include the complete collection of genomic sequences available in GISAID, default parameters were modified accordingly and the number of genomic sequences required to support the formation of a new designations was reduced to 25 (parametes file paramVOC).
+Users are kindly invited to re-run/re-proccess these use case to verify and test the main functionalities of HaploCoV.
+
+## Use case 1. Alpha
+
+The file *alphaNX* contains a complete collection of the genomic sequences of SARS-CoV-2 specimens isolated in the United Kindgom between 2020-09-01 and 2020-11-15. The total number is 36820.
+The following HaploCoV command can be used to process the file and derive novel variants:
+
+` perl HaploCov.pl --file alphaNX --locales alpha.loc --param paramVOC `.
+
+The locales file *alpha.loc* resticts set scope of the analysis to the United Kingdom (area=EuUK) and to sequences collected in between 2020-09-01 and 2020-11-15.
+The final output of HaploCoV will be writtent in the *EuUK_custom.rep* report file. Intermediate files will be stored in the folder: *EuUK_custom_results*. Please refer to the following sections in the manual available at readthedocs (and below) for a more comprehensive explanation of these files and what they do: 
+
+* [locales file](https://haplocov.readthedocs.io/en/latest/haplocov.html#configuration-locales-file); 
+* [parameters file](https://haplocov.readthedocs.io/en/latest/haplocov.html#advanced-configuration-parameters-file);
+* [report file](https://haplocov.readthedocs.io/en/latest/haplocov.html#id5);
+* [intermediate files](https://haplocov.readthedocs.io/en/latest/haplocov.html#id4).
+
+As you can see from figure XX according to the report.: \"5 novel candidate sublineage(s)/subvariant(s) \" were found (see screenshot below), but only 1 did pass both the score, and prevalence threshold. This novel variant, designated as B.1.1.N1 is defined 28 additional genomic variants compared to the parental lineage, and is associated with an astounding increase in *VOC-ness* score of ~11 points. According to report, B.1.1.N1 shows an increase in prevalence from 1% (0.01) to 10% (0.1) in between 2020-10-21 to 2020-11-12, in the United Kingdom and in England.
+In the light of the above observations, it is easy to infer that B.1.1.N1 corresponds with B.1.1.7, the original lineage of the Alpha VOC. The Alpha variant hence was successfully identified.
+
+## Use case 2. Delta
+
+*deltaNX* contains a total of 673 genomic sequences of SARS-CoV-2 isolated in the India between 2020-11-01. 
+By running: 
+
+` perl HaploCov.pl --file deltaNX --locales delta.loc --param paramVOC `.
+
+HaploCoV can be applied to this dataset to derive novel variants. Results will we written in the report file India_custom.rep.
+According to the output, only one "interesting" variant was identified by HaploCoV: B.1.N1. The novel designation has 34 additional defining genomic variant compared with its parent. The VOC-ness score is increased from 4.42 to 18.58
+
+
+<hr>
 
 ## Input files
 
