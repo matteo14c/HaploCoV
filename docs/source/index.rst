@@ -70,14 +70,21 @@ If you find any issue with the software, please contact `me <mailto:matteo.chiar
    prior.rst
    assign.rst
    increase.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: HaploCoV: Use Cases
+   
+   customreports.rst
+   whatnext.rst
+
 
 .. toctree::
    :maxdepth: 2
    :caption: HaploCoV: advanced
 
-   whatnext.rst
    subsetting.rst
-   customreports.rst
+   
 
 
 Indices and tables
