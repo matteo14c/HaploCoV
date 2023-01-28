@@ -293,9 +293,9 @@ i.e. 1_A\|T indicates a A to T substitution in position 1 of the reference genom
 An example of the output is reported below: 
 
 `Genomic variants:`
-        <br><br>`defined by: 210_G\|T 241_C\|T 3037_C\|T 4181_G\|T 21618_C\|G 22995_C|A 19220_C\|T `
-        <br><br>`gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T `
-        <br><br>`lost (wrt parent): `
+        <br>`defined by: 210_G\|T 241_C\|T 3037_C\|T 4181_G\|T 21618_C\|G 22995_C|A 19220_C\|T `
+        <br>`gained (wrt parent): 21618_C\|G 22995_C\|A 19220_C\|T `
+        <br>`lost (wrt parent): `
         
 In this case the novel candidate lineage/variant is defined by 3 additional genomic variants compared to its parental.
 
@@ -323,7 +323,7 @@ For every interval/span of time (default 4 weeks) where the novel candidate line
 The place were the increase was observed, the prevalence at the initial time point of the interval, and the prevalence at the last time point of the interval
 
 For example:
-<br>`Interval: 2021-04-01 to 2021-04-28, increase at 1 locale(s) `<br>
+<br>`Interval: 2021-04-01 to 2021-04-28, increase at 1 locale(s) `
  <br>`List of locale(s): AsiaSO::India::Delhi:0.03-(76),0.08-(117)`<br>
 
 Indicates that in the interval of time comprised between April 1rst and April 28th, at Dehli the candidate lineage/variant increased its prevalence from 0.03 (3%) to 0.08 (8%). The numbers in brackets, 76 and 117 respectively, indicate the total number of genomic sequences used to estimate the prevalence.
