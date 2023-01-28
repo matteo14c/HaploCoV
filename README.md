@@ -376,6 +376,8 @@ Please take a look to these sections in the manual at readthedocs (and above) fo
 As you can see from the figure below, according to the report.: \"5 novel candidate sublineage(s)/subvariant(s) \" were found by HaploCoV, but only 1 did pass both the score and prevalence threshold. This novel candidate lineage, designated as B.1.1.N1 is defined by 28 additional genomic variants compared to the parental lineage B.1.1, and is associated with an astounding increase in *VOC-ness* score of ~11 points. According to report, B.1.1.N1 shows an increase in prevalence from 1% (0.01) to 10% (0.1) in between 2020-10-21 and 2020-11-12, in the United Kingdom and in England.
 Based on these observations is easy to infer that B.1.1.N1 corresponds with B.1.1.7, the first lineage of the Alpha VOC.
 
+![image](https://github.com/matteo14c/HaploCoV/blob/b5558f609b95328b0af471d80e548e3bb0ae0f91/images/FigAlpha.jpeg)
+
 A complete list of the genomic sequences assigned to the novel designation can be retrieved by applying the *subset.pl* tool (see [here](https://haplocov.readthedocs.io/en/latest/subsetting.html#select-a-specific-lineage-hg)) to *EuUK_assigned.txt* in the intermediate file folder *EuUK_custom_results* created by HaploCoV while processing the data.
 The following command can be issued to select entries assigned to the novel lineage:
 
@@ -395,8 +397,10 @@ According to the output file (screenshot below), only one "interesting" variant 
 Although the novel designation has a prevalence of almost 80% by 2021-04-28, a 2 fold increase in prevalence is not detected at any time point. 
 <br>
 The intermediate file *India_assigned.txt.prev* in the *India_custom_results* folder provides a more detailed picture of the spread of the novel designation (again, see screenshot).
-According to this "extended" prevalence report, B.1.1.N1 is first observed at 2021-03-30, and shows a prevalence of ~ 45% by then (see screenshot). Although the prevalence of the variant grows rapidly, the increase il lower that 2 fold at the intervals of time included in the analysis.
-<br>
+According to this "extended" prevalence report, B.1.1.N1 is first observed at 2021-03-30, and shows a prevalence of ~ 45% by then (see screenshot). Although the prevalence of the variant grows rapidly, the increase is lower that 2 fold at the intervals of time included in the analysis.
+
+![image](https://github.com/matteo14c/HaploCoV/blob/b5558f609b95328b0af471d80e548e3bb0ae0f91/images/FigDelta.jpeg).
+
 This is probably due to the patchy pattern of available data. Indeed we observe that no prevalence is reported for several interval of time in *India_assigned.txt.prev*; this indicates that for several intervals less than 10 genomic sequences were available, 10 being the minimum number of sequences required by HaploCoV to do this computation (see [prevalence report](https://haplocov.readthedocs.io/en/latest/increase.html) in the manual for a more comprehensive explanation). 
 
 ## Use case 3. Omicron
@@ -410,8 +414,10 @@ HaploCoV can be applied to analyse these data. According to the specfications pr
 Main results are saved to *SouthAfrica_custom.rep*. Intermediate files to *SouthAfrica_custom_results*.
 Similar to use case 2, only one novel "insteresting" designation is identified by HaploCoV: B.1.1.N1. This novel designation is characterized by 58 genomic variants that are not shared with the parental. The VOC-ness score is increased from 3.50 to 21.82. 
 According to the prevalence report, B.1.1.N1 has a prevalece above 95% (0.95) in South Africa by 2021-12-26. However B.1.1.N1 is not flagged as an "increased prevalence" variant, since it does not show an increase in prevalence of 2 fold or higher at any interval of time (see screenshot below).
-<br>
-The interemediate file *SouthAfrica_assigned.txt.prev* in the *SouthAfrica_custom_results* folder can be used to obtain more information about the prevalence of the newly defined designation.
+
+![image](https://github.com/matteo14c/HaploCoV/blob/b5558f609b95328b0af471d80e548e3bb0ae0f91/images/FigOmic.jpeg).
+
+The intermediate file *SouthAfrica_assigned.txt.prev* in the *SouthAfrica_custom_results* folder can be used to obtain more information about the prevalence of the newly defined designation.
 From the report it is possible to observe that B.1.1.N1 is first identified by HaploCoV at 2021-11-22, and shows a prevalence greater than 86%. Similar to use case 2, also in this case the data are patchy and several intervals of tim have missing data. In this scenario the novel variant is not identified as a variant "showing and increase in prevalence" since it is already dominant/widespread by the time it is first identified.
 
 <hr>
