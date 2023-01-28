@@ -17,7 +17,7 @@ HaploCoV is a collection of Perl scripts that can be used to:
 This software package is composed of **9 (*+3*)** utilities. Instructions concerning required input files, their format and how to configure HaploCoV are reported below (and in the extended [manual](https://haplocov.readthedocs.io/en/latest/) at readthedocs).
 <br>
 In brief, input files need to be formatted according to the format used by HaploCoV by applying either *addToTable.pl* or *NexStrainToHaploCoV.pl* (depending on the input, see below). 
-Then the complete HaploCoV workflow can be executed by running *HaploCoV.pl* (recommended) or, if you prefer, by running all the tools yourself (please see [HaploCoV:Tools](https://haplocov.readthedocs.io/en/latest/impatient2.html)).
+Then the complete HaploCoV workflow can be executed by running *HaploCoV.pl* (recommended) or, if you prefer, by running each tool yourself (please see [HaploCoV:Tools](https://haplocov.readthedocs.io/en/latest/impatient2.html)).
 The figure below provides a conceptual representation of the workflow and the tools used to execute each task in HaploCoV.
 ![image](https://github.com/matteo14c/HaploCoV/blob/a1d84694e38ce87341ce523d4ec28a56c4be7ef7/images/wf.png).
 
@@ -29,7 +29,7 @@ The main aim of HaploCoV is to facilitate the identification of novel variants/l
 2. Features associated with VOCs/VOIs (variants of concern or variants of interest);
 3. Both of the above.
 
-HaploCoV incorporates a standalone "scoring system" (*VOC-ness score* from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The suggested minimum treshold is 2.5 or 10% of the total score (see the paper for more details). 
+HaploCoV incorporates a standalone "scoring system" (*VOC-ness score* from here onward) for the identification and flagging of VOC and VOI-like variants based on the functional annotation of the genome. Interesting/relevant candidate variants are identified as those showing a significant increase (above a minimum threshold) in their score compared with their parental lineage/variant. The suggested minimum treshold is 2.5 or 10% of the total score of the parental lineage (whichever is higher, see the paper for more details). 
 
 Increase/decrease in prevalence is inferred by analyses of the (available) metadata. By default novel candidate variants with a prevalence above 1% in a region/country, and showing an increase by at least 2 fold over 4 weeks are reported. 
 These parameters can be configured by the user at runtime.
@@ -51,84 +51,10 @@ The main output consists of a report file that summarizes the prevalence and fea
 2. ` perl HaploCov.pl --file linearDataSorted.txt --locales italy.loc `.
 
 ### Finally
-Read the report (.rep) file.
-Track any interesting/additional novel variant that you identified
-(Optional, read the full manual for more details on intermediate files and output formats).
-See the following sections for complete details.
-
-<hr>
-
-# Examples and Use Cases
-
-The folder useCases in the main repository provides a collection of files and examples that can be used to test HaploCoV for the identification of novel variants of SARS-CoV-2. Three use cases are provided, all associated with emergence of a VOC:
-
-1. Alpha in the UK;
-2. Delta in India;
-3. Omicron in South Africa.
-
-For every use case only genomic sequences collected within an interval compatible with the emergence of each VOC, and from the country where each VOC was first reported, were extracted from the complete dataset of publicly available SARS-CoV-2 genome sequence (as processed by Nexstrain by means of their Ncov workflow). Subsequently, all the genomes assigned to VOC-related lineages were manually re-assigned to their parental, non-VOC lineage. Finally, HaploCoV was applied to verify if VOC lineages could be re-intified from scratch.
-Users are kindly invited to re-run/re-proccess these data to verify and test the main functionalities of HaploCoV.
-
-Please notice that since publicy avaliable data include only about 36% of the complete collection of genomic sequences available in GISAID, default parameters were adjusted to cope with the reduced number of sequences. In particular the number of supporting genomic sequences required to form a designation was lowered to 25 (parameters file paramVOC).
-
-## Use case 1. Alpha
-
-The file *alphaNX* contains a complete collection of the genomic sequences of SARS-CoV-2 specimens isolated in the United Kindgom between 2020-09-01 and 2020-11-15. The total number is 36820.
-The following HaploCoV command can be used to process the file and derive novel variants:
-
-` perl HaploCov.pl --file alphaNX --locales alpha.loc --param paramVOC `.
-
-The locales file *alpha.loc* restricts the scope of the analysis to the United Kingdom (area=EuUK) and to sequences collected inbetween 2020-09-01 and 2020-11-15.
-The final output of HaploCoV will be written in the report file *EuUK_custom.rep*. Intermediate files will be stored in the folder: *EuUK_custom_results*. 
-<br>
-
-Please take a look to these sections in the manual at readthedocs (and below) for a more comprehensive explanation of these files and what they do: 
-
-* [locales file](https://haplocov.readthedocs.io/en/latest/haplocov.html#configuration-locales-file); 
-* [parameters file](https://haplocov.readthedocs.io/en/latest/haplocov.html#advanced-configuration-parameters-file);
-* [report file](https://haplocov.readthedocs.io/en/latest/haplocov.html#id5);
-* [intermediate files](https://haplocov.readthedocs.io/en/latest/haplocov.html#id4).
-
-As you can see from the figure below, according to the report.: \"5 novel candidate sublineage(s)/subvariant(s) \" were found by HaploCoV, but only 1 did pass both the score and prevalence threshold. This novel candidate lineage, designated as B.1.1.N1 is defined 28 additional genomic variants compared to the parental lineage, and is associated with an astounding increase in *VOC-ness* score of ~11 points. According to report, B.1.1.N1 shows an increase in prevalence from 1% (0.01) to 10% (0.1) in between 2020-10-21 to 2020-11-12, in the United Kingdom and in England.
-Based on these observations is easy to infer that B.1.1.N1 corresponds with B.1.1.7, the first lineage of the Alpha VOC.
-
-A complete list of the genomic sequences assigned to the novel designation can be retrieved by applying the *subset.pl* tool (see [here](https://haplocov.readthedocs.io/en/latest/subsetting.html#select-a-specific-lineage-hg)) to *EuUK_assigned.txt* in the intermediate file folder *EuUK_custom_results* created by HaploCoV while processing the data.
-The following command can be issued to select entries assigned to the novel lineage:
-
-` perl subset.pl --infile EuUK_custom_results/EuUK_assigned.txt --lineage B.1.1.N1 --outfile novelLin `.
-The output file should include 814 entries
-
-## Use case 2. Delta
-
-*deltaNX* contains a total of 673 genomic sequences of SARS-CoV-2 isolated in the India between 2020-11-01 and 2021-05-01. 
-By running: 
-
-` perl HaploCov.pl --file deltaNX --locales delta.loc --param paramVOC `.
-
-HaploCoV can be applied to this dataset to derive novel variants; *delta.loc* specifies the country to be analysed (India) and the interval of time (2020-11-01 to 2021-05-01). Results will be written in the report file *India_custom.rep*, intermediate files to *India_custom_results*.
-<br>
-According to the output file (screenshot below), only one "interesting" variant was identified by HaploCoV: B.1.1.N1. The novel designation has 34 additional defining genomic variants compared with its parental. The VOC-ness score is increased from 4.42 to 18.58. 
-Although the novel designation has a prevalence of almost 80% by 2021-04-28, according to HaploCoV it does not show a 2 fold increase in prevalence at any time point. 
-<br>
-The intermediate file *India_assigned.txt.prev* in the *India_custom_results* folder can be used to obtain a more detailed picture of the spread of this variant.
-According to this "extended" prevalence report, the novel designation is first observed at 2021-03-30, and shows a prevalence of ~ 45% by then (see screenshot). Although the prevalence of the variant grows rapidly, a 2 fold increase is not observed in the interval of time included in the analysis.
-<br>
-We speculate that this is probably due to the patchy pattern of available data. Indeed we observe that no prevalence is reported for several interval of time in *India_assigned.txt.prev*; this indicates that for several intervals less than 10 genomic sequences were available, 10 being the minimum number of sequences required by HaploCoV to do this computation (see [prevalence report](https://haplocov.readthedocs.io/en/latest/increase.html) in the manual for a more comprehensive explanation). 
-
-## Use case 3. Omicron
-
-*omicronNX* includes 1009 genomic sequences of SARS-CoV-2 isolated in the South Africa between 2021-07-01 and 2021-12-31. 
-By running: 
-
-` perl HaploCov.pl --file omicronNX --locales omicron.loc --param paramVOC `.
-
-HaploCoV can be applied to analyse these data. According to the specfications provided by *omicron.loc* only isolates from South Africa, and in between 2021-07-01 and 2021-12-31 will be analysed.
-Main results will be saved in *SouthAfrica_custom.rep*. Intermediate files in *SouthAfrica_custom_results*.
-Similar to use case 2, only one novel "insteresting" designation is identified by HaploCoV: B.1.1.N1. This novel designation is characterized by 58 genomic variants that are not shared with the parental. The VOC-ness score is increased from 3.50 to 21.82. 
-According to the prevalence report, B.1.1.N1 has a prevalece above 95% (0.95) in South Africa by 2021-12-26. However the variants is not flagged as an "increased prevalence" variant, and does not show an increase in prevalence of 2 fold or more at any interval (see screenshot below).
-<br>
-The interemediate file *SouthAfrica_assigned.txt.prev* in the *SouthAfrica_custom_results* folder can be used to obtain more information about the prevalence of the newly identified designation.
-From the report it is possible to observe that B.1.1.N1 is first identified by HaploCoV at 2021-11-22, and shows a prevalence greater than 86%. Similar to use case 2, also in this case the data are patchy and several intervals with missing data are observed. In this scenario the novel variant is not identified as a variant "showing and increase in prevalence" since it is already dominant/widespread by the time it was first identified.
+Read the report (.rep) file, the name will *be Italy_custom.rep* in this case.
+Check out any interesting/additional novel variant that was identified and
+(optional) read the full manual for more details on intermediate files and output formats.
+See the following sections for a brief explanation.
 
 <hr>
 
@@ -138,7 +64,7 @@ HaploCoV requires 3 (main) input files:
 * **the reference assembly** of the SARS-CoV-2 genome in fasta format;
 * a **multifasta** file with SARS-CoV-2 genomes to be compared with the reference;
 * a **.tsv** file with matched (to the sequences in the fasta file) metadata;
-See the [Where do I get the data?](https://haplocov.readthedocs.io/en/latest/data.html) in the extended manual for more details on how to obtain these files.
+See the [Where do I get the data?](https://haplocov.readthedocs.io/en/latest/data.html) in the extended manual instructions on how to obtain these files.
 
 If you find any of this software useful for your work, please cite:
 >**Chiara M, Horner DS, Gissi C, Pesole G. Comparative genomics reveals early emergence and biased spatio-temporal distribution of SARS-CoV-2. Mol Biol Evol. 2021 Feb 19:msab049. doi: 10.1093/molbev/msab049.**
@@ -166,11 +92,11 @@ The format is as follows: <br>
 \<genomicposition\>_\<ref\>|\<alt\>  <br>
 i.e. 1_A|T indicates a A to T substitution in position 1 of the reference genome.<br>
 
-A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: [HaploCoVFormatted.txt](http://159.149.160.88/HaploCoVFormatted.txt.gz) in the form of a `gzip` compressed file. When de-compressed the file should be around 2.9G in size.  
+A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: [HaploCoVFormatted.txt](http://159.149.160.88/HaploCoVFormatted.txt.gz) in the form of a `gzip` compressed file. When de-compressed the file should be around 2.9G in size, or alternatively see the Use cases sections, below. 
 
 ## #1.1 GISAID data: addToTable.pl
 
-*addToTable.pl* reads multifasta (*sequences.fasta*) and metadata files (*metadata.tsv*) and extracts all the information required for subsequent analyses. 
+*addToTable.pl* reads multifasta (*sequences.fasta*) and metadata files (*metadata.tsv*) and extracts all the information required for subsequent analyses. Currently the tool supports both complete dumps of the GISAID database (see [here](https://haplocov.readthedocs.io/en/latest/data.html#gisaid)), and data packages in Augur format (see [here](https://haplocov.readthedocs.io/en/latest/data.html#gisaid-augur)).
 
 ### Options
 *addToTable.pl* accepts the following options:
@@ -184,18 +110,18 @@ A valid example of an HaploCoV-formatted file, including all the sequences avail
 ### Execution:
 An example command looks like:
 <br>`perl addToTable.pl --metadata metadata.tsv --seq sequences.fasta --nproc 16 --outfile linearDataSorted.txt `.<br>
-The final output will consist of a metadata table in *HaploCoV format*.  This table is required for all the subsequent analyses.
+The final output will consist of a metadata table in *HaploCoV format*.  This table is required in all the subsequent analyses.
 
 ### Important: Incremental addition of data
 *addToTable.pl* can add novel data/metadata incrementally to a pre-existing table in *HaploCoV format*. This feature is extremely useful, since it allows users to add data incrementally, without the need to re-execute analyses from scratch. When the output file provided by the user is not empty, addToTable.pl will process only those genomes which are not already included in your metadata table. Matching is by sequence identifier (column Virus name).
 
 ### Execution times 
-On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour. Computation scales linearly: 160k genomes on 8 cores, or 320k on 16 cores. This means that processing the complete collection of the more than 13M genomes included in the GISAID database on November 11th 2022 from scratch will take about 20 days if only one processor is used;  3 days would be needed if 8 processes are used; and 1.5 days if 16 are used. Importantly this operation needs to be performed only once, since the tool supports the incremental addition of data (see above). 
+On a single processor HaploCoV can process about 20k SARS-CoV-2 genomes per hour. Computation scales linearly: 160k genomes on 8 cores, or 320k on 16 cores. This means that processing the complete collection of the more than 13M genomes included in the GISAID database on November 11th 2022 from scratch would take about 20 days if only one processor is used;  3 days would be needed if 8 processes are used; and 1.5 days if 16 are used. Importantly this operation needs to be performed only once, since the tool features incremental addition of data (see above). 
 
 ## NextStrain data: NextStrainToHaploCoV.pl
 
 If you downloaded your metadata files from Nexstrain ([link](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz)), you need to use the utility *NextStrainToHaploCoV.pl* to convert them in HaploCoV format.
-Unlike *addToTable.pl*, *NextStrainToHaploCoV.pl* does not support incremental addition of data to a pre-existing file: this metadata file can be converted in *HaploCoV format* in 3 to 5 minutes. 
+Unlike *addToTable.pl*, *NextStrainToHaploCoV.pl* does not support incremental addition of data to a pre-existing file: this metadata file can be converted in *HaploCoV format* less than 10 minutes. 
 
 ### Options
 *NextStrainToHaploCoV.pl* accepts the following options:
@@ -241,7 +167,7 @@ Since in this case the type of analysis was set to "custom" and the target geogr
 
 <hr>
 
-### Configuration (Locales file)
+### Configuration (I) (Locales files)
 
 Locale(s) configuration files are used by *HaploCoV.pl* to set the main parameters for the execution of your analyses. These files need to have a tabular format and contain 5 colums separated by tabulations. An example of a valid locales file is illustrated below:
 
@@ -255,7 +181,7 @@ world   |area     |2022-01-01|2022-11-11|custom          |
 * qualifier: qualifier of the geographic entity, accepted values are: region, country or area. Again, refer to [Geography and places](https://haplocov.readthedocs.io/en/latest/metadata.html#geography-and-places) for more details;
 * start-date: lower limit of the interval of time on which to execute the analysis (see [Dates and time in HaploCoV](https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov));
 * end-date: upper limit of the interval of time;
-* genomic-variants: a comma separated list of files with high frequency genomic variants (see  [Genomic variants file](https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii)). Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature. If you do not wish to use a precomputed file, you can use the special word *custom*. High frequency genomic variants will be computed by HaploCoV based on your selection.  A distinct report file (.rep) will be generated for every file in this list. The name of the variant file is always appended to the name of the report, i.e. if the name of your genomic variants file is \"myVar\" the name of the report will be "\_myVar.rep" if instead *custom* was used, the name will be "\_custom.rep" (see below).
+* genomic-variants: a comma separated list of files with high frequency genomic variants (see  [Genomic variants file](https://haplocov.readthedocs.io/en/latest/haplocov.html#genomic-variants-files-configuration-ii)). Each file is used to derive novel candidate lineages/variants compared to a reference nomenclature. If you do not wish to use a precomputed file, you can use the special word *custom*. High frequency genomic variants will be computed by HaploCoV based on your selection.  A distinct report file (.rep) will be generated for every file in this list. The name of the genomic variant file is always appended to the name of the report, i.e. if the name of your genomic variants file is \"myVar\" the name of the report will be "\_myVar.rep" if instead *custom* was used, the name will be "\_custom.rep" (see below).
 
 The file locales.txt included in this repository provides a valid example of a locales configuration file. 
 
@@ -278,7 +204,7 @@ The section [Intermediate files and what to make of them](https://haplocov.readt
 
 <hr>
 
-### Genomic variants files (Configuration II)
+### Configuration II (genomic variants files)
 
 HaploCoV uses collections of genomic variants with high frequency in a specific country/region/locale to define and identify novel candidate variants/lineages of SARS-CoV-2.<br> 
 For your convenience, a collection of pre-computed files is available in this github repository. If you want to use one of these files, you simply have to enter the file/files name in the fifth column of your *locales* configuration file. HaploCoV will detect the file and run all the analyses. 
@@ -295,7 +221,7 @@ Please see the section [Genomic variants file](https://haplocov.readthedocs.io/e
 
 Alternatively, if the pre-computed files do not suit their use case, users do also have the option to derive "custom" sets of genomic variants by analysing the selected locale and time-frame only. In this case the keyword *custom* needs to be indicated in the 5th column, and high frequency genomic variants will be computed on the current selection.   
 
-### Important: special/reserved keywords
+### Note: special/reserved keywords
 
 When the reserved word *world*  is used in the 1rst column of your locales all the sequences in the metadata file will be analysed irrespective of the geographic origin.
 
@@ -316,11 +242,12 @@ The main output of HaploCoV consists of a file in .rep format. This is a simple 
 3. both of the above.
 
 The report contains 3 main sections, which are briefly discussed below. Please refer to the manual if you need additional explanations.
-The file "India_custom.rep" in the current repo, provides an example of .rep file. The file contains an analysis of "novel" variants identified by HaploCoV in India, between 2021-01-01 and 2021-04-30, that is when the Delta and Kappa variant of SARS-CoV-2 emerged and started to spread in the country.
+The files "India_custom.rep", "EuUK_custom.rep", and "SouthAfrica_custom.rep" in the useCases folder, provide some example of a .rep file. Please see the Use Cases section below and in the manual for more info. 
+The files are in simple text format, and cand be inspected with any text editor of your choice.
 
 ## Header and sections
 
-Headers and sections of the file are specified/set by \"#\" symbols. The first 4 lines summarize the results by reporting the number of novel candidate variants that:
+Headers and sections of a .rep file are specified/separated by \"#\" symbols. The first 4 lines summarize the results by reporting the number of novel candidate variants that:
 
 1. passed both the prevalence and score threshold;
 2. passed only the score threshold;
@@ -336,7 +263,7 @@ In the report each candidate lineage/variant is introduced by a # followed by a 
 
 I.e B.1.N1 descends from B.1 for example.
 
-The report includes two distinct and complementary sections. The first section reports information about the *VOC-ness* and on the defining genomic variants that prompted the identification of the novel candidate viral varianr/lineage, the second section summarizes its prevalence at the geographic locales specified by the user. Only places where a minimum prevalence threshold (1% by default) is reached are included.
+The report includes two distinct and complementary sections. The first section reports information about the *VOC-ness* score and on the defining genomic variants that prompted the identification of the novel candidate viral varianr/lineage, the second section summarizes its prevalence at the geographic locales specified by the user. Only places where a minimum prevalence threshold (1% by default) is reached are included.
 
 ### Scores and novel genomic variants
 
@@ -347,16 +274,16 @@ As an example:
 
 `Parent: B.1 ` indicates that the parental lineage is B.1
 
-2. The *VOC-ness score* of the parental, and candidate new lineage/variant (*Score parent:* and *Score subV:* , respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
+2. The *VOC-ness score* of the parental, and candidate new lineage/variant (*Score parent:* and *Score subV:*, respectively). The larger the difference between the 2 scores is, the more likely it is that the new lineage/variant should have "increased" VOC-like features. A difference of 10 or above in particular should be considered a strong indication, since in our experience score-differences of 10 or higher have been recorded only when comparing (known) VOC variants as defined by the WHO with their parental lineage.
 
-An example of a output line is reported below:
+This in an example of an output line:
 `Score parent: 3.28 - Score subV: 15.10 `
 
 
 3. A detailed comparison of the genomic variants gained or lost by the novel candidate lineage/designation w.r.t its parent. Which includes the following data:
-<br>3.1. *defined by*: reports the complete list of defining genomic variants of the novel lineage/designation
-<br>3.2. *gained (wrt parent)*: genomic variants that are new compared with the parent lineage
-<br>3.3. *lost (wrt parent)*: genomic variants associated with the parent lineage/designation, but not with the novel candidate lineage/designation
+<br>3.1. *defined by*: reports the complete list of defining genomic variants of the novel lineage/designation;
+<br>3.2. *gained (wrt parent)*: genomic variants that are new compared with the parent lineage;
+<br>3.3. *lost (wrt parent)*: genomic variants associated with the parent lineage/designation, but not observed in the novel candidate lineage/designation;
 
 Genomic variants are provided as a list separated by " " and in the same format indicated above:
 <br> 
@@ -407,11 +334,85 @@ The sentence ` The candidate variant/lineage did not show an increase in prevale
 ### Prevalence in time
 
 This section reports the latest prevalence of the candidate variant/lineage as estimated by HaploCoV. For example:
-<br>`Latest prevalence:`<br>
-        <br>`AsiaSO 2021-04-30 0.0294-(136)`<br>
+<br>`Latest prevalence:`
+        <br>`AsiaSO 2021-04-30 0.0294-(136)`
         <br>`AsiaSO::India 2021-04-30 0.0294-(136)`<br>
 
 indicates that the latest prevalence of the candidate lineage/variant at April 30th 2021, was 0.029 (~3%) in South Asia and India. 
+
+<hr>
+
+# Use Cases
+
+The folder *useCases* in the main repository provides a collection of files and examples that can be used to test HaploCoV for the identification of novel variants of SARS-CoV-2. Three use cases are provided, all associated with emergence of a VOC:
+
+1. Alpha in the UK;
+2. Delta in India;
+3. Omicron in South Africa.
+
+For every use case only genomic sequences collected within an interval compatible with the emergence of each VOC, and from the country where each VOC was first reported, were extracted from the complete dataset of publicly available SARS-CoV-2 genome sequence (Nexstrain data). Subsequently, all the genomes assigned to VOC-related lineages were manually re-assigned to the B.1.1 lineage. Finally, HaploCoV was applied to verify if VOC lineages could be re-intified from scratch.
+Users are kindly invited to re-run/re-proccess these data to test the main functionalities of HaploCoV.
+
+Please notice that since publicy avaliable data include only about 36% of the complete collection of genomic sequences available in GISAID, default parameters were adjusted to cope with the reduced number of sequences. In particular the number of supporting genomic sequences required to form a designation was lowered to 25 (parameters file paramVOC).
+
+## Use case 1. Alpha
+
+The file *alphaNX* contains a complete collection of the genomic sequences of SARS-CoV-2 specimens isolated in the United Kindgom between 2020-09-01 and 2020-11-15. The total number is 36820.
+The following HaploCoV command was be used to process the file and derive novel variants:
+
+` perl HaploCov.pl --file alphaNX --locales alpha.loc --param paramVOC `.
+
+The locales file *alpha.loc* restricts the scope of the analysis to the United Kingdom (area=EuUK) and to sequences collected inbetween 2020-09-01 and 2020-11-15.
+The final output of HaploCoV is written to the report file *EuUK_custom.rep*. Intermediate files will are stored in the folder: *EuUK_custom_results*. 
+<br>
+
+Please take a look to these sections in the manual at readthedocs (and above) for a more comprehensive explanation of these files and what they do: 
+
+* [locales file](https://haplocov.readthedocs.io/en/latest/haplocov.html#configuration-locales-file); 
+* [parameters file](https://haplocov.readthedocs.io/en/latest/haplocov.html#advanced-configuration-parameters-file);
+* [report file](https://haplocov.readthedocs.io/en/latest/haplocov.html#id5);
+* [intermediate files](https://haplocov.readthedocs.io/en/latest/haplocov.html#id4).
+
+As you can see from the figure below, according to the report.: \"5 novel candidate sublineage(s)/subvariant(s) \" were found by HaploCoV, but only 1 did pass both the score and prevalence threshold. This novel candidate lineage, designated as B.1.1.N1 is defined by 28 additional genomic variants compared to the parental lineage B.1.1, and is associated with an astounding increase in *VOC-ness* score of ~11 points. According to report, B.1.1.N1 shows an increase in prevalence from 1% (0.01) to 10% (0.1) in between 2020-10-21 and 2020-11-12, in the United Kingdom and in England.
+Based on these observations is easy to infer that B.1.1.N1 corresponds with B.1.1.7, the first lineage of the Alpha VOC.
+
+A complete list of the genomic sequences assigned to the novel designation can be retrieved by applying the *subset.pl* tool (see [here](https://haplocov.readthedocs.io/en/latest/subsetting.html#select-a-specific-lineage-hg)) to *EuUK_assigned.txt* in the intermediate file folder *EuUK_custom_results* created by HaploCoV while processing the data.
+The following command can be issued to select entries assigned to the novel lineage:
+
+` perl subset.pl --infile EuUK_custom_results/EuUK_assigned.txt --lineage B.1.1.N1 --outfile novelLin `.
+The output file should include 814 entries.
+
+## Use case 2. Delta
+
+*deltaNX* contains a total of 673 genomic sequences of SARS-CoV-2 isolated in the India between 2020-11-01 and 2021-05-01. 
+By running: 
+
+` perl HaploCov.pl --file deltaNX --locales delta.loc --param paramVOC `.
+
+HaploCoV is applied to this dataset to derive novel variants; *delta.loc* specifies the country to be analysed (India) and the interval of time (2020-11-01 to 2021-05-01). Results will be written in the report file *India_custom.rep*, intermediate files to *India_custom_results*.
+<br>
+According to the output file (screenshot below), only one "interesting" variant was identified by HaploCoV in these settings: B.1.1.N1. The novel designation has 34 additional defining genomic variants compared with its parental. The VOC-ness score is increased from 4.42 to 18.58. 
+Although the novel designation has a prevalence of almost 80% by 2021-04-28, a 2 fold increase in prevalence is not detected at any time point. 
+<br>
+The intermediate file *India_assigned.txt.prev* in the *India_custom_results* folder provides a more detailed picture of the spread of the novel designation (again, see screenshot).
+According to this "extended" prevalence report, B.1.1.N1 is first observed at 2021-03-30, and shows a prevalence of ~ 45% by then (see screenshot). Although the prevalence of the variant grows rapidly, the increase il lower that 2 fold at the intervals of time included in the analysis.
+<br>
+This is probably due to the patchy pattern of available data. Indeed we observe that no prevalence is reported for several interval of time in *India_assigned.txt.prev*; this indicates that for several intervals less than 10 genomic sequences were available, 10 being the minimum number of sequences required by HaploCoV to do this computation (see [prevalence report](https://haplocov.readthedocs.io/en/latest/increase.html) in the manual for a more comprehensive explanation). 
+
+## Use case 3. Omicron
+
+*omicronNX* includes 1009 genomic sequences of SARS-CoV-2 isolated in the South Africa between 2021-07-01 and 2021-12-31. 
+By running: 
+
+` perl HaploCov.pl --file omicronNX --locales omicron.loc --param paramVOC `.
+
+HaploCoV can be applied to analyse these data. According to the specfications provided by *omicron.loc* only isolates from South Africa, and in between 2021-07-01 and 2021-12-31 will be analysed.
+Main results are saved to *SouthAfrica_custom.rep*. Intermediate files to *SouthAfrica_custom_results*.
+Similar to use case 2, only one novel "insteresting" designation is identified by HaploCoV: B.1.1.N1. This novel designation is characterized by 58 genomic variants that are not shared with the parental. The VOC-ness score is increased from 3.50 to 21.82. 
+According to the prevalence report, B.1.1.N1 has a prevalece above 95% (0.95) in South Africa by 2021-12-26. However B.1.1.N1 is not flagged as an "increased prevalence" variant, since it does not show an increase in prevalence of 2 fold or higher at any interval of time (see screenshot below).
+<br>
+The interemediate file *SouthAfrica_assigned.txt.prev* in the *SouthAfrica_custom_results* folder can be used to obtain more information about the prevalence of the newly defined designation.
+From the report it is possible to observe that B.1.1.N1 is first identified by HaploCoV at 2021-11-22, and shows a prevalence greater than 86%. Similar to use case 2, also in this case the data are patchy and several intervals of tim have missing data. In this scenario the novel variant is not identified as a variant "showing and increase in prevalence" since it is already dominant/widespread by the time it is first identified.
 
 <hr>
 
@@ -421,9 +422,9 @@ If you identified a novel variant of SARS-CoV-2 with "interesting" genomic featu
 
 Normally [virological.org](https://virological.org/) or [Pango](https://github.com/cov-lineages/pango-designation/issues/) would be the right place to start.
 If the novel candidate variant was identified by HaploCoV, *HaploCoV.pl* (see [--varfile](https://haplocov.readthedocs.io/en/latest/haplocov.html#designations-file)) or *augmentClusters.pl* (see [here](https://haplocov.readthedocs.io/en/latest/novel.html)) should/could have provided a file with the complete list of genomic variants that define your novel lineage/lineages of interest.
-It might be worthwhile to add this/these definitions to your favourite *Genomics variant file* (see [here](https://haplocov.readthedocs.io/en/latest/genomic.html)) and use *assign.pl* or *p_assign.pl* to re-assign genomic sequences using the augmented nomenclature.<br> 
+It might be worthwhile to add this/these definitions to your favourite *Genomics variant file* (see [here](https://haplocov.readthedocs.io/en/latest/genomic.html)) and use *assign.pl* or *p_assign.pl* to re-assign genomic sequences using the augmented nomenclature. *HaploCoV.pl* might already have done that for you, anyway (see [intermediate files](https://haplocov.readthedocs.io/en/latest/haplocov.html#id4)).<br> 
 
-Whence the novel nomenclature is assigned, you can extract the data (and metadata) of the novel candidate lineage/variant from a HaploCoV formatted metadata table (like for example the output of *assign.pl*) by using the *subset.pl* utility included in this repo.  The section [Subsetting data](https://haplocov.readthedocs.io/en/latest/subsetting.html) of the manual illustrates some possible applications of this tool, and explains how to use it to extract data of interest. <br>
+Whence the novel nomenclature is assigned, you can extract the data (and metadata) of the novel candidate lineage/variant from a HaploCoV formatted metadata table (like for example the output of *assign.pl*) by using the *subset.pl* utility included in this repo.  The section [Subsetting data](https://haplocov.readthedocs.io/en/latest/subsetting.html) of the manual illustrates some possible applications of this tool, and explains how to use it to extract data of interest (see also use case 1 above). <br>
 Finally the *increase.pl* utility can be used to calculate the prevalence of your novel/candidate variant/lineages in space and time and derive global patterns (if any and if your novel designations was not already derived from the analysis of all the available genome sequences).<br>
 All these topics are covered in the [manual](https://haplocov.readthedocs.io/en/latest/index.html) of HaploCoV. Please take a look at the manual in order to see how to make the best of the tools and utilities.
 
