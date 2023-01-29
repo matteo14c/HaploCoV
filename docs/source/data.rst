@@ -62,7 +62,7 @@ HaploCoV is compatible with the input format used by the Augur pipeline, hence u
 See figure below.
 
 .. figure:: _static/gisaid2.png
-   :scale: 80%
+   :scale: 40%
    :align: center
 
 
