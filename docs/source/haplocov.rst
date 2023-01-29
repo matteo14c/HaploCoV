@@ -4,13 +4,13 @@ Once data has been converted in *HaploCoV format*, the complete workflow can be 
 *HaploCoV.pl* is the workhorse of HaploCoV and is the recommended way to execute our software.
 
 Users can specify a list of geographic **regions/areas or countries** and **intervals of time** to be considered in their analyses by providing a configuration file in text format (*locales file*, see next). 
-HaploCoV.pl will process the configuration file and apply the complete workflow to each entity therein listed. For every distinct country, area or region results will be provided in the form of a *report (.rep) file*.
+*HaploCoV.pl* will process the configuration file and apply the complete workflow to each entity therein listed. For every distinct country, area or region results will be provided in the form of a *report (.rep) file*.
 
 The report will list candidate SARS-CoV-2 variants/lineages showing a significant increase of their *VOC-ness score* and/or prevalence, and which are probably worth to be monitored. More details on the interpretation of the report are provided in the section `How to interpret HaploCoV's results <https://haplocov.readthedocs.io/en/latest/haplocov.html#how-to-interpret-haplocov-s-results>`_ and `What to do next <https://haplocov.readthedocs.io/en/latest/whatnext.html>`_.
 
 **Options**
 
-HaploCoV.pl accepts the following options:
+*HaploCoV.pl* accepts the following options:
 
 * *--file:* name of the input file (metadata file in HaploCoV format);
 * *--locales:* configuration file with the list of regions and countries to analyse;
@@ -31,7 +31,7 @@ The content of the file is briefly summarized below. A more comprehensive discus
 
 ::
 
- location qualifier start date end date   genomic variants
+ location qualifier start-date end-date   genomic-variants
  Italy    country   2022-07-01 2023-01-26     custom
 
 Only sequences collected in Italy, from 2022-07-01 to 2023-01-26 will be considered by HaploCoV, according to this configuration. 
@@ -40,7 +40,7 @@ Since the type of analysis was set to "custom" and the target geographic region 
 Configuration (*Locales file*)
 ==============================
 
-Locale(s) configuration files are used by HaploCoV.pl to set the main parameters for the execution of your analyses.
+Locale(s) configuration files are used by *HaploCoV.pl* to set the main parameters for the execution of your analyses.
 These files are used to configure the place/places and intervals of time that HaploCoV will analyse. There is no limit to the maximum number of geographic locations and time-intervals that can be specified. As outlined in the example below, however, each needs to be indicated in a separate line in your locales file.
 
 *Locales files* need to have a tabular format and contain 5 columns separated by tabulations. The file *locales.txt* included in the Github repository provides a valid example of a locales configuration file. 
@@ -51,11 +51,11 @@ These files are used to configure the place/places and intervals of time that Ha
    :widths: 35 35 50 50 70
    :header-rows: 1
 
-   * - Heading location
-     - Heading qualifier
-     - Heading start-date
-     - Heading end-date
-     - Heading genomic-variants
+   * - Location
+     - qualifier
+     - start-date
+     - end-date
+     - genomic-variants
    * - Italy
      - country
      - 2022-01-01
@@ -114,7 +114,7 @@ For your convenience, a collection of *pre-computed* genomic variants files is a
 
 Precomputed sets of genomic variants/files can broadly be categorized into 4 main classes:
 
-| 1. **Highly variable genomes.** These are allelic variants found in at least 25 *highly divergent* genomic sequences (w.r.t the reference strain to which they are assigned). These files are stored under the folder: **HighVar**.
+| 1. **Highly variable genomes.** These are genomic variants found in at least 25 *highly divergent* genomic sequences (w.r.t the reference strain to which they are assigned). These files are stored under the folder: **HighVar**.
 |
 | 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. These files are stored under the folder: **country**. 
 |
@@ -128,11 +128,11 @@ All these files can be used alone, or in any combination by HaploCoV to derive n
    :widths: 35 35 50 50 70
    :header-rows: 1
 
-   * - Heading location
-     - Heading qualifier
-     - Heading start-date
-     - Heading end-date
-     - Heading genomic-variants
+   * - location
+     - qualifier
+     - start-date
+     - end-date
+     - genomic-variants
    * - Italy
      - country
      - 2022-01-01
@@ -156,7 +156,7 @@ Advanced configuration (*parameters file*)
 *HaploCoV.pl* executes all the tools and utilities in HaploCoV for you and in the right order. However, the workflow is relatively complex, and every tool uses a series of parameters that need to be configured.
 The *parameters file* is a special configuration file that can be used to set and configure all the parameters used by  every single tool in the workflow.
 A default file with a standard configuration (called *parameters*) is included in the main repository. This file should suit most use cases/scenarios. However users are free to edit it according to their needs.
-To facilitate this process, users can take advantage of the file *parametersExtended* in the main repository, which provides an explicit list of all the parameters that can be modified/set and their default values.
+To facilitate this process, users can take advantage of the file *parametersDetailed* (`here <https://github.com/matteo14c/HaploCoV/blob/bd0d15859a1cffc1b591f4b664530d0103576077/parametersDetailed>`_) in the main repository, which provides an explicit list of all the parameters that can be modified/set and their default values.
 
 The format is quite straightforward, each tool is indicated in a line, and the parameters to be set in the following lines. When no parameters are specified the default values are used. In example:
 
