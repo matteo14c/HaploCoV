@@ -15,4 +15,4 @@ The main configuration files required by HaploCoV are:
 |
 | 4. *scalingFactors.csv*: this file contains the list of features used by HaploCoV to compute its *VOC-ness" score*. Please refer to the HaploCoV paper for more details. Similarly to *globalAnnot.gz* all the tools in HaploCoV that use this file will try to download the most recent version for you.
 |
-| 5. *parameters*: this is a simple text file that provides the default/standard parameters for the execution of the HaploCoV workflow. The file is used by HaploCoV.pl and is included in the main repository on Github. Since this file does not need to be updated/modified HaploCoV.pl does not download a novel copy of *parameters* at every execution.
+| 5. *parameters*: this is a simple text file that provides the default/standard parameters for the execution of the HaploCoV workflow. The file is used by *HaploCoV.pl* and is included in the main repository on Github. Since this file does not need to be updated/modified *HaploCoV.pl* does not download a novel copy of *parameters* at every execution.
