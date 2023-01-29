@@ -49,7 +49,7 @@ To apply the full workflow implemented by HaploCoV.pl you will need to execute 7
 
  6. perl assign.pl --dfile lvar.txt --metafile linearDataSorted.txt --outfile --out HaploCoVAssignedVariants.txt
 
-**OR alternatively:** 
+**OR alternatively (parallel version, faster):** 
 
 ::
 
