@@ -12,10 +12,10 @@ For every isolate in the input file, distances to all the groups/lineages/varian
 
 The output is in HaploCoV format.
 
-**Assigning Pango Lineages** 
+**Assigning Pango Lineages:** 
 The file *linDefMut* in the github repository provides a complete list of defining genomic variants for all the lineages included in the Pango nomenclature. Feel free to use that file if you need to assign genomes/isolates according to Pango. The file is updated on a bi-weekly basis.
 
-**Assigning Haplogroups as defined in Chiara et al 2021**
+**Assigning Haplogroups as defined in Chiara et al 2021:**
 *HaploDefMut* in the github repository provides a complete list of defining allele variants for all haplogroups identified by the method described in `Chiara et al 2021 <https://academic.oup.com/mbe/article/38/6/2547/6144924>`_. Feel free to use that file if you need to assign genomes according to that system. The file is updated on a bi-weekly basis.
 
 **Options**
@@ -32,24 +32,24 @@ To assign genomes to a lineages/group/classes you need to run:
 
  assign.pl  --dfile linDefMut  --metafile  linearDataSorted.txt --out  linearDataSorted.txt_reAssigned
  
-The output consists of a table in *HaploCoV format*, similarly to the input. The group/class/lineage assigned to each genome (9th column) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *no* indicates no alternative assignments were identified, and hence that the genome was unambiguously assigned to a single group/lineage. When multiple assignments are identified, a comma separated list is provided.
+The output consists of a table in *HaploCoV format*, similarly to the input. The group/class/lineage assigned to each genome (10th column, pangoLin) will be updated with the newly assigned groups/class/lineages. Moreover an additional column will be added to indicate/report alternative assignments with equal levels of similarity. An example is outlined below. *no* indicates no alternative assignments were identified, and hence that the genome was unambiguously assigned to a single group/lineage. When multiple assignments are identified, a comma separated list is provided.
 
 .. list-table:: Locales File
    :widths: 30 30 30 30 30 30 30 30 30 30 30 30
    :header-rows: 1
 
-   * - Heading genome ID
-     - Heading collection date
-     - Heading offset days (collection)
-     - Heading deposition date
-     - Heading offset days (deposition)
-     - Heading continent
-     - Heading macro-area
-     - Heading country
-     - Heading region
-     - Heading lineage
-     - Heading genomic variants
-     - Heading alternative lineage
+   * - genomeID
+     - collectionD
+     - offsetCD
+     - depositionD
+     - offsetDD
+     - continent
+     - area
+     - country
+     - region
+     - pangoLin
+     - listV
+     - alt
    * - genome1
      - 2022-06-01
      - 788
@@ -77,7 +77,7 @@ The output consists of a table in *HaploCoV format*, similarly to the input. The
    
 **Execution times, and multithreading** 
 
-Using a single core/thread *assign.pl* can assign the complete collection of more than 15M of genomes included in GISAID to Pango lineages in about 4 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than twenty minutes are required to assign 15M genomes.
+Using a single core/thread *assign.pl* can assign the complete collection of more than 14M of genomes included in GISAID to Pango lineages in about 4 hours. The companion utility *p_assign.pl* included in this repository can be used to parallelize the execution of *assign.pl* if required (see below). Execution times are reduced linearly. For example, if 24 cores are used, less than thirty minutes are required to assign 14M genomes.
 
 **p_assign.pl**
 
@@ -100,6 +100,6 @@ To execute it you can use:
 Input files are the same as those provided to *assign.pl*. Output format is in the same format described above.
 
 .. warning::
-Since *p_assign.pl* does directly make use of *assign.pl* when it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error if *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
+ Since *p_assign.pl* does directly make use of *assign.pl* when it is executed, both scripts need to be in the same folder when invoking *p_assign.pl*. Execution will halt and raise an error if *assign.pl* is not found/is not in the same folder as *p_assign.pl*. 
 
 All input files **MUST** be in the **same folder** from which the program is executed. If/when linDefMut, the *designations file* of Pango lineages as derived by HaploCoV is specified, by default the most recent version is downloaded from github. Please set *--update F* to disable this behaviour.
