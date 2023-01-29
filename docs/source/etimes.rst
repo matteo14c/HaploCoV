@@ -9,11 +9,11 @@ Moreover, some tasks/processes can potentially take up to a few days (see for ex
    :widths: 40 40 40 40 40
    :header-rows: 1
    
-   * - Heading Tool
-     - Heading Input files
-     - Heading RAM (peak memory)
-     - Heading Time
-     - Heading Output (size)
+   * - Tool
+     - Input files
+     - RAM (peak memory)
+     - Time
+     - Output (size)
    * - addToTable.pl
      - sequences.fasta > 300G; metadata.tsv ~10G
      - 6.0G - 8.0G
