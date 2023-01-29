@@ -2,8 +2,8 @@
 =====================
 
 The utility *augmentClusters.pl* is used to derive novel sub-groups/sublineages within an existing classification of SARS-CoV-2 lineages/variants. The aim is to extend a target classification system by the incorporation of local/regional high genomic variants, which are used to infer/derive local variants of the virus. 
-Users can specify the minimum size (minimum number of isolates included in the group) required for a novel group to be formed (*--size*) and the minimum distance (in terms of number of characteristic high frequency genomic variants, *--dist*) between newly formed and extant groups.
-The input consists in a metadata table in *HaploCoV format* and a list of genomic variant of hig frequency (*genomic variant file*). The output will be a simple text file with SARS-CoV-2 variants/lineages (one per line) and the list of their characteristic (present in >50% of the genomes) genomic variants (*designations file*). The file will include all the extant lineages/variants specified in the metadata table, and also novel variants/lineages formed by the tool. All novel variants/lineages will be indicated by a suffix (*--suffix*) that can be specified by the user.
+Users can specify the minimum size (minimum number of isolates included in the group) required for a novel group to be formed (*--size*), the minimum distance (in terms of number of characteristic high frequency genomic variants, *--dist*) between newly formed and extant groups, and a `designations file <https://haplocov.readthedocs.io/en/latest/genomic.html#designations-files-in-haplocov>`_, with the list of genomic variant characteristic of lineages/designations already included in the nomenclature (*--deffile*).
+The input consists in a metadata table in *HaploCoV format* and a list of genomic variant of hig frequency (*genomic variant file*). The output will a new *designations file* which will incorporate additional, novel designations/candidate lineages. The file will include all the extant lineages/variants specified in the metadata table, and also novel variants/lineages formed by the tool. All novel variants/lineages will be indicated by a suffix (*--suffix*) that can be specified by the user.
 
 **High frequencies alleles for Nexstrain data**
 
@@ -38,13 +38,20 @@ The main output file, lvar.txt will contain all current groups/lineages along wi
    :scale: 80%
    :align: center
 
-In augmentClusters.pl the *--deffile* parameter can be used to provide a *designations file*. If no *designation file* is provided, characteristic/defining genomic variants are derived by processing the input metadata file (*--metafile*). If/when *linDefMut*, the designations file of Pango lineages included in the HaploCoV repository is used, the *--update* option can be set to specify whether the most recent copy of the file should be downloaded (default, T=true), or wheter to use the copy already available in the current installation. 
-Please see below for a more detailed discussion of **designations files* and their meaning.
+.. warning::
+    In augmentClusters.pl the *--deffile* parameter is used to provide a *designations file*. 
+    If no *designation file* is provided, characteristic/defining genomic variants are derived dynamically by processing the input  metadata file (*--metafile*). This behaviour was implemented such as to avoid failures in the execution, however it might have some downsides: identifications/reconstruction of the genomic variants characteristic of a lineage will be based only on the data provided in input, and might result inconsistent across different executions. For these reasons we strongly advise users to provide a *designations file* with the *--deffile* option.
+ 
+.. warning:: 
+    If/when *linDefMut*, the designations file of Pango lineages included in the HaploCoV repository is used, the *--update* option can be set to specify whether the most recent copy of the file should be downloaded (default, T=true), or wheter to use the copy already available in the current installation. 
+ 
+
+Please see below for a brief recap on **designations files* and their meaning.
 
 **Designations files**
 
 HaploCoV uses *designations files* to specify/list genomic variants that are characteristic of a group or lineage. The format of *designations files* is as follows: every line reports a lineage/group, defined by the corresponding id/name, followed by the list of characteristic genomic variants (defined here as those present in >50% of the isolates assigned to the group). Values are separated by spaces (see above).
-augmentClusters.pl provides its main output in *designations files* format, newly formed lineages/groups/sub-lineages in the output file are identified by a user specified suffix that a progressive number. The default value for this suffix is the letter **"N"**. If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.1.17 lineage, these will be reported as:
+*augmentClusters.pl* provides its main output in *designations files* format, newly formed lineages/groups/sub-lineages in the output file are identified by a user specified suffix that a progressive number. The default value for this suffix is the letter **"N"**. If for example two novel lineages/groups/sub-lineages are derived in the Pango BA.1.17 lineage, these will be reported as:
 
 | 1. BA.1.17.N1 and;
 | 2. BA.1.17.N2;
