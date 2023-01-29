@@ -96,11 +96,11 @@ An example of a valid metadata table is reported below.
    :widths: 50 50 50 50 25
    :header-rows: 1
 
-   * - Heading location
-     - Heading qualifier
-     - Heading start-date
-     - Heading end-date
-     - Heading genomic-variants
+   * - Location
+     - qualifier
+     - start-date
+     - end-date
+     - genomic-variants
    * - Italy
      - 2022-11-01
      - 2022-11-11
@@ -134,4 +134,4 @@ Valid metadata tables must include 5 columns with the following names:
 * *"Location"*;
 * *"Pango Lineage" or "Lineage"*;
 
-Names must match exactly. 
+Names must match exactly, although mistakes in capitalisation are tolerated. 
