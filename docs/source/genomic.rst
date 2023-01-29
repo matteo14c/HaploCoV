@@ -5,7 +5,7 @@ Genomic variants file
 HaploCoV uses a collection of genomic variants with high frequency (at a specific time or place) to augment a "target nomenclature" and identify **candidate** novel variants or lineages.
 By genomic variant, here we mean a variant in the genome, or better w.r.t the reference genome assembly of SARS-CoV-2. Although the specification of the adjective "genomic" might sound verbose, we prefer to use it throughout the manual to avoid confusion between "viral variants" or variants of the virus.
 
-The utility *computeAF.pl* included in HaploCoV can be used to analyse a file in HaploCoV format and identify high frequency genomic variants. By default *computeAF.pl* will flag all the genomic variants that displayed a frequency of 1%, for more than 30 non consecutive days during the pandemic (i.e. or derived from the input data).
+The utility *computeAF.pl* included in HaploCoV can be used to analyse a file in HaploCoV format and identify high frequency genomic variants. By default *computeAF.pl* will flag all the genomic variants that displayed a frequency of 1%, for more than 15 non consecutive days during the pandemic (i.e. or derived from the input data).
 
 The output of *computeAF.pl* are *genomic variants files*.These files have a very streamlined format which is briefly illustrated below. Each genomic variant is reported  according to the following format:
 
@@ -36,26 +36,26 @@ For example:
 
 ::
 
- 1. global_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt`
- 2. area_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt`
- 3. countries_list.txt ` wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt`
+ 1. global_list.txt  wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt
+ 2. area_list.txt wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/country_list.txt
+ 3. countries_list.txt wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/global_list.txt
  
 HaploCoV does also feature additional sets of *genomic variants files*, which might be suitable for different use cases. 
 These files are found under the folder "alleleVariantSet" and include:
 
-| 1. **Highly variable genomes.** These are genomic variants found in at least 25 *highly divergent* genomic sequences that have 6 or more additional genomic variants w.r.t the reference strain to which they are assigned. Highly divergent genomic variants are computed by considering non overlapping intervals of 60 days. For example 960\_1020\_list.txt from the list of genomic variants from genome sequences isolated from 960 to 1020 days after Mon 2019-12-30 (day 0 according to HaploCoV, see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov>`_). These files are stored under the folder: **HighVar**. These files are usefult/can be used to identify novel candidate lineage/variants which show an increased number of genomic variants compared with theri parental lineage.
+| 1. **Highly variable genomes.** These are genomic variants found in at least 25 *highly divergent* genomic sequences that have 6 or more additional genomic variants w.r.t the reference strain to which they are assigned. Highly divergent genomic variants are computed by considering non overlapping intervals of 60 days. For example 960\_1020\_list.txt from the list of genomic variants from genome sequences isolated from 960 to 1020 days after Mon 2019-12-30 (day 0 according to HaploCoV, see `here <https://haplocov.readthedocs.io/en/latest/metadata.html#dates-and-time-in-haplocov>`_). These files are stored under the folder: **HighVar**. These files are useful/can be used to identify novel candidate lineage/variants which show an increased number of genomic variants compared with theri parental lineage.
 |
-| 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 30 days in a specific country at any time point from Mon 2019-12-30. In this case each file represents a country, unlike country_list.txt which reports genomic variants that were frequent at any country. These files are stored under the folder: **country**. Country specific files can be used, for example for identyfing/defining novel candidate lineages or variants that are specific to a country.
+| 2. **Country specific genomic variants.** Genomic variants reaching a frequency of 1% or higher, for at least 15 days in a specific country at any time point from Mon 2019-12-30. In this case each file represents a country, unlike country_list.txt which reports genomic variants that were frequent at any country. These files are stored under the folder: **country**. Country specific files can be used, for example for identyfing/defining novel candidate lineages or variants that are specific to a country.
 |
-| 3. **Genomic variants with increased prevalence.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.**  These files are meant to facilitate the identification and flagging of novel variants of SARS-CoV-2 that are increasing in prevalence.
+| 3. **Genomic variants with increased prevalence.** Genomic variants showing an increase in their prevalence of a 1.5 fold or greater in at least one country, at different months, and starting from January 2020. These files are stored under the folder: **HighFreq.**  These files are meant to facilitate the identification and flagging of novel variants of SARS-CoV-2 that are increasing their prevalence.
 |
 
 *Designations files* in HaploCoV
 =============================================
 
 In HaploCoV viral lineages/variants are defined by considering the complete collection of genomic variants that are observed in at least 50%+1 of the genomes assigned by a designation.
-The main repository in github includes *linDefMut* a file that provides the complete list of genomic variants that define lineages of SARS-CoV-2 according to the Pango nomenclature. In HaploCoV we refer to this type of file as: *designations files*.
-In a *designation file* each lineage is reported in a single line, followed by the complete list of defining genomic variants.
+The main repository in github includes *linDefMut*, a file that provides the complete list of genomic variants that define lineages of SARS-CoV-2 according to the Pango nomenclature. In HaploCoV we refer to this type of file as: *designations files*.
+In a *designation file* each lineage/designation is reported in a single line, followed by the complete list of its defining genomic variants.
 Genomic variants are indicated according to the convention described above.
 To provide and example:
 
@@ -82,4 +82,4 @@ For example if HaploCoV identifies 2 novel candidate lineages within the Pango l
 | B.1.N1
 | B.1.N2
  
-The default string/letter to be used as a suffix is set by the --suffix option in *augmentClusters.pl*. Please see below for how to modify this default behaviour.
+The string/letter used to indicate novel variants is set by the --suffix option in *augmentClusters.pl*. 
