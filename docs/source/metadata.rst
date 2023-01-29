@@ -13,17 +13,17 @@ An example of the data format used by HaploCoV (HaploCoV format) is illustrated 
    :widths: 30 30 30 30 30 30 30 30 30 30 30
    :header-rows: 1
 
-   * - Heading genome ID
-     - Heading collection date
-     - Heading offset days (collection)
-     - Heading deposition date
-     - Heading offset days (deposition)
-     - Heading continent
-     - Heading macro-area
-     - Heading country
-     - Heading region
-     - Heading lineage
-     - Heading genomic variants
+   * - genomeID
+     - collectionD 
+     - offsetCD 
+     - depositionD
+     - offsetDD
+     - continent
+     - area
+     - country
+     - region
+     - pangoLin
+     - listV
    * - genome1
      - 2022-06-01
      - 788
@@ -47,21 +47,21 @@ An example of the data format used by HaploCoV (HaploCoV format) is illustrated 
      - BA.2
      - v1,v2,vn 
     
-The file is delineated by tabulations. Genomic variants are reported as a comma separated list. 
+The file is delineated by tabulations. Genomic variants (column listV) are reported as a comma separated list. 
 The format is as follows: 
 | *genomicposition_ref|alt* i.e. *1_A|T* for example indicates a A to T substitution in position 1 of the reference genome.
 
-A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2022-07-20 is available at the following link: `HaploCoVFormatted.txt <http://159.149.160.88/HaploCoVFormatted.txt.gz>`_ . The file is `gzip` compressed. When de-compressed it should be around 2.9G in size. 
+A valid example of an HaploCoV-formatted file, including all the sequences available in INSDC databases up to 2023-25-01 is available at the following link: `HaploCoVFormatted.txt <http://159.149.160.88/HaploCoVFormatted.txt.gz>`_ . The file is `gzip` compressed. When de-compressed it should be around 4G in size. 
 
 Dates and time in HaploCoV
 ==========================
 
-HaploCoV can only read dates in **YYYY-MM-DD format**. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represents day 0. This date represents the beginning of the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019).
+HaploCoV can only read dates in **YYYY-MM-DD format**. Time periods and intervals of time are computed as offsets in days with respect to Monday Dec 30th 2019, which in HaploCoV represents day 0. This date represents the first week following the first reported isolation of SARS-CoV-2 (December 26th 2019).
 For example Tue 31th Dec 2019 is day 1 according to HaploCoV notation and Sun 29th Dec 2019, represents day -1. 
 
 In the HaploCoV metadata format, the 3rd column reports the offset in days between the isolation of a specific isolate and Dec 30th 2019; similarly the 5th column reports the offset from Dec 30th 2019 to the deposition of the genome sequence in a public database.
 
-Metadata tables in *HaploCov format* are sorted in descending order by the 3rd column (offset of the collection date). This means that the oldest genome sequences will always be at the top of the file, while those isolated more recently  at the bottom.
+Metadata tables in *HaploCov format* are sorted in descending order by the 3rd column (offsetCD). This means that the less recent genome sequences will always be at the top of the file, while those isolated more recently at the bottom.
 
 If you need to know the date of isolation (and offset with respect to day 0) of the most recent genome included in the dataset you can simply use this command in a unix-like shell environment:
 
@@ -81,9 +81,16 @@ Geography and geography related information are stored in columns 6 to 9 in Hapl
 * column 8: country;
 * column 9: region.
 
-Geographic data are inferred directly from your metadata table, by processing the Location column (see above). Geographic metadata in the Location column of your metadata file must be indicated in the following format:
+Geographic data are inferred directly from your metadata table, by processing the Location column (GISAID formatted data) or the corresponding columns if your data were retrieved from Nextstrain. 
+If your data are in GISAID format, geographic metadata in the Location column be indicated in the following way:
 
 * Continent/Country/Region.
+
+For Nextrain formatted data, the following columns are used:
+
+* region -> Continent;
+* country -> Country;
+* division -> Region;
 
 If geographic data are reported in a different format, HaploCoV will not be able to process the information and will append NA values in columns 6 to 9.
 Importantly we must stress that HaploCoV does not perform any correction on the spelling/consistency of geographic data. Hence it is down to the user to provide input data that are as accurate and correct as possible.
@@ -136,7 +143,7 @@ The helper script *aling.pl* is used to derive genomic variants by *addToTable.p
 **Options**
 addToTable.pl accepts the following options:
 
-* *--metadata**: input metadata file (typically metadata.tsv from GISAID);
+* *--metadata*: input metadata file (typically metadata.tsv from GISAID);
 * *--seq*: fasta file;
 * *--nproc*: number of threads. Defaults to 8;
 * *--dayFrom*: include only genomes collected after this day;
@@ -159,7 +166,7 @@ NextStrain data: NextStrainToHaploCoV.pl
 If you obtained your metadata files from NexStrain you will **not need** to use *addToTable.pl* and *align.pl*. Metadata tables from NexStrain have already been processed by their ncov pipeline, and do already include a list of allele variants for every genome. The pre-processed file can be downloaded from `here <https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz>`_. 
 Please be aware that NexStrain can re-distribute only publicly available data, which at the moment account for about 40% of the data in GISAID.
 Data from NexStrain still need to be converted to *HaploCoV format*. For this purpose you can use *NextStrainToHaploCoV.pl*.
-Contrary to addToTable.pl, NextStrainToHaploCoV.pl does not feature incremental addition of data: the full NexStrain table can be converted to *HaploCoV format* in less than 10 minutes. 
+Contrary to *addToTable.pl*, *NextStrainToHaploCoV.pl* does not feature incremental addition of data: the full NexStrain table can be converted to *HaploCoV format* in less than 10 minutes. 
 
 **Options**
 NextStrainToHaploCoV.pl accepts the following options:
