@@ -3,7 +3,7 @@
 
 The *LinToFeats.pl* utility computes high level genomic features of SARS-CoV-2 lineages.
 A complete list of such high level features along with a brief description is provided in the *features.csv* file in the main Github repo of HaploCoV.
-The tool uses pre-computed annotations of SARS-CoV-2 variants obtained by CorGAT to derive its scores. Such annotations are available from the *globalAnnot* file,and are updated on a bi-weekly basis. At every execution the most recent version of the annotations is downloaded automatically. 
+The tool uses pre-computed annotations of SARS-CoV-2 variants obtained by CorGAT to derive its scores. Such annotations are available from the *globalAnnot* file,and are updated on a bi-weekly basis. At every execution the most recent version of the annotations is downloaded automatically. Users are kindly encouraged to not modify this behaviour, unless for a very good reason.
 
 LinToFeats.pl takes the output of augmentClusters.pl as its main input, the output file is a simple tab delineated table where for every lineage/group in input, genomic features are computed.
 
@@ -23,4 +23,4 @@ An example of a valid command line for the execution of LinToFeats.pl is:
 
  perl LinToFeats.pl --infile lvar.txt --outfile lvar_feats.tsv `
 
-The main output file: *lvar_feats.tsv* will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages. By default the most recent version of the *globalAnnot* file is downloaded from the HaploCoV github repo at every execution (--update T), this is strongly reccommended, please do not modify the defaults unless for a valid reason.
+The main output file: *lvar_feats.tsv* will contain genomic features in tabular format for all SARS-CoV-2 groups/lineages newly formed groups/sub-lineages. The output consists in a simple table, where for every variant, the numeric value associated with each feature is reported
