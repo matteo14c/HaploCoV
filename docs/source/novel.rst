@@ -39,11 +39,11 @@ The main output file, lvar.txt will contain all current groups/lineages along wi
    :align: center
 
 .. warning::
-   In augmentClusters.pl the *--deffile* parameter is used to provide a *designations file*. 
-   If no *designation file* is provided, characteristic/defining genomic variants are derived dynamically by processing the input  metadata file (*--metafile*). This behaviour was implemented such as to avoid failures in the execution, however it might have some downsides: identifications/reconstruction of the genomic variants characteristic of a lineage will be based only on the data provided in input, and might result inconsistent across different executions. For these reasons we strongly advise users to provide a *designations file* with the *--deffile* option.
+ In augmentClusters.pl the *--deffile* parameter is used to provide a *designations file*. 
+ If no *designation file* is provided, characteristic/defining genomic variants are derived dynamically by processing the input  metadata file (*--metafile*). This behaviour was implemented such as to avoid failures in the execution, however it might have some downsides: identifications/reconstruction of the genomic variants characteristic of a lineage will be based only on the data provided in input, and might result inconsistent across different executions. For these reasons we strongly advise users to provide a *designations file* with the *--deffile* option.
  
 .. warning:: 
-   If/when *linDefMut*, the designations file of Pango lineages included in the HaploCoV repository is used, the *--update* option can be set to specify whether the most recent copy of the file should be downloaded (default, T=true), or wheter to use the copy already available in the current installation. 
+ If/when *linDefMut*, the designations file of Pango lineages included in the HaploCoV repository is used, the *--update* option can be set to specify whether the most recent copy of the file should be downloaded (default, T=true), or wheter to use the copy already available in the current installation. 
  
 
 Please see below for a brief recap on **designations files* and their meaning.
