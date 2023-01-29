@@ -18,8 +18,7 @@ A metadata table in *HaploCoV format* is the only required input. The full list 
 4. *--nInt* number of consecutive time units used to form an interval. Units are specified in days. Default: 4; 
 5. *--minP* minimum level of prevalence, variants/lineages below this prevalence are not reported. Default: 0.01;
 6. *--minG* minimum number of genome sequences, only lineages associated with --minG or more genomes are reported. Default 5;
-7. *--pass* logical value. T=TRUE, F=FALSE. report only variants that fulfilled all the criteria specified by
-	--minFc, --minP and --minG. defaults to T (true), if set to F (false) all variants will be reported instead;
+7. *--pass* logical value. T=TRUE, F=FALSE. report only variants that fulfilled all the criteria specified by --minFc, --minP and --minG. defaults to T (true), if set to F (false) all variants will be reported instead;
 8. *--outfile* name of the output file. Defaults to \<\<file\>\>.prev.
 
 To run the program you MUST provide at least --file. The file needs to be in the current folder.
@@ -34,7 +33,7 @@ The output will be saved in metadata.tsv.prev.
 The figure below provides an example of the output. Each interval is introduced by  header lines, defined by a **#** symbol which report the start and end of the interval and illustrates the format of the report.
 The report itself consists of a table with a number of columns that is equal to *2 X the number of time intervals + 3*. I.e by default 11, since 4 time intervals are used (4X2+3).
 The first 2 columns report respectively, the name of the lineage and the region where an increase in prevalence was observed. 
-The following columns report the prevalence and each time point in the interval, followed by the total number of genomes used for the computation. The last column (PASS) indicates whether the lineage fulfilled all the criteria set by --minFc, --minP and --minG (1=TRUE), or not (0=FALSE). This last column is useful only when/if the --pass option is  set F (FALSE). 
+The following columns report the prevalence at each time point in the interval, followed by the total number of genomes used for the computation. The last column (PASS) indicates whether the lineage fulfilled all the criteria set by --minFc, --minP and --minG (1=TRUE), or not (0=FALSE). This last column is useful only when/if the --pass option is  set F (FALSE). 
 
 .. figure:: _static/outputInc.png
    :scale: 70%
