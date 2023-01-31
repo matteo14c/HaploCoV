@@ -150,17 +150,20 @@ When the reserved word **world** is used in the 1rst column of your locales all 
 
 In the 5th (genomic-variants) you can use the reserved world **custom** if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed genomic-variant file provided by HaploCoV. When **custom** is specified, high frequency genomic variants are determined on the fly based on the user selection.
 
-Advanced configuration (*parameters file*)
-==========================================
+Parameters file (configuration III)
+=====================================
 
 *HaploCoV.pl* executes all the tools and utilities in HaploCoV for you and in the right order. However, the workflow is relatively complex, and every tool uses a series of parameters that need to be configured.
 The *parameters file* is a special configuration file that can be used to set and configure all the parameters used by  every single tool in the workflow.
-A default file with a standard configuration (called *parameters*) is included in the main repository. This file should suit most use cases/scenarios. However users are free to edit it according to their needs.
+A default file with a standard configuration (called *parameters*) is included in the main repository. This file should suit most use cases/scenarios. However users are free to edit it according to their needs. The file can be edited with any text editor.
 To facilitate this process, users can take advantage of the file *parametersDetailed* (`here <https://github.com/matteo14c/HaploCoV/blob/bd0d15859a1cffc1b591f4b664530d0103576077/parametersDetailed>`_) in the main repository, which provides an explicit list of all the parameters that can be modified/set and their default values.
 
-The format is quite straightforward, each tool is indicated in a line, and the parameters to be set in the following lines. When no parameters are specified the default values are used. In example:
+The format is quite straightforward, each tool is indicated in a line, and the parameters to be set in the following lines. Values are separate by tabulations. Comments need to be prepended with an "#" symbol.
+When no parameters are specified the default values are used. In example:
 
+| #use the defaults for computeAF.pl
 | ``computeAF.pl`` 
+| #provide some parameters for augmentClusters.pl
 | ``augmentClusters.pl`` 
 | ``--size  10`` 
 | ``--dist  4``
@@ -168,7 +171,7 @@ The format is quite straightforward, each tool is indicated in a line, and the p
 will set *computeAF.pl* to use its default parameters; 
 while for *augmentClusters.pl* --dist will be set to 4 and --size to 10.
 
-For a complete list of all the parameters accepted by every tool, please refer to the corresponding section in the manual or see the file *parametersExtended* file.
+For a complete list of all the parameters accepted by every tool, please refer to the corresponding section in the manual or see the file *parametersDetailed* file.
 
 
 *Designations file*
