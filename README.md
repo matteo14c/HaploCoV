@@ -227,6 +227,27 @@ When the reserved word *world*  is used in the 1rst column of your locales all t
 
 In the 5th column (genomic-variants) you can use the reserved word *custom* if you need to re-compute high frequency genomic variants based on your selection of genomic sequences, instead of using a pre-computed genomic-variant file provided by HaploCoV. This option allows more flexibility. When *custom* is specified, high frequency genomic variants are determined dynamically based on the user selection. Please see the [Genomic variants file](https://haplocov.readthedocs.io/en/latest/genomic.html) in the manual for additional explanations.
 
+### Configuration III (parameters file)
+
+*HaploCoV.pl* executes all the tools and utilities in the HaploCoV workflow to derive novel candidate additional designations of SARS-CoV-2 variants. As you can see from the manual at [readthedocs](https://haplocov.readthedocs.io/en/latest/impatient2.html) this workflow is relatively complex, and every tool has several parameters.
+The value of each parameter can be set by providing to HaploCoV a parameters file, with the *--param* option. Parameters files are used by HaploCoV to set the configuration of all the tools.
+The default is to use the file *parameters* that you can find in the main repository. This file provides default parameters for the execution of HaploCoV. The file can be modified with a simple text editor. The file *parametersDetailed* in this repository, provides the full list of parameters that can be set.
+
+The format is quite straightforward, each tool is indicated in a line, and the parameters to be set in the following lines. Values are separate by tabulations. Comments need to be prepended with an "#" symbol.
+When no parameters are specified the default values are used. In example:
+
+<br> `#use the defaults for computeAF.pl `
+<br> `computeAF.pl ` 
+<br> `#provide some parameters for augmentClusters.pl `
+<br> `augmentClusters.pl ` 
+<br> `--size  10 ` 
+<br> `--dist  4 `
+
+will set *computeAF.pl* to use its default parameters; 
+while for *augmentClusters.pl* --dist will be set to 4 and --size to 10.
+
+Please refer to this section of the extended manual for additional explanations on parameters [files](https://haplocov.readthedocs.io/en/latest/haplocov.html#parameters-file-configuration-iii).
+
 ### Advanced configuration
 
 This readme covers only the standard/basic requirements for the execution of HaploCoV. We kindly invite users to read the [manual](https://haplocov.readthedocs.io/en/latest) for a more thorough explanation of additional options (and configuration) of the workflow, and tips/instructions for how to make the best of each single tool.
@@ -369,9 +390,9 @@ The final output of HaploCoV is written to the report file *EuUK_custom.rep*. In
 Please take a look to these sections in the manual at readthedocs (and above) for a more comprehensive explanation of these files and what they do: 
 
 * [locales file](https://haplocov.readthedocs.io/en/latest/haplocov.html#configuration-locales-file); 
-* [parameters file](https://haplocov.readthedocs.io/en/latest/haplocov.html#advanced-configuration-parameters-file);
-* [report file](https://haplocov.readthedocs.io/en/latest/haplocov.html#id5);
-* [intermediate files](https://haplocov.readthedocs.io/en/latest/haplocov.html#id4).
+* [parameters file](https://haplocov.readthedocs.io/en/latest/haplocov.html#parameters-file-configuration-iii);
+* [intermediate files](https://haplocov.readthedocs.io/en/latest/haplocov.html#id5);
+* [report file](https://haplocov.readthedocs.io/en/latest/haplocov.html#id6)
 
 As you can see from the figure below, according to the report.: \"5 novel candidate sublineage(s)/subvariant(s) \" were found by HaploCoV, but only 1 did pass both the score and prevalence threshold. This novel candidate lineage, designated as B.1.1.N1 is defined by 28 additional genomic variants compared to the parental lineage B.1.1, and is associated with an astounding increase in *VOC-ness* score of ~11 points. According to report, B.1.1.N1 shows an increase in prevalence from 1% (0.01) to 10% (0.1) in between 2020-10-21 and 2020-11-12, in the United Kingdom and in England.
 Based on these observations is easy to infer that B.1.1.N1 corresponds with B.1.1.7, the first lineage of the Alpha VOC.
