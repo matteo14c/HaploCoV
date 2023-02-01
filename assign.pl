@@ -25,7 +25,7 @@ my ($initscores,$decode,$pos)=populate_matrix($lvarFile);
 
 ######################################################################################
 # assign genomes
-assign($initscores,$decode,$pos,$ofile);
+assign($initscores,$decode,$pos);
 
 
 #####################################################################################
