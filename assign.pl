@@ -68,16 +68,16 @@ sub assign
 	open(OUT,">$ofile");
 	print OUT "genomeID\tcollectionD\toffsetCD\tdepositionD\toffsetDD\tcontinent\tarea\tcountry\tregion\tpangoLin\tlistV\talt\n";
 	open(IN,$metafile);
-	my $header=<IN>;
-        my @fields=(split(/\t/,$header));
-        my $fields=@fields;
-        unless ($fields==11 || $fields==12)
-        {
-                die("\n The input is not in the expected format: I got $fields columns,\n but I expect 10 (HaploCoV formatted file) or 11(HaploCoV formatted file+assign.pl).\n\n Please provide a valid file.\n\n");
-        }
-
 	while(<IN>)
 	{
+		my @fields=(split(/\t/,$_));
+        	my $fields=@fields;
+        	unless ($fields==11 || $fields==12)
+        	{
+                	die("\n The input is not in the expected format: I got $fields columns,\n but I expect 10 (HaploCoV formatted file) or 11(HaploCoV formatted file+assign.pl).\n\n Please provide a valid file.\n\n");
+        	}
+
+		next if $_=~/genomeID/;
 		chomp();
         	my @scores=@initscores;
         	my @vls=(split(/\t/));

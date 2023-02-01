@@ -28,9 +28,9 @@ if ($lvarFile eq "linDefMut" && $update eq "T")
 }
 
 check_input_arg_valid();
-check_exists_command('split') or die "$0 requires split to split the input fasta file\n";
-check_exists_command('cat') or die "$0 requires cat to concatenate input fasta files\n";
-
+check_exists_command('split') or die "$0 requires split to split the input file\n";
+check_exists_command('tail') or die "$0 requires tail to concatenate input files\n";
+check_exists_command('mv') or die "$0 requires mv to rename files\n";
 
 my $files=split_file($metafile,$nProc);
 parallel_assign($files,$lvarFile);
@@ -86,9 +86,19 @@ sub merge
 {
 	my @files=@{$_[0]};
 	my $ifile=$_[1];
+	if (-e $ifile)
+	{
+		my $randTempName=sprintf "%08X", rand(0xffffffff);
+		print "IMPORTANT!\n The output file $ifile does already exist. Renaming the old file to $ifile.$randTempName\n";
+		system ("mv $ofile $ifile.$randTempName")==0||die("could not rename the pre-existing output file $ifile\n");
+	}
+
+	open(OO,">$ifile");
+	print OO "genomeID\tcollectionD\toffsetCD\tdepositionD\toffsetDD\tcontinent\tarea\tcountry\tregion\tpangoLin\tlistV\talt\n";
+	close(OO);
 	foreach my $f (@files)
 	{
-		system ("cat $f\_Assign.tmp >> $ifile")==0||die();
+		system ("tail -n +2 $f\_Assign.tmp >> $ifile")==0||die();
 		system ("rm $f\_Assign.tmp")==0||die();
 	}
 }

@@ -68,17 +68,12 @@ sub subset
 	my $lineage=$_[6];
 	my $outfile=$_[7];
 	open(IN,$infile);
-	open(OUT,">$outfile");
 	my $header=<IN>;
-        my @fields=(split(/\t/,$header));
-        my $fields=@fields;
-        unless ($fields==11 || $fields==12)
-        {
-                die("\n The input is not in the expected format: I got $fields columns,\n but I expect 10 (HaploCoV formatted file) or 11(HaploCoV formatted file+assign.pl).\n\n Please provide a valid file.\n\n");
-        }
+	open(OUT,">$outfile");
 	print OUT $header;
 	while(<IN>)
 	{
+		chomp();
 		my ($id,$date,$offset,$depo,$odepo,$continent,$farea,$fcountry,$fregion,$flineage,$mut)=(split(/\t/,$_));
 		#next if $odepo-$offset>=60;
 		#print if $lineage eq $flineage;
@@ -138,7 +133,6 @@ sub check_arguments
                         warn("Valid arguments are @valid\n");
                         warn("All those moments will be lost in time, like tears in rain.\n Time to die!\n");
                         print_help();
-			die("Reason:\nInvalid parameter $act provided\n");
                 }
         }
 }
@@ -151,42 +145,32 @@ sub check_input_arg_valid
                 my $f=$arguments{"--infile"};
                 die("No valid input file provided. $f does not exist!");
         }
-	if ($arguments{"--outfile"} eq "na")
-        {
-                print_help();
-                my $f=$arguments{"--outfile"};
-                die("--outfile was not provided. Please provide a valid name for the output file!");
-        }
-
 }
 
 sub print_help
 {
-        print " This utility is used to subset a metadata file in HaploCoV format,\n"; 
-	print " different conditions and filters can be applied.\n";
+        print " This utility is meant to subset a metadata file in HaploCoV format\n"; 
+	print " different conditions and filters can be applied\n";
 	print " Logical AND of the filters set by the user is always applied\n";
-	print " in the subset/filtration of the input data: i.e if both a region and \n";
+	print " in the subset/filtration of the input data. i.e if both a region and \n";
 	print " lineage are provided (--region and --lineage) only metadata of genomic \n";
-	print " sequences from that region and assigned to that lineage will be extracted\.n";
+	print " sequneces from that region and assigned to that lineage will be extracted\n";
 	print " The final output will consist in a metadata table in HaploCov format\n";
-	print " containing only the subset of the data specified by the user.\n\n";
+	print " with only the subset of the data specified by the user\n\n";
 
 	
 
 	print "##INPUT PARAMETERS\n\n";
-        print "--infile <<filename>>\t metadata file in HaploCoV format;\n";
-        print "--area <<filter>>\t name of a macro geographic area;\n";
-        print "--country <filter>>\t name of a country;\n";
-        print "--region <filter>>\t name of a region;\n";
-        print "--lineage <filter>>\t name of a lineage. Name must match extactly;\n";
-	print "--startD <<date: YYYY-MM-DD>>\t extract only specimens collected after this date;\n";
-	print "--endD <<date: YYYY-MM-DD>>\t extract only speciments collected before this date;\n";
+        print "--infile <<filename>>\t metadata file\n";
+        print "--area <<filter>>\t name of a macro geographic area\n";
+        print "--country <filter>>\t name of a country\n";
+        print "--region <filter>>\t name of a region\n";
+        print "--lineage <filter>>\t name of a lineage. Name must match extactly\n";
+	print "--startD <<date: YYYY-MM-DD>>\t extract only genomes collected after this date\n";
+	print "--endD <<date: YYYY-MM-DD>>\t extract only genomes collected before this date\n";
         print "Mandatory parameters are --infile and --outfile, at least one of  --area,--country,--filter\n";
         print "--lineage,--startD or --endD should be set. If no filters are specified, execution will halt\n\n";
-        print "OUTPUT PARAMETERS\n\n";
-	print "--outfile <filename>\t name of the output file\n";
-	
-	print "\n##EXAMPLE:\n\n";
+        print "\n##EXAMPLE:\n\n";
         print "1# input is HaploCoV_formattedMetadata:\nperl subset.pl --infile HaploCoV_formattedMetadata --country Thailand"; 
         print "--startD 2022-05-01 --outfile Thai_HaploCoV_formattedMetadata\n\n";
 }
