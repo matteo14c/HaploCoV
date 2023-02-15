@@ -467,7 +467,7 @@ sub check_input_arg_valid
                 die("Reason:\n$f is not a valid name for the output file. Please provide a valide name using --outfile");
         }
 
-        if ( !(-e $arguments{"--corgat"}."annotate.pl") && !(-e $arguments{"--annotfile"})  )
+        if ( !(-e $arguments{"--corgat"}."annotate.pl") && !(-e $arguments{"--annotfile"}) && !(-e $arguments{"--annotfile"}.".gz" ) )
         {
                 print_help();
                 my $m=$arguments{"--corgat"};
