@@ -1,4 +1,16 @@
-world	area	2022-10-15	2022-11-30	custom
-NAnorth	area	2022-10-15	2022-11-30	custom
-Euc	area	2022-10-15	2022-11-30	custom
-EuUK	area	2022-10-15	2022-11-30	custom
+location	qualifier	start date	end date	genomic-variants
+world	area	2022-10-15	2023-01-26	custom
+AfrSouth	area	2022-10-15	2023-01-26	custom
+AsiaEast	area	2022-10-15	2023-01-26	custom
+AsiaME	area	2022-10-15	2023-01-26	custom
+AsiaSE	area	2022-10-15	2023-01-26	custom
+AsiaSO	area	2022-10-15	2023-01-26	custom
+EuEa	area	2022-10-15	2023-01-26	custom
+EuNO	area	2022-10-15	2023-01-26	custom
+EuSO	area	2022-10-15	2023-01-26	custom
+EuUK	area	2022-10-15	2023-01-26	custom
+Euc	area	2022-10-15	2023-01-26	custom
+NAcent	area	2022-10-15	2023-01-26	custom
+NAnorth	area	2022-10-15	2023-01-26	custom
+Oc	area	2022-10-15	2023-01-26	custom
+SAM	area	2022-10-15	2023-01-26	custom
