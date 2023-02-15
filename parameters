@@ -1,8 +1,8 @@
 computeAF.pl
 augmentClusters.pl
---size  50
---dist  2
---deffile linDefMut
+--size	50
+--dist	2
+--deffile	linDefMut
 LinToFeats.pl
 report.pl
 p_assign.pl
