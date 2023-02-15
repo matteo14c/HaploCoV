@@ -442,7 +442,7 @@ sub download_refMut
         print "will rename the old copy to linDefMut.old\n";
         if (-e "linDefMut")
         {
-                system("mv linDefMut.old")==0||die("could not remove the old version of linDefMut")
+                system("mv linDefMut linDefMut.old")==0||die("could not remove the old version of linDefMut")
         }
         print "Downloading linDefMut from the github repo. Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
