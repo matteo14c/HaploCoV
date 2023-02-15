@@ -1,7 +1,8 @@
 computeAF.pl
 augmentClusters.pl
 --size	50
---dist	2
+--dist  2
+--deffile linDefMut
 LinToFeats.pl
 report.pl
 p_assign.pl
@@ -9,6 +10,6 @@ p_assign.pl
 increase.pl
 --days	7
 --minFC	2
---minP	0.05
---nInt	3
+--minP	0.01
+--nInt	4
 --pass	F
