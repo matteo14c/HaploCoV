@@ -446,7 +446,7 @@ sub download_refMut
         }
         print "Downloading linDefMut from the github repo. Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
-        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
+        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
 
 }
 
