@@ -1,3 +1,8 @@
+> **Warning**
+> Dear users please be aware that due to a glitch in the update of our repository, if you downloaded HaploCoV in-between February 11th and February 15th 2023, you might have experienced some issues. The issues has "now" (as of Feb 16th) been fixed. We would kindy ask you to download our software again. 
+> Apologies for any inconvience that this might have caused
+> Regards, the HaploCoV development team
+
 # HaploCoV: a set of utilities and methods to identify novel variants of SARS-CoV-2
 
 ## Important
