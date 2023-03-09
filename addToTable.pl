@@ -394,6 +394,7 @@ sub linearize
 	{
 		#print;
         	my ($curID,$vars)=(split(/\t/))[0,1];
+		$vars="none" if $vars eq ".";
 		my $metadata=$data{$curID} ? $data{$curID} : $NAst;
                 print OUT "$curID\t$metadata\t$vars";
 	}
