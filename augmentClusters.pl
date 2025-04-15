@@ -8,8 +8,8 @@ my %arguments=
 "--metafile"=>"na",          # max time
 "--posFile"=>"na",
 "--dist"=>2,
-"--suffix"=>"N",
-"--size"=>100,
+"--suffix"=>"NmC",
+"--size"=>50,
 "--tmpdir"=>"novelGs",
 "--deffile"=>"na",
 "--update"=>"T",
@@ -96,7 +96,7 @@ sub compress_groups
         }
         unless ($fields[2] eq "offsetCD")
         {
-		die("\n Your 3rd column is called $fields[2], but the name should be offsetCD. Is the file in HaploCoV format?\n\n Please check.\n\n");
+		warn("\n Your 3rd column is called $fields[2], but the name should be offsetCD. Is the file in HaploCoV format?\n\n Please check.\n\n");
         }
 
 
@@ -446,7 +446,7 @@ sub download_refMut
         }
         print "Downloading linDefMut from the github repo. Please download this file manually, if this fails\n";
         check_exists_command('wget') or die "$0 requires wget to download the genome\nHit <<which wget>> on the terminal to check if you have wget\n";
-        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/master/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
+        system("wget https://raw.githubusercontent.com/matteo14c/HaploCoV/updates/linDefMut")==0||die("Could not retrieve the reference annotation used by HaploCov\n")
 
 }
 

@@ -7,7 +7,7 @@ my %arguments=
 (
 "--file"=>"na",         # name of the input file
 "--maxT"=>"na",      	# max time
-"--minT"=>-10, 		# min time
+"--minT"=>"na", 		# min time
 "--interval"=>10,
 "--minCoF"=>1,
 "--minP"=>3,
@@ -85,10 +85,17 @@ sub process_data
 	my @Ws=();
 	my @zeros=();
 
+
 	if ($max_time eq "na")
 	{
 		$max_time=pick_time($file);
 	}
+
+	if ($min_time eq "na")
+	{
+		$min_time=pick_time_min($file);
+	}
+
 
 	for(my $t=$min_time;$t<=$max_time;$t+=$increment)
         {
@@ -99,7 +106,6 @@ sub process_data
 	}
 	
 
-	#print "@Ws\n";
 
 	my %final_data=();
 	my %freqPos=();	
@@ -118,7 +124,7 @@ sub process_data
 	}
 	unless ($fields[2] eq "offsetCD")
 	{
-		die("\n Your 3rd column is called $fields[2], but the name should be offsetCD. Is the file in HaploCoV format?\n\n Please check.\n\n"); 
+		warn("\n Your 3rd column is called $fields[2], but the name should be offsetCD. Is the file in HaploCoV format?\n\n Please check.\n\n"); 
 	}	
 	while(<IN>)
 	{
@@ -194,7 +200,7 @@ sub process_data
 	}	
 	foreach my $spec (keys %freqPos)
 	{
-		
+		#print "$spec\n";	
 		open(OUT,">$outdir/$spec\_list.txt");
 		print OUT "Genomic-variant\t$spec\n";
 		foreach my $pos (keys %{$freqPos{$spec}})
@@ -213,15 +219,34 @@ sub pick_time
 	$file=$_[0];
 	if (check_exists_command("tail"))
 	{
-		system("tail -n 1 $file >> tmp.file")==0||die();
+		system("tail -n 1 $file > tmp.file")==0||die();
 		open(IN,"tmp.file");
 		my $lline=<IN>;
 		my $date=(split(/\t/,$lline))[2];
+		system("rm tmp.file")==0||die("tmpfile not removed\n");
 		return($date);
 
 	}else{
 		die ("To guess the endDate I need to use the tail command. But I can not find tail in your environment/shell. Please provide a valid endDate by using the --maxT parameter\n");
 	}
+}
+
+sub pick_time_min
+{
+        $file=$_[0];
+        if (check_exists_command("tail"))
+        {
+                system("head -n 2 $file > tmp.file")==0||die();
+                open(IN,"tmp.file");
+                my $lline=<IN>;
+		$lline=<IN>;
+                my $date=(split(/\t/,$lline))[2];
+		system("rm tmp.file")==0||die("tmpfile not removed\n");
+                return($date);
+
+        }else{
+                die ("To guess the starDate I need to use the head command. But I can not find tail in your environment/shell. Please provide a valid endDate by using the --maxT parameter\n");
+        }
 }
 
 ######################################################################
